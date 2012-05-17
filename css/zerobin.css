@@ -24,7 +24,13 @@ font-size: 0.8em;
 margin-bottom:15px;
 padding-left:60px; padding-right:60px;
 }
- 
+
+.blink {
+	text-decoration: blink;
+	font-size: 10pt;
+	color: #a4b3c4;
+}
+
 a  { color:#0F388F; }
 
 h1 {
@@ -46,20 +52,23 @@ cursor:pointer;
 }
 
 h2 { 
-color:#000; 
-font-size:1em; 
-display:inline; 
-font-style:italic; 
-font-weight:bold; 
+color:#000;
+font-size:1em;
+display:inline;
+font-style:italic;
+font-weight:bold;
 position:relative; 
-bottom:8px;} 
+bottom:8px;
+} 
   
 h3 { 
-color:#94a3b4; 
-font-size:0.7em; 
-display:inline; 
-position:relative; 
-bottom:8px;}   
+color:#94a3b4;
+font-size:0.7em;
+display:inline;
+margin-top: 10px;
+position:relative;
+bottom:8px;
+}   
 
 #aboutbox { 
 font-size:0.85em;
@@ -72,9 +81,9 @@ float:right;
 width:60%;
 }
 
-div#aboutbox a { color: #94a3b4; }
+#aboutbox a { color: #94a3b4; }
 
-textarea#message,div#cleartext,.replymessage {
+textarea#message, #cleartext, .replymessage {
 clear:both;
 color:black;
 background-color:#fff;
@@ -91,13 +100,13 @@ box-sizing:border-box;
 width:100%;
 }
 
-div#status { 
+#status { 
 clear:both; 
 padding:5px 10px; 
 }
 
 
-div#pastelink { 
+#pastelink { 
 background-color:#1F2833;
 color:white;
 padding:4px 12px; 
@@ -106,11 +115,11 @@ clear:both;
 -webkit-box-shadow: inset 0px 2px 2px #000;
 box-shadow: inset 0px 2px 5px #000;
 }
-div#pastelink a { color:white; }
-div#pastelink button { margin-left:11px }
-div#toolbar, div#status { margin-bottom:5px; }
+#pastelink a { color:white; }
+#pastelink button { margin-left:11px }
+#toolbar, #status { margin-bottom:5px; }
 
-button,.button,div#expiration,div#language {
+button,.button,#expiration,#language {
 color:#fff;
 background-color:#323B47;
 background-repeat:no-repeat;
@@ -163,27 +172,27 @@ position:relative;
 top:2px;
 }
 
-div#expiration, div#language, div#opendisc { 
+#expiration, #language, #opendisc { 
 background-color:#414D5A; 
 padding:6px 8px;
 margin:0px 5px 0px 0px;;
 position: relative;
 bottom:1px; /* WTF ? Why is this shifted by 1 pixel ? */
 }
-div#expiration select, div#language select {
+#expiration select, #language select {
 color:#eee;
 background: transparent;
 border: none;
 }
 
 
-div#expiration select option, div#language select option {
+#expiration select option, #language select option {
 color:#eee;
 background: #414D5A;
 background-color:#414D5A;
 }
 
-div#remainingtime {
+#remainingtime {
 color: #94a3b4; 
 display:inline;
 font-size:0.85em;
@@ -211,7 +220,7 @@ border-radius:4px;
 padding:5px;
 }
 
-div#ienotice {
+#ienotice {
 background-color:#7E98AF;
 color:#000;
 font-size:0.85em;
@@ -220,14 +229,13 @@ text-align:center;
 -webkit-border-radius:4px;
 -moz-border-radius:4px;
 border-radius:4px;
-display:none;
 }
 
-div#ienotice a {
+#ienotice a {
 color:black;
 }
 
-div#oldienotice {
+#oldienotice {
 display:none;
 }
 
@@ -240,7 +248,7 @@ color:#FF0;
 /* --- discussion related CSS ------- */
 
 
-div#discussion {  /* Discussion container */
+#discussion {  /* Discussion container */
 margin-top:20px;
 width:100%;
 margin-left:-30px;
@@ -257,7 +265,7 @@ margin-left:30px;
 }
 
 
-div.comment /* One single reply */
+.comment /* One single reply */
 {
 background-color:#CECED6;
 color:#000;
@@ -276,17 +284,17 @@ overflow:auto;
 }
 /* FIXME: Add min-width */
 
-div.reply {
+.reply {
 margin: 5px 0px 0px 30px;
 }
 
-div#replystatus { 
+#replystatus { 
 display:inline;
 padding:1px 7px; 
 font-family: Arial, Helvetica, sans-serif;
 }
 
-div.comment button  {
+.comment button  {
 color:#446;
 background-color:#aab;
 background-repeat:no-repeat;
@@ -310,7 +318,7 @@ box-shadow: inset 0px 1px 2px #eee;
 border-radius: 3px;
 -moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box;
 }
-div.comment button:hover  { 
+.comment button:hover  { 
 background-image: linear-gradient(bottom, #ccd 0%, #fff 100%);
 background-image: -o-linear-gradient(bottom, #ccd 0%, #fff 100%);
 background-image: -moz-linear-gradient(bottom, #ccd 0%, #fff 100%);
@@ -318,7 +326,7 @@ background-image: -webkit-linear-gradient(bottom, #ccd 0%, #fff 100%);
 background-image: -ms-linear-gradient(bottom, #ccd 0%, #fff 100%);
 background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccd), color-stop(1, #fff));
 }
-div.comment button:active {
+.comment button:active {
 background-image: linear-gradient(bottom, #fff 0%, #889 100%);
 background-image: -o-linear-gradient(bottom, #fff 0%, #889 100%);
 background-image: -moz-linear-gradient(bottom, #fff 0%, #889 100%);
@@ -329,7 +337,7 @@ position:relative;
 top:1px;
 }
 
-div.comment input  {
+.comment input  {
 padding:2px;
 }
 
@@ -337,14 +345,14 @@ textarea#replymessage {
 margin-top:5px;
 }
 
-div.commentmeta {
+.commentmeta {
 color: #fff;
 background-color:#8EA0B2;
 margin-bottom:3px;
 padding:0px 0px 0px 3px;
 }
 
-span.commentdate {
+.commentdate {
 color: #BFCEDE;
 }
 
