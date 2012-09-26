@@ -46,23 +46,22 @@
       <div id="expiration" style="display:none;">Expire: 
       <select id="pasteExpiration" name="pasteExpiration">
         <option value="burn">Burn after reading</option>
-        <option value="10min">10 minutes</option>
+        <option value="10min" selected="selected">10 minutes</option>
         <option value="1hour">1 hour</option>
         <option value="1day">1 day</option>
-        <option value="1month" selected="selected">1 month</option>
+        <option value="1month">1 month</option>
         <option value="1year">1 year</option>
         <option value="never">Never</option>
       </select>
       </div>
       <div id="remainingtime" style="display:none;"></div>
-      <div id="language" style="display:none;">
-      <select name="language">
-        <option value="language" selected="selected">Language</option>
-        <option value="C/C++">C/C++</option>
-        <option value="php">php</option>
-        <option value="python">Python</option>
+      <div id="language">Language:
+      <select name="language" id="selectedLanguage">
+        <option value="none" selected="none">None</option>
+{$LANGUAGES}
       </select>
       </div>
+      <div id="languageDisplay">Language: <div id="languageValue">php</div>.</div>
         <input id="password" value="Optional password..." style="display:none;" />
         <div id="opendisc" class="button" style="display:none;">
            <input type="checkbox" id="opendiscussion" name="opendiscussion" />
