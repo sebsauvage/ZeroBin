@@ -94,7 +94,7 @@ function setElementText(element, text) {
     }
     // for other (sane) browsers:
     else {
-        element.text(text);
+        element.html(text);
     }
 }
 
@@ -233,15 +233,30 @@ function send_comment(parentid) {
 
 /**
  *  Send a new paste to server
+ *  FIXME: Implement some kind of error if prettyprint.php is not available
  */
 function send_data() {
     // Do not send if no data.
     if ($('textarea#message').val().length == 0) {
         return;
     }
+    showStatus('Prettyprinting paste...', spin=true);
+    ppText = "";
+    $.ajax({
+      async: false,
+      type: 'POST',
+      url: 'lib/prettyprint.php',
+      data: {
+            text: $('textarea#message').val(),
+            lang: $('select#selectedLanguage').val(),
+            },
+      success: function(data){
+        ppText = data;
+      }
+    });
     showStatus('Sending paste...', spin=true);
     var randomkey = sjcl.codec.base64.fromBits(sjcl.random.randomWords(8, 0), 0);
-    var cipherdata = zeroCipher(randomkey, $('textarea#message').val());
+    var cipherdata = zeroCipher(randomkey, ppText);
     var data_to_send = { data:           cipherdata,
                          expire:         $('select#pasteExpiration').val(),
                          opendiscussion: $('input#opendiscussion').is(':checked') ? 1 : 0
@@ -256,7 +271,7 @@ function send_data() {
                 var url = scriptLocation() + "?" + data.id + '#' + randomkey;
                 showStatus('');
                 $('div#pastelink').html('Your paste is <a href="' + url + '">' + url + '</a>').show();
-                setElementText($('div#cleartext'), $('textarea#message').val());
+                setElementText($('div#cleartext'), ppText);
                 urls2links($('div#cleartext'));
                 showStatus('');
             }
@@ -277,7 +292,8 @@ function stateNewPaste() {
     $('button#clonebutton').hide();
     $('div#expiration').show();
     $('div#remainingtime').hide();
-    $('div#language').hide(); // $('#language').show();
+    $('div#language').show();
+    $('div#languageDisplay').hide();
     $('input#password').hide(); //$('#password').show();
     $('div#opendisc').show();
     $('button#newbutton').show();
@@ -320,6 +336,7 @@ function clonePaste() {
     stateNewPaste();
     showStatus('');
     $('textarea#message').text($('div#cleartext').text());
+    $("select#selectedLanguage").val($('div#languageValue').text()).attr('selected',true);
 }
 
 /**

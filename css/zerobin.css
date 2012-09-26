@@ -110,7 +110,7 @@ div#pastelink a { color:white; }
 div#pastelink button { margin-left:11px }
 div#toolbar, div#status { margin-bottom:5px; }
 
-button,.button,div#expiration,div#language {
+button,.button,div#expiration,div#language{
 color:#fff;
 background-color:#323B47;
 background-repeat:no-repeat;
@@ -183,7 +183,7 @@ background: #414D5A;
 background-color:#414D5A;
 }
 
-div#remainingtime {
+div#remainingtime, div#languageDisplay, div#languageValue {
 color: #94a3b4; 
 display:inline;
 font-size:0.85em;

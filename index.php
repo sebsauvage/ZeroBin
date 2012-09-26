@@ -138,7 +138,6 @@ if (!empty($_POST['data'])) // Create new paste/comment
     // Make sure last paste from the IP address was more than 10 seconds ago.
     if (!trafic_limiter_canPass($_SERVER['REMOTE_ADDR']))
         { echo json_encode(array('status'=>1,'message'=>'Please wait 10 seconds between each post.')); exit; }
-
     // Make sure content is not too big.
     $data = $_POST['data'];
     if (strlen($data)>2000000)
@@ -162,7 +161,6 @@ if (!empty($_POST['data'])) // Create new paste/comment
         elseif ($expire=='1year') $meta['expire_date']=time()+365*24*60*60;
         elseif ($expire=='burn') $meta['burnafterreading']=true;
     }
-
     // Read open discussion flag
     if (!empty($_POST['opendiscussion']))
     {
@@ -262,9 +260,36 @@ if (!empty($_POST['data'])) // Create new paste/comment
 echo json_encode(array('status'=>1,'message'=>'Server error.'));
 exit;
 }
-
+function genLangList(){
+     if (!($dir = @opendir(dirname(__FILE__) . '/geshi/geshi'))) {
+            return '<option>No languages available!</option>';
+     }
+     $languages = array();
+     $retStr = "";
+     while ($file = readdir($dir)) {
+        if ( $file[0] == '.' || strpos($file, '.', 1) === false) {
+             continue;
+        }
+        $lang = substr($file, 0,  strpos($file, '.'));
+        $languages[] = $lang;
+    }
+    closedir($dir);
+    sort($languages);
+    foreach ($languages as $lang) {
+        if (isset($_POST['language']) && $_POST['language'] == $lang) {
+            $selected = 'selected="selected"';
+        } else {
+            $selected = '';
+        }
+        $retStr = $retStr . '<option value="' . $lang . '" '. $selected .'>' . $lang . "</option>\n        ";
+    }
+    return $retStr;
+}
 $CIPHERDATA='';
 $ERRORMESSAGE='';
+$LANGUAGES=genLangList();
+
+
 if (!empty($_SERVER['QUERY_STRING']))  // Display an existing paste.
 {
     $dataid = $_SERVER['QUERY_STRING'];
@@ -335,5 +360,6 @@ $page = new RainTPL;
 $page->assign('CIPHERDATA',htmlspecialchars($CIPHERDATA,ENT_NOQUOTES));  // We escape it here because ENT_NOQUOTES can't be used in RainTPL templates.
 $page->assign('VERSION',$VERSION);
 $page->assign('ERRORMESSAGE',$ERRORMESSAGE);
+$page->assign('LANGUAGES',$LANGUAGES);
 $page->draw('page');
 ?>
