@@ -267,7 +267,6 @@ function send_data() {
                 setElementText($('div#cleartext'), $('textarea#message').val());
                 urls2links($('div#cleartext'));
                 showStatus('');
-		prettyPrint();
             }
             else if (data.status==1) {
                 showError('Could not create paste: '+data.message);
@@ -445,7 +444,6 @@ $(function() {
         stateExistingPaste();
 
         displayMessages(pageKey(), messages);
-	prettyPrint();
     }
     // Display error message from php code.
     else if ($('div#errormessage').text().length>1) {
