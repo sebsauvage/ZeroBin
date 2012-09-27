@@ -74,7 +74,7 @@ width:60%;
 
 div#aboutbox a { color: #94a3b4; }
 
-textarea#message,div#cleartext,.replymessage {
+textarea#message,pre#cleartext,.replymessage {
 clear:both;
 color:black;
 background-color:#fff;
