@@ -108,13 +108,13 @@ function displayMessages(key, comments) {
     try { // Try to decrypt the paste.
         var cleartext = zeroDecipher(key, comments[0].data);
     } catch(err) {
-        $('div#cleartext').hide();
+        $('pre#cleartext').hide();
         $('button#clonebutton').hide();
         showError('Could not decrypt data (Wrong key ?)');
         return;
     }
-    setElementText($('div#cleartext'), cleartext);
-    urls2links($('div#cleartext')); // Convert URLs to clickable links.
+    setElementText($('pre#cleartext'), cleartext);
+    urls2links($('pre#cleartext')); // Convert URLs to clickable links.
 
     // Display paste expiration.
     if (comments[0].meta.expire_date) $('div#remainingtime').removeClass('foryoureyesonly').text('This document will expire in '+secondsToHuman(comments[0].meta.remaining_time)+'.').show();
@@ -256,9 +256,10 @@ function send_data() {
                 var url = scriptLocation() + "?" + data.id + '#' + randomkey;
                 showStatus('');
                 $('div#pastelink').html('Your paste is <a href="' + url + '">' + url + '</a>').show();
-                setElementText($('div#cleartext'), $('textarea#message').val());
-                urls2links($('div#cleartext'));
+                setElementText($('pre#cleartext'), $('textarea#message').val());
+                urls2links($('pre#cleartext'));
                 showStatus('');
+		prettyPrint();
             }
             else if (data.status==1) {
                 showError('Could not create paste: '+data.message);
@@ -284,7 +285,7 @@ function stateNewPaste() {
     $('div#pastelink').hide();
     $('textarea#message').text('');
     $('textarea#message').show();
-    $('div#cleartext').hide();
+    $('pre#cleartext').hide();
     $('div#message').focus();
     $('div#discussion').hide();
 }
@@ -310,7 +311,7 @@ function stateExistingPaste() {
     $('button#newbutton').show();
     $('div#pastelink').hide();
     $('textarea#message').hide();
-    $('div#cleartext').show();
+    $('pre#cleartext').show();
 }
 
 /**
@@ -319,7 +320,7 @@ function stateExistingPaste() {
 function clonePaste() {
     stateNewPaste();
     showStatus('');
-    $('textarea#message').text($('div#cleartext').text());
+    $('textarea#message').text($('pre#cleartext').text());
 }
 
 /**
@@ -436,6 +437,7 @@ $(function() {
         stateExistingPaste();
 
         displayMessages(pageKey(), messages);
+	prettyPrint();
     }
     // Display error message from php code.
     else if ($('div#errormessage').text().length>1) {
