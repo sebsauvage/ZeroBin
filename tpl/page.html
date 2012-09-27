@@ -2,13 +2,14 @@
 <head>
 <title>ZeroBin</title>
 <link type="text/css" rel="stylesheet" href="css/zerobin.css?{$VERSION|rawurlencode}#" /> 
+<link type="text/css" rel="stylesheet" href="../lib/google-code-prettify/prettify.css" /> 
 <script src="js/jquery.js#"></script>
 <script src="js/sjcl.js#"></script>
 <script src="js/base64.js#"></script>
 <script src="js/rawdeflate.js#"></script>
 <script src="js/rawinflate.js#"></script>
 <script src="js/zerobin.js?{$VERSION|rawurlencode}#"></script>
-
+<script src="lib/google-code-prettify/prettify.js#"></script>
 <!--[if lt IE 10]>
 <style> body {padding-left:60px;padding-right:60px;} div#ienotice {display:block;} </style>
 <![endif]-->
@@ -55,22 +56,14 @@
       </select>
       </div>
       <div id="remainingtime" style="display:none;"></div>
-      <div id="language" style="display:none;">
-      <select name="language">
-        <option value="language" selected="selected">Language</option>
-        <option value="C/C++">C/C++</option>
-        <option value="php">php</option>
-        <option value="python">Python</option>
-      </select>
-      </div>
-        <input id="password" value="Optional password..." style="display:none;" />
+        <input id="password" placeholder="Optional password..." style="display:none;" />
         <div id="opendisc" class="button" style="display:none;">
            <input type="checkbox" id="opendiscussion" name="opendiscussion" />
            <label for="opendiscussion">Open discussion</label>
         </div>
     </div>
     <div id="pastelink" style="display:none;"></div>
-    <div id="cleartext" style="display:none;"></div>
+    <pre id="cleartext" class="prettyprint" style="display:none;"></pre>
     <textarea id="message" name="message" cols="80" rows="25" style="display:none;"></textarea>
     <div id="discussion" style="display:none;">
         <h4>Discussion</h4>
