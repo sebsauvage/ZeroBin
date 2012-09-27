@@ -116,13 +116,13 @@ function displayMessages(key, comments) {
     try { // Try to decrypt the paste.
         var cleartext = zeroDecipher(key, comments[0].data);
     } catch(err) {
-        $('pre#cleartext').hide();
+        $('div#cleartext').hide();
         $('button#clonebutton').hide();
         showError('Could not decrypt data (Wrong key ?)');
         return;
     }
-    setElementText($('pre#cleartext'), cleartext);
-    urls2links($('pre#cleartext')); // Convert URLs to clickable links.
+    setElementText($('div#cleartext'), cleartext);
+    urls2links($('div#cleartext')); // Convert URLs to clickable links.
 
     // Display paste expiration.
     if (comments[0].meta.expire_date) $('div#remainingtime').removeClass('foryoureyesonly').text('This document will expire in '+secondsToHuman(comments[0].meta.remaining_time)+'.').show();
@@ -264,8 +264,8 @@ function send_data() {
                 var url = scriptLocation() + "?" + data.id + '#' + randomkey;
                 showStatus('');
                 $('div#pastelink').html('Your paste is <a href="' + url + '">' + url + '</a>').show();
-                setElementText($('pre#cleartext'), $('textarea#message').val());
-                urls2links($('pre#cleartext'));
+                setElementText($('div#cleartext'), $('textarea#message').val());
+                urls2links($('div#cleartext'));
                 showStatus('');
 		prettyPrint();
             }
@@ -293,7 +293,7 @@ function stateNewPaste() {
     $('div#pastelink').hide();
     $('textarea#message').text('');
     $('textarea#message').show();
-    $('pre#cleartext').hide();
+    $('div#cleartext').hide();
     $('div#message').focus();
     $('div#discussion').hide();
 }
@@ -319,7 +319,7 @@ function stateExistingPaste() {
     $('button#newbutton').show();
     $('div#pastelink').hide();
     $('textarea#message').hide();
-    $('pre#cleartext').show();
+    $('div#cleartext').show();
 }
 
 /**
@@ -328,7 +328,7 @@ function stateExistingPaste() {
 function clonePaste() {
     stateNewPaste();
     showStatus('');
-    $('textarea#message').text($('pre#cleartext').text());
+    $('textarea#message').text($('div#cleartext').text());
 }
 
 /**
