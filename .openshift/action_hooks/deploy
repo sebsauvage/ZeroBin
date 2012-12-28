@@ -1,0 +1,14 @@
+#!/bin/bash
+# This deploy hook gets executed after dependencies are resolved and the
+# build hook has been run but before the application has been started back
+# up again.  This script gets executed directly, so it could be python, php,
+# ruby, etc.
+
+mkdir -p $OPENSHIFT_REPO_DIR/php
+
+for i in index.php tpl css img js; do
+    ln -s $OPENSHIFT_REPO_DIR/$i $OPENSHIFT_REPO_DIR/php/$i
+done
+
+# neede so paste do not disappear
+ln -s $OPENSHIFT_DATA_DIR/ $OPENSHIFT_REPO_DIR/php/data
