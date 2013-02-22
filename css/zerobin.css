@@ -25,7 +25,7 @@ margin-bottom:15px;
 padding-left:60px; padding-right:60px;
 }
  
-a  { color:#0F388F; }
+a  { color:#0F388F; cursor:pointer; }
 
 h1 {
 font-size:3.5em;
@@ -74,7 +74,7 @@ width:60%;
 
 div#aboutbox a { color: #94a3b4; }
 
-textarea#message,div#cleartext,.replymessage {
+textarea#message,div#cleartext,.replymessage,div#attachment {
 clear:both;
 color:black;
 background-color:#fff;

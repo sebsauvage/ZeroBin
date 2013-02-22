@@ -141,12 +141,21 @@ if (!empty($_POST['data'])) // Create new paste/comment
 
     // Make sure content is not too big.
     $data = $_POST['data'];
+    $has_attachment = array_key_exists('attachment', $_POST);
+    if($has_attachment)
+        $attachment = $_POST['attachment'];
     if (strlen($data)>2000000)
         { echo json_encode(array('status'=>1,'message'=>'Paste is limited to 2 Mb of encrypted data.')); exit; }
+    if($has_attachment)
+        if (strlen($attachment)>2000000)
+            { echo json_encode(array('status'=>1,'message'=>'Paste is limited to 2 Mb of encrypted data.')); exit; }
 
     // Make sure format is correct.
     if (!validSJCL($data))
         { echo json_encode(array('status'=>1,'message'=>'Invalid data.')); exit; }
+    if($has_attachment)
+        if (!validSJCL($attachment))
+            { echo json_encode(array('status'=>1,'message'=>'Invalid data.')); exit; }
 
     // Read additional meta-information.
     $meta=array();
@@ -210,7 +219,10 @@ if (!empty($_POST['data'])) // Create new paste/comment
     $dataid = substr(hash('md5',$data),0,16);
 
     $is_comment = (!empty($_POST['parentid']) && !empty($_POST['pasteid'])); // Is this post a comment ?
+
     $storage = array('data'=>$data);
+    if($has_attachment)
+        $storage['attachment'] = $attachment;
     if (count($meta)>0) $storage['meta'] = $meta;  // Add meta-information only if necessary.
 
     if ($is_comment) // The user posts a comment.
@@ -327,7 +339,6 @@ if (!empty($_SERVER['QUERY_STRING']))  // Display an existing paste.
         }
     }
 }
-
 
 require_once "lib/rain.tpl.class.php";
 header('Content-Type: text/html; charset=utf-8');
