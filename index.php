@@ -268,7 +268,7 @@ $ERRORMESSAGE='';
 if (!empty($_SERVER['QUERY_STRING']))  // Display an existing paste.
 {
     $dataid = $_SERVER['QUERY_STRING'];
-    if (preg_match('/[a-f\d]{16}/',$dataid))  // Is this a valid paste identifier ?
+    if (preg_match('/\A[a-f\d]{16}\z/',$dataid))  // Is this a valid paste identifier ?
     {
         $filename = dataid2path($dataid).$dataid;
         if (is_file($filename)) // Check that paste exists.
