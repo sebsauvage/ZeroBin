@@ -37,7 +37,7 @@
         <a href="http://www.google.com/chrome">Chrome</a>, 
         <a href="http://www.apple.com/safari">Safari</a>...
     </div>
-    <div id="status">&nbsp;</div>
+    <div id="status">{$STATUS}</div>
     <div id="errormessage" style="display:none">{$ERRORMESSAGE|htmlspecialchars}</div>
     <div id="toolbar">
     <button id="newbutton" onclick="window.location.href=scriptLocation();return false;" style="display:none;"><img src="img/icon_new.png#" width="11" height="15" />New</button>
@@ -69,7 +69,10 @@
            <label for="opendiscussion">Open discussion</label>
         </div>
     </div>
-    <div id="pastelink" style="display:none;"></div>
+    <div id="pasteresult" style="display:none;">
+      <div id="deletelink"></div>
+      <div id="pastelink"></div>
+    </div>
     <div id="cleartext" style="display:none;"></div>
     <textarea id="message" name="message" cols="80" rows="25" style="display:none;"></textarea>
     <div id="discussion" style="display:none;">

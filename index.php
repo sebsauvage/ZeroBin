@@ -3,8 +3,9 @@
 ZeroBin - a zero-knowledge paste bin
 Please see project page: http://sebsauvage.net/wiki/doku.php?id=php:zerobin
 */
-$VERSION='Alpha 0.15';
+$VERSION='Alpha 0.17';
 if (version_compare(PHP_VERSION, '5.2.6') < 0) die('ZeroBin requires php 5.2.6 or above to work. Sorry.');
+require_once "lib/serversalt.php";
 require_once "lib/vizhash_gd_zero.php";
 
 // In case stupid admin has left magic_quotes enabled in php.ini:
@@ -217,8 +218,8 @@ if (!empty($_POST['data'])) // Create new paste/comment
     {
         $pasteid = $_POST['pasteid'];
         $parentid = $_POST['parentid'];
-        if (!preg_match('/[a-f\d]{16}/',$pasteid)) { echo json_encode(array('status'=>1,'message'=>'Invalid data.')); exit; }
-        if (!preg_match('/[a-f\d]{16}/',$parentid)) { echo json_encode(array('status'=>1,'message'=>'Invalid data.')); exit; }
+        if (!preg_match('/\A[a-f\d]{16}\z/',$pasteid)) { echo json_encode(array('status'=>1,'message'=>'Invalid data.')); exit; }
+        if (!preg_match('/\A[a-f\d]{16}\z/',$parentid)) { echo json_encode(array('status'=>1,'message'=>'Invalid data.')); exit; }
 
         unset($storage['expire_date']); // Comment do not expire (it's the paste that expires)
         unset($storage['opendiscussion']);
@@ -255,7 +256,13 @@ if (!empty($_POST['data'])) // Create new paste/comment
         }
         // New paste
         file_put_contents($storagedir.$dataid,json_encode($storage));
-        echo json_encode(array('status'=>0,'id'=>$dataid)); // 0 = no error
+
+        // Generate the "delete" token.
+        // The token is the hmac of the pasteid signed with the server salt.
+        // The paste can be delete by calling http://myserver.com/zerobin/?pasteid=<pasteid>&deletetoken=<deletetoken>
+        $deletetoken = hash_hmac('sha1', $dataid , getServerSalt());
+
+        echo json_encode(array('status'=>0,'id'=>$dataid,'deletetoken'=>$deletetoken)); // 0 = no error
         exit;
     }
 
@@ -263,71 +270,108 @@ echo json_encode(array('status'=>1,'message'=>'Server error.'));
 exit;
 }
 
-$CIPHERDATA='';
-$ERRORMESSAGE='';
-if (!empty($_SERVER['QUERY_STRING']))  // Display an existing paste.
+/* Process a paste deletion request.
+   Returns an array ('',$ERRORMESSAGE,$STATUS)
+*/
+function processPasteDelete($pasteid,$deletetoken)
 {
-    $dataid = $_SERVER['QUERY_STRING'];
-    if (preg_match('/\A[a-f\d]{16}\z/',$dataid))  // Is this a valid paste identifier ?
+    if (preg_match('/\A[a-f\d]{16}\z/',$pasteid))  // Is this a valid paste identifier ?
     {
-        $filename = dataid2path($dataid).$dataid;
-        if (is_file($filename)) // Check that paste exists.
+        $filename = dataid2path($pasteid).$pasteid;
+        if (!is_file($filename)) // Check that paste exists.
         {
-            // Get the paste itself.
-            $paste=json_decode(file_get_contents($filename));
-
-            // See if paste has expired.
-            if (isset($paste->meta->expire_date) && $paste->meta->expire_date<time())
-            {
-                deletePaste($dataid);  // Delete the paste
-                $ERRORMESSAGE='Paste does not exist or has expired.';
-            }
-
-            if ($ERRORMESSAGE=='') // If no error, return the paste.
-            {
-                // We kindly provide the remaining time before expiration (in seconds)
-                if (property_exists($paste->meta, 'expire_date')) $paste->meta->remaining_time = $paste->meta->expire_date - time();
-
-                $messages = array($paste); // The paste itself is the first in the list of encrypted messages.
-                // If it's a discussion, get all comments.
-                if (property_exists($paste->meta, 'opendiscussion') && $paste->meta->opendiscussion)
-                {
-                    $comments=array();
-                    $datadir = dataid2discussionpath($dataid);
-                    if (!is_dir($datadir)) mkdir($datadir,$mode=0705,$recursive=true);
-                    $dhandle = opendir($datadir);
-                    while (false !== ($filename = readdir($dhandle)))
-                    {
-                        if (is_file($datadir.$filename))
-                        {
-                            $comment=json_decode(file_get_contents($datadir.$filename));
-                            // Filename is in the form pasteid.commentid.parentid:
-                            // - pasteid is the paste this reply belongs to.
-                            // - commentid is the comment identifier itself.
-                            // - parentid is the comment this comment replies to (It can be pasteid)
-                            $items=explode('.',$filename);
-                            $comment->meta->commentid=$items[1]; // Add some meta information not contained in file.
-                            $comment->meta->parentid=$items[2];
-                            $comments[$comment->meta->postdate]=$comment; // Store in table
-                        }
-                    }
-                    closedir($dhandle);
-                    ksort($comments); // Sort comments by date, oldest first.
-                    $messages = array_merge($messages, $comments);
-                }
-                $CIPHERDATA = json_encode($messages);
-
-                // If the paste was meant to be read only once, delete it.
-                if (property_exists($paste->meta, 'burnafterreading') && $paste->meta->burnafterreading) deletePaste($dataid);
-            }
-        }
-        else
-        {
-            $ERRORMESSAGE='Paste does not exist or has expired.';
+            return array('','Paste does not exist, has expired or has been deleted.','');
         }
     }
+
+    if ($deletetoken != hash_hmac('sha1', $pasteid , getServerSalt())) // Make sure token is valid.
+    {
+        return array('','Wrong deletion token. Paste was not deleted.','');
+    }
+
+    // Paste exists and deletion token is valid: Delete the paste.
+    deletePaste($pasteid);
+    return array('','','Paste was properly deleted.');
 }
 
+/* Process a paste fetch request.
+   Returns an array ($CIPHERDATA,$ERRORMESSAGE,$STATUS)
+*/
+function processPasteFetch($pasteid)
+{
+    if (preg_match('/\A[a-f\d]{16}\z/',$pasteid))  // Is this a valid paste identifier ?
+    {
+        $filename = dataid2path($pasteid).$pasteid;
+        if (!is_file($filename)) // Check that paste exists.
+        {
+            return array('','Paste does not exist, has expired or has been deleted.','');
+        }
+    }    
+
+    // Get the paste itself.
+    $paste=json_decode(file_get_contents($filename));
+
+    // See if paste has expired.
+    if (isset($paste->meta->expire_date) && $paste->meta->expire_date<time())
+    {
+        deletePaste($pasteid);  // Delete the paste
+        return array('','Paste does not exist, has expired or has been deleted.','');
+    }
+
+
+    // We kindly provide the remaining time before expiration (in seconds)
+    if (property_exists($paste->meta, 'expire_date')) $paste->meta->remaining_time = $paste->meta->expire_date - time();
+
+    $messages = array($paste); // The paste itself is the first in the list of encrypted messages.
+    // If it's a discussion, get all comments.
+    if (property_exists($paste->meta, 'opendiscussion') && $paste->meta->opendiscussion)
+    {
+        $comments=array();
+        $datadir = dataid2discussionpath($pasteid);
+        if (!is_dir($datadir)) mkdir($datadir,$mode=0705,$recursive=true);
+        $dhandle = opendir($datadir);
+        while (false !== ($filename = readdir($dhandle)))
+        {
+            if (is_file($datadir.$filename))
+            {
+                $comment=json_decode(file_get_contents($datadir.$filename));
+                // Filename is in the form pasteid.commentid.parentid:
+                // - pasteid is the paste this reply belongs to.
+                // - commentid is the comment identifier itself.
+                // - parentid is the comment this comment replies to (It can be pasteid)
+                $items=explode('.',$filename);
+                $comment->meta->commentid=$items[1]; // Add some meta information not contained in file.
+                $comment->meta->parentid=$items[2];
+                $comments[$comment->meta->postdate]=$comment; // Store in table
+            }
+        }
+        closedir($dhandle);
+        ksort($comments); // Sort comments by date, oldest first.
+        $messages = array_merge($messages, $comments);
+    }
+    $CIPHERDATA = json_encode($messages);
+
+    // If the paste was meant to be read only once, delete it.
+    if (property_exists($paste->meta, 'burnafterreading') && $paste->meta->burnafterreading) deletePaste($pasteid);
+
+    return array($CIPHERDATA,'','');
+}
+
+
+
+$CIPHERDATA='';
+$ERRORMESSAGE='';
+$STATUS='';
+
+if (!empty($_GET['deletetoken']) && !empty($_GET['pasteid'])) // Delete an existing paste
+{
+    list ($CIPHERDATA, $ERRORMESSAGE, $STATUS) = processPasteDelete($_GET['pasteid'],$_GET['deletetoken']);
+}
+else if (!empty($_SERVER['QUERY_STRING']))  // Return an existing paste.
+{
+    list ($CIPHERDATA, $ERRORMESSAGE, $STATUS) = processPasteFetch($_SERVER['QUERY_STRING']);    
+
+}
 
 require_once "lib/rain.tpl.class.php";
 header('Content-Type: text/html; charset=utf-8');
@@ -335,5 +379,6 @@ $page = new RainTPL;
 $page->assign('CIPHERDATA',htmlspecialchars($CIPHERDATA,ENT_NOQUOTES));  // We escape it here because ENT_NOQUOTES can't be used in RainTPL templates.
 $page->assign('VERSION',$VERSION);
 $page->assign('ERRORMESSAGE',$ERRORMESSAGE);
+$page->assign('STATUS',$STATUS);
 $page->draw('page');
 ?>

@@ -1,6 +1,5 @@
-/* ZeroBin 0.15 - http://sebsauvage.net/wiki/doku.php?id=php:zerobin */
+/* ZeroBin 0.17 - http://sebsauvage.net/wiki/doku.php?id=php:zerobin */
 
-/*   Hé, t'as vu Idleman, j'ai fait un effort sur les CSS !   ;-)      */
 
 /*  CSS Reset from YUI 3.4.1 (build 4118) - Copyright 2011 Yahoo! Inc. All rights reserved.
 Licensed under the BSD License. - http://yuilibrary.com/license/    */
@@ -97,7 +96,7 @@ padding:5px 10px;
 }
 
 
-div#pastelink { 
+div#pasteresult { 
 background-color:#1F2833;
 color:white;
 padding:4px 12px; 
@@ -106,8 +105,9 @@ clear:both;
 -webkit-box-shadow: inset 0px 2px 2px #000;
 box-shadow: inset 0px 2px 5px #000;
 }
-div#pastelink a { color:white; }
-div#pastelink button { margin-left:11px }
+div#pasteresult a { color:white; }
+div#pasteresult button { margin-left:11px }
+div#deletelink { float:right; }
 div#toolbar, div#status { margin-bottom:5px; }
 
 button,.button,div#expiration,div#language {

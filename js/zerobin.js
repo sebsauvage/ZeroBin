@@ -1,5 +1,5 @@
 /**
- * ZeroBin 0.15
+ * ZeroBin 0.17
  *
  * @link http://sebsauvage.net/wiki/doku.php?id=php:zerobin
  * @author sebsauvage
@@ -322,8 +322,13 @@ function send_data() {
             if (data.status == 0) {
                 stateExistingPaste();
                 var url = scriptLocation() + "?" + data.id + '#' + randomkey;
+                var deleteUrl = scriptLocation() + "?pasteid=" + data.id + '&deletetoken=' + data.deletetoken;
                 showStatus('');
-                $('div#pastelink').html('Your paste is <a href="' + url + '">' + url + '</a>').show();
+
+                $('div#pastelink').html('Your paste is <a href="' + url + '">' + url + '</a>');
+                $('div#deletelink').html('<a href="' + deleteUrl + '">Delete link</a>');
+                $('div#pasteresult').show();
+
                 setElementText($('div#cleartext'), $('textarea#message').val());
                 urls2links($('div#cleartext'));
                 showStatus('');
@@ -349,7 +354,7 @@ function stateNewPaste() {
     $('input#password').hide(); //$('#password').show();
     $('div#opendisc').show();
     $('button#newbutton').show();
-    $('div#pastelink').hide();
+    $('div#pasteresult').hide();
     $('textarea#message').text('');
     $('textarea#message').show();
     $('div#cleartext').hide();
@@ -376,7 +381,7 @@ function stateExistingPaste() {
     $('input#password').hide();
     $('div#opendisc').hide();
     $('button#newbutton').show();
-    $('div#pastelink').hide();
+    $('div#pasteresult').hide();
     $('textarea#message').hide();
     $('div#cleartext').show();
 }
@@ -423,11 +428,11 @@ function showStatus(message, spin) {
     $('div#replystatus').removeClass('errorMessage');
     $('div#replystatus').text(message);
     if (!message) {
-        $('div#status').html('&nbsp');
+        $('div#status').html('&nbsp;');
         return;
     }
     if (message == '') {
-        $('div#status').html('&nbsp');
+        $('div#status').html('&nbsp;');
         return;
     }
     $('div#status').removeClass('errorMessage');
@@ -492,6 +497,13 @@ $(function() {
         }
     });
 
+    // Display status returned by php code if any (eg. Paste was properly deleted.)
+    if ($('div#status').text().length > 0) {
+        showStatus($('div#status').text(),false);
+        return;
+    }
+
+    $('div#status').html('&nbsp;'); // Keep line height even if content empty.
 
     // Display an existing paste
     if ($('div#cipherdata').text().length > 1) {
