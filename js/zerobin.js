@@ -177,12 +177,15 @@ function displayMessages(key, comments) {
         var cleartext = zeroDecipher(key, comments[0].data);
     } catch(err) {
         $('div#cleartext').hide();
+        $('div#prettymessage').hide();
         $('button#clonebutton').hide();
         showError('Could not decrypt data (Wrong key ?)');
         return;
     }
     setElementText($('div#cleartext'), cleartext);
+    setElementText($('pre#prettyprint'), cleartext);
     urls2links($('div#cleartext')); // Convert URLs to clickable links.
+    prettyPrint();
 
     // Display paste expiration.
     if (comments[0].meta.expire_date) $('div#remainingtime').removeClass('foryoureyesonly').text('This document will expire in '+secondsToHuman(comments[0].meta.remaining_time)+'.').show();
@@ -325,8 +328,10 @@ function send_data() {
                 showStatus('');
                 $('div#pastelink').html('Your paste is <a href="' + url + '">' + url + '</a>').show();
                 setElementText($('div#cleartext'), $('textarea#message').val());
+                setElementText($('pre#prettyprint'), $('textarea#message').val());
                 urls2links($('div#cleartext'));
                 showStatus('');
+                prettyPrint();
             }
             else if (data.status==1) {
                 showError('Could not create paste: '+data.message);
@@ -355,6 +360,7 @@ function stateNewPaste() {
     $('div#cleartext').hide();
     $('div#message').focus();
     $('div#discussion').hide();
+    $('div#prettymessage').hide();
 }
 
 /**
@@ -378,7 +384,8 @@ function stateExistingPaste() {
     $('button#newbutton').show();
     $('div#pastelink').hide();
     $('textarea#message').hide();
-    $('div#cleartext').show();
+    $('div#cleartext').hide();
+    $('div#prettymessage').show();
 }
 
 /**
