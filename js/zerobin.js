@@ -112,7 +112,10 @@ function decompress(data) {
  * @return encrypted string data
  */
 function zeroCipher(key, message) {
-    return sjcl.encrypt(key,compress(message));
+    if ($('input#password').val().length==0) {
+	return sjcl.encrypt(key,compress(message));
+    }
+    return sjcl.encrypt(key+sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash($("input#password").val())),compress(message));
 }
 /**
  *  Decrypt message with key, then decompress.
@@ -122,7 +125,12 @@ function zeroCipher(key, message) {
  *  @return string readable message
  */
 function zeroDecipher(key, data) {
-    return decompress(sjcl.decrypt(key,data));
+	try {
+	    return decompress(sjcl.decrypt(key,data));
+	} catch(err){
+	    var password = prompt("Please enter the password for this paste.","");
+	    return decompress(sjcl.decrypt(key+sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(password)),data));
+	}
 }
 
 /**
@@ -346,7 +354,7 @@ function stateNewPaste() {
     $('div#expiration').show();
     $('div#remainingtime').hide();
     $('div#language').hide(); // $('#language').show();
-    $('input#password').hide(); //$('#password').show();
+    $('#password').show();
     $('div#opendisc').show();
     $('button#newbutton').show();
     $('div#pastelink').hide();
