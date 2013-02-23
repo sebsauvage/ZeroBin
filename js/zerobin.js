@@ -325,9 +325,10 @@ function send_data() {
                 var deleteUrl = scriptLocation() + "?pasteid=" + data.id + '&deletetoken=' + data.deletetoken;
                 showStatus('');
 
-                $('div#pastelink').html('Your paste is <a href="' + url + '">' + url + '</a>');
+                $('div#pastelink').html('Your paste is <a id="pasteurl" href="' + url + '">' + url + '</a> <span id="copyhint">(Hit CTRL+C to copy)</span>');
                 $('div#deletelink').html('<a href="' + deleteUrl + '">Delete link</a>');
                 $('div#pasteresult').show();
+                selectText('pasteurl'); // We pre-select the link so that the user only has to CTRL+C the link.
 
                 setElementText($('div#cleartext'), $('textarea#message').val());
                 urls2links($('div#cleartext'));
@@ -342,6 +343,28 @@ function send_data() {
         });
 }
 
+
+/** Text range selection.
+ *  From: http://stackoverflow.com/questions/985272/jquery-selecting-text-in-an-element-akin-to-highlighting-with-your-mouse
+ *  @param string element : Indentifier of the element to select (id="").
+ */
+function selectText(element) {
+    var doc = document
+        , text = doc.getElementById(element)
+        , range, selection
+    ;    
+    if (doc.body.createTextRange) { //ms
+        range = doc.body.createTextRange();
+        range.moveToElementText(text);
+        range.select();
+    } else if (window.getSelection) { //all others
+        selection = window.getSelection();        
+        range = doc.createRange();
+        range.selectNodeContents(text);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+}
 /**
  * Put the screen in "New paste" mode.
  */

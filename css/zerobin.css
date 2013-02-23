@@ -109,6 +109,7 @@ div#pasteresult a { color:white; }
 div#pasteresult button { margin-left:11px }
 div#deletelink { float:right; }
 div#toolbar, div#status { margin-bottom:5px; }
+#copyhint { color: #666; font-size:8pt; }
 
 button,.button,div#expiration,div#language {
 color:#fff;
