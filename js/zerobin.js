@@ -240,7 +240,7 @@ function displayMessages(key, comments) {
             try {
                 divComment.find('span.nickname').text(zeroDecipher(key, comment.meta.nickname));
             } catch(err) { }
-            divComment.find('span.commentdate').text('  ('+(new Date(comment.meta.postdate*1000).toUTCString())+')').attr('title','CommentID: ' + comment.meta.commentid);
+            divComment.find('span.commentdate').text('  ('+(new Date(comment.meta.postdate*1000).toString())+')').attr('title','CommentID: ' + comment.meta.commentid);
 
             // If an avatar is available, display it.
             if (comment.meta.vizhash) {
