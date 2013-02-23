@@ -119,7 +119,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
          data (mandatory) = json encoded SJCL encrypted text (containing keys: iv,salt,ct)
 
          All optional data will go to meta information:
-         expire (optional) = expiration delay (never,10min,1hour,1day,1month,1year,burn) (default:never)
+         expire (optional) = expiration delay (never,5min,10min,1hour,1day,1week,1month,1year,burn) (default:never)
          opendiscusssion (optional) = is the discussion allowed on this paste ? (0/1) (default:0)
          syntaxcoloring (optional) = should this paste use syntax coloring when displaying.
          nickname (optional) = son encoded SJCL encrypted text nickname of author of comment (containing keys: iv,salt,ct)
@@ -157,9 +157,11 @@ if (!empty($_POST['data'])) // Create new paste/comment
     if (!empty($_POST['expire']))
     {
         $expire=$_POST['expire'];
-        if ($expire=='10min') $meta['expire_date']=time()+10*60;
+        if ($expire=='5min') $meta['expire_date']=time()+5*60;
+        elseif ($expire=='10min') $meta['expire_date']=time()+10*60;
         elseif ($expire=='1hour') $meta['expire_date']=time()+60*60;
         elseif ($expire=='1day') $meta['expire_date']=time()+24*60*60;
+        elseif ($expire=='1week') $meta['expire_date']=time()+7*24*60*60;
         elseif ($expire=='1month') $meta['expire_date']=time()+30*24*60*60; // Well this is not *exactly* one month, it's 30 days.
         elseif ($expire=='1year') $meta['expire_date']=time()+365*24*60*60;
         elseif ($expire=='burn') $meta['burnafterreading']=true;
