@@ -166,6 +166,20 @@ function setElementText(element, text) {
     }
 }
 
+/** Apply syntax coloring to clear text area.
+  */
+function applySyntaxColoring()
+{
+    if ($('div#cleartext').html().substring(0,11) != '<pre><code>')
+    {
+        // highlight.js expects code to be surrounded by <pre><code>
+        $('div#cleartext').html('<pre><code>'+ $('div#cleartext').html()+'</code></pre>');
+    }
+    hljs.highlightBlock(document.getElementById('cleartext'));
+    $('div#cleartext').css('padding','0'); // Remove white padding around code box.
+}
+
+
 /**
  * Show decrypted text in the display area, including discussion (if open)
  *
@@ -183,6 +197,10 @@ function displayMessages(key, comments) {
     }
     setElementText($('div#cleartext'), cleartext);
     urls2links($('div#cleartext')); // Convert URLs to clickable links.
+
+    // comments[0] is the paste itself.
+
+    if (comments[0].meta.syntaxcoloring) applySyntaxColoring();
 
     // Display paste expiration.
     if (comments[0].meta.expire_date) $('div#remainingtime').removeClass('foryoureyesonly').text('This document will expire in '+secondsToHuman(comments[0].meta.remaining_time)+'.').show();
@@ -312,7 +330,8 @@ function send_data() {
     var cipherdata = zeroCipher(randomkey, $('textarea#message').val());
     var data_to_send = { data:           cipherdata,
                          expire:         $('select#pasteExpiration').val(),
-                         opendiscussion: $('input#opendiscussion').is(':checked') ? 1 : 0
+                         opendiscussion: $('input#opendiscussion').is(':checked') ? 1 : 0,
+                         syntaxcoloring: $('input#syntaxcoloring').is(':checked') ? 1 : 0
                        };
     $.post(scriptLocation(), data_to_send, 'json')
         .error(function() {
@@ -332,6 +351,10 @@ function send_data() {
 
                 setElementText($('div#cleartext'), $('textarea#message').val());
                 urls2links($('div#cleartext'));
+
+                // FIXME: Add option to remove syntax highlighting ?
+                if ($('input#syntaxcoloring').is(':checked')) applySyntaxColoring();
+
                 showStatus('');
             }
             else if (data.status==1) {
@@ -376,6 +399,7 @@ function stateNewPaste() {
     $('div#language').hide(); // $('#language').show();
     $('input#password').hide(); //$('#password').show();
     $('div#opendisc').show();
+    $('div#syntaxcoloringoption').show();
     $('button#newbutton').show();
     $('div#pasteresult').hide();
     $('textarea#message').text('');
@@ -403,6 +427,7 @@ function stateExistingPaste() {
     $('div#language').hide();
     $('input#password').hide();
     $('div#opendisc').hide();
+    $('div#syntaxcoloringoption').hide();    
     $('button#newbutton').show();
     $('div#pasteresult').hide();
     $('textarea#message').hide();

@@ -71,9 +71,8 @@ float:right;
 width:60%;
 }
 
-div#aboutbox a { color: #94a3b4; }
-
-textarea#message,div#cleartext,.replymessage {
+div#aboutbox a { color: #94a3b4; } 
+textarea#message,div#cleartext,.replymessage, code {
 clear:both;
 color:black;
 background-color:#fff;
@@ -89,6 +88,7 @@ box-sizing:border-box;
 -o-box-sizing:border-box;
 width:100%;
 }
+
 
 div#status { 
 clear:both; 
@@ -164,7 +164,7 @@ position:relative;
 top:2px;
 }
 
-div#expiration, div#language, div#opendisc { 
+div#expiration, div#language, div#opendisc, div#syntaxcoloringoption { 
 background-color:#414D5A; 
 padding:6px 8px;
 margin:0px 5px 0px 0px;;

@@ -121,6 +121,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
          All optional data will go to meta information:
          expire (optional) = expiration delay (never,10min,1hour,1day,1month,1year,burn) (default:never)
          opendiscusssion (optional) = is the discussion allowed on this paste ? (0/1) (default:0)
+         syntaxcoloring (optional) = should this paste use syntax coloring when displaying.
          nickname (optional) = son encoded SJCL encrypted text nickname of author of comment (containing keys: iv,salt,ct)
          parentid (optional) = in discussion, which comment this comment replies to.
          pasteid (optional) = in discussion, which paste this comment belongs to.
@@ -171,6 +172,14 @@ if (!empty($_POST['data'])) // Create new paste/comment
         if ($opendiscussion!='0' && $opendiscussion!='1') { $error=true; }
         if ($opendiscussion!='0') { $meta['opendiscussion']=true; }
     }
+
+    // Show we use syntax coloring when displaying ?
+    if (!empty($_POST['syntaxcoloring']))
+    {
+        $syntaxcoloring = $_POST['syntaxcoloring'];
+        if ($syntaxcoloring!='0' && $syntaxcoloring!='1') { $error=true; }
+        if ($syntaxcoloring!='0') { $meta['syntaxcoloring']=true; }
+    }    
 
     // You can't have an open discussion on a "Burn after reading" paste:
     if (isset($meta['burnafterreading'])) unset($meta['opendiscussion']);
@@ -223,6 +232,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
 
         unset($storage['expire_date']); // Comment do not expire (it's the paste that expires)
         unset($storage['opendiscussion']);
+        unset($storage['syntaxcoloring']);
 
         // Make sure paste exists.
         $storagedir = dataid2path($pasteid);
