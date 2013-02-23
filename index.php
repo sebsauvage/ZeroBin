@@ -64,24 +64,30 @@ function dataid2discussionpath($dataid)
 // False if format is incorrect.
 function validSJCL($jsonstring)
 {
-    $accepted_keys=array('iv','salt','ct');
+    $accepted_keys=array('iv','v','iter','ks','ts','mode','adata','cipher','salt','ct');
 
     // Make sure content is valid json
     $decoded = json_decode($jsonstring);
     if ($decoded==null) return false;
     $decoded = (array)$decoded;
 
-    // Make sure required fields are present and that they are base64 data.
+    // Make sure required fields are present
     foreach($accepted_keys as $k)
     {
         if (!array_key_exists($k,$decoded))  { return false; }
-        if (base64_decode($decoded[$k],$strict=true)==null) { return false; }
     }
 
-    // Make sure no additionnal keys were added.
-    if (count(array_intersect(array_keys($decoded),$accepted_keys))!=3) { return false; }
+    // Make sure some fields are base64 data
+    if (base64_decode($decoded['iv'],$strict=true)==null) { return false; }
+    if (base64_decode($decoded['salt'],$strict=true)==null) { return false; }
+    if (base64_decode($decoded['cipher'],$strict=true)==null) { return false; }
 
-    // FIXME: Reject data if entropy is too low ?
+    // Make sure no additionnal keys were added.
+    if (count(array_intersect(array_keys($decoded),$accepted_keys))!=10) { return false; }
+
+    // Reject data if entropy is too low
+    $ct = base64_decode($decoded['ct'], $strict=true);
+    if (strlen($ct) > strlen(gzdeflate($ct))) return false;
 
     // Make sure some fields have a reasonable size.
     if (strlen($decoded['iv'])>24) return false;
