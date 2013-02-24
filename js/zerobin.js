@@ -397,8 +397,6 @@ function stateNewPaste() {
     $('button#clonebutton').hide();
     $('div#expiration').show();
     $('div#remainingtime').hide();
-    $('div#language').hide(); // $('#language').show();
-    $('input#password').hide(); //$('#password').show();
     $('div#burnafterreadingoption').show();
     $('div#opendisc').show();
     $('div#syntaxcoloringoption').show();
@@ -426,8 +424,6 @@ function stateExistingPaste() {
     }
 
     $('div#expiration').hide();
-    $('div#language').hide();
-    $('input#password').hide();
     $('div#burnafterreadingoption').hide();
     $('div#opendisc').hide();
     $('div#syntaxcoloringoption').hide();    

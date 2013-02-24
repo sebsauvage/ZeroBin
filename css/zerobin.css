@@ -111,7 +111,7 @@ div#deletelink { float:right; }
 div#toolbar, div#status { margin-bottom:5px; }
 #copyhint { color: #666; font-size:8pt; }
 
-button,.button,div#expiration,div#language {
+button,.button,div#expiration {
 color:#fff;
 background-color:#323B47;
 background-repeat:no-repeat;
@@ -164,21 +164,21 @@ position:relative;
 top:2px;
 }
 
-div#expiration, div#language, div#burnafterreadingoption, div#opendisc, div#syntaxcoloringoption { 
+div#expiration, div#burnafterreadingoption, div#opendisc, div#syntaxcoloringoption { 
 background-color:#414D5A; 
 padding:6px 8px;
 margin:0px 5px 0px 0px;;
 position: relative;
 bottom:1px; /* WTF ? Why is this shifted by 1 pixel ? */
 }
-div#expiration select, div#language select {
+div#expiration select {
 color:#eee;
 background: transparent;
 border: none;
 }
 
 
-div#expiration select option, div#language select option {
+div#expiration select option {
 color:#eee;
 background: #414D5A;
 background-color:#414D5A;
