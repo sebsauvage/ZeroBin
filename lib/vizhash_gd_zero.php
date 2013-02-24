@@ -1,5 +1,5 @@
 <?php
-// VizHash_GD 0.0.4 beta ZeroBin 0.17
+// VizHash_GD 0.0.4 beta ZeroBin 0.18
 // Visual Hash implementation in php4+GD, stripped down and modified version for ZeroBin
 // See: http://sebsauvage.net/wiki/doku.php?id=php:vizhash_gd
 // This is free software under the zlib/libpng licence
