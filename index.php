@@ -170,7 +170,14 @@ if (!empty($_POST['data'])) // Create new paste/comment
         elseif ($expire=='1week') $meta['expire_date']=time()+7*24*60*60;
         elseif ($expire=='1month') $meta['expire_date']=time()+30*24*60*60; // Well this is not *exactly* one month, it's 30 days.
         elseif ($expire=='1year') $meta['expire_date']=time()+365*24*60*60;
-        elseif ($expire=='burn') $meta['burnafterreading']=true;
+    }
+
+    // Destroy the paste when it is read.
+    if (!empty($_POST['burnafterreading']))
+    {
+        $burnafterreading = $_POST['burnafterreading'];
+        if ($burnafterreading!='0' && $burnafterreading!='1') { $error=true; }
+        if ($burnafterreading!='0') { $meta['burnafterreading']=true; }
     }
 
     // Read open discussion flag

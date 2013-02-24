@@ -330,6 +330,7 @@ function send_data() {
     var cipherdata = zeroCipher(randomkey, $('textarea#message').val());
     var data_to_send = { data:           cipherdata,
                          expire:         $('select#pasteExpiration').val(),
+                         burnafterreading: $('input#burnafterreading').is(':checked') ? 1 : 0,
                          opendiscussion: $('input#opendiscussion').is(':checked') ? 1 : 0,
                          syntaxcoloring: $('input#syntaxcoloring').is(':checked') ? 1 : 0
                        };
@@ -398,6 +399,7 @@ function stateNewPaste() {
     $('div#remainingtime').hide();
     $('div#language').hide(); // $('#language').show();
     $('input#password').hide(); //$('#password').show();
+    $('div#burnafterreadingoption').show();
     $('div#opendisc').show();
     $('div#syntaxcoloringoption').show();
     $('button#newbutton').show();
@@ -426,6 +428,7 @@ function stateExistingPaste() {
     $('div#expiration').hide();
     $('div#language').hide();
     $('input#password').hide();
+    $('div#burnafterreadingoption').hide();
     $('div#opendisc').hide();
     $('div#syntaxcoloringoption').hide();    
     $('button#newbutton').show();
@@ -534,9 +537,12 @@ function pageKey() {
 }
 
 $(function() {
-    $('select#pasteExpiration').change(function() {
-        if ($(this).val() == 'burn') {
+
+    // If "burn after reading" is checked, disable discussion.
+    $('input#burnafterreading').change(function() {
+        if ($(this).is(':checked') ) { 
             $('div#opendisc').addClass('buttondisabled');
+            $('input#opendiscussion').attr({checked: false});
             $('input#opendiscussion').attr('disabled',true);
         }
         else {
