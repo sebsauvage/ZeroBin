@@ -356,3 +356,13 @@ position:relative;
 top:2px;
 left:-3px;
 }
+
+pre a {
+color:#58A5B4;
+}
+
+pre a:hover {
+color:#64B9C6;
+}
+
+
