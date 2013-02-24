@@ -188,7 +188,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
         if ($opendiscussion!='0') { $meta['opendiscussion']=true; }
     }
 
-    // Show we use syntax coloring when displaying ?
+    // Should we use syntax coloring when displaying ?
     if (!empty($_POST['syntaxcoloring']))
     {
         $syntaxcoloring = $_POST['syntaxcoloring'];
@@ -231,7 +231,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
     // Add post date to meta.
     $meta['postdate']=time();
 
-    // We just want a small hash to avoid collisions: Half-MD5 (64 bits) will do the trick
+    // We just want a small hash to avoid collisions: Half-MD5 (64 bits) will do the trick.
     $dataid = substr(hash('md5',$data),0,16);
 
     $is_comment = (!empty($_POST['parentid']) && !empty($_POST['pasteid'])); // Is this post a comment ?
