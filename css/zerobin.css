@@ -164,7 +164,7 @@ position:relative;
 top:2px;
 }
 
-div#expiration, div#burnafterreadingoption, div#opendisc, div#syntaxcoloringoption { 
+div#expiration, div#rawtextbutton, div#burnafterreadingoption, div#opendisc, div#syntaxcoloringoption { 
 background-color:#414D5A; 
 padding:6px 8px;
 margin:0px 5px 0px 0px;;

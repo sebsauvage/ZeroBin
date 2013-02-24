@@ -395,6 +395,7 @@ function selectText(element) {
 function stateNewPaste() {
     $('button#sendbutton').show();
     $('button#clonebutton').hide();
+    $('button#rawtextbutton').hide();
     $('div#expiration').show();
     $('div#remainingtime').hide();
     $('div#burnafterreadingoption').show();
@@ -422,6 +423,7 @@ function stateExistingPaste() {
     else {
         $('button#clonebutton').show();
     }
+    $('button#rawtextbutton').show();
 
     $('div#expiration').hide();
     $('div#burnafterreadingoption').hide();
@@ -431,6 +433,17 @@ function stateExistingPaste() {
     $('div#pasteresult').hide();
     $('textarea#message').hide();
     $('div#cleartext').show();
+}
+
+/** Return raw text
+  */
+function rawText()
+{
+    history.replaceState(document.title, document.title, 'document.txt');
+    var paste = $('div#cleartext').text();
+    var newDoc = document.open('text/plain', 'replace');
+    newDoc.write(paste);
+    newDoc.close();
 }
 
 /**
