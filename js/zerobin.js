@@ -317,6 +317,26 @@ function send_comment(parentid) {
         });
     }
 
+/**
+ * Shorten URL via a webservice
+ */
+function shortenUrl(url)
+{
+    // replace with your webservice URL
+    $.get ('/shortapi.php', 
+           { url: url
+             /* shortener options */ }
+          )   
+        .error(function() {
+            showError('Data could not be sent (webservice error).');
+        })  
+        .success(function(data) {
+            var shorten = data;
+            $('div#shortenlink').html('Short URL is <a id="shorturl" href="' + shorten + '">' + shorten + '</a> <span id="copyhint">(Hit CTRL+C to copy)</span>');
+            $('div#shortenlink').show();
+            selectText('shorturl');
+        }); 
+}
 
 /**
  *  Send a new paste to server
@@ -356,16 +376,22 @@ function send_data() {
                 var deleteUrl = scriptLocation() + "?pasteid=" + data.id + '&deletetoken=' + data.deletetoken;
                 showStatus('');
 
-                $('div#pastelink').html('Your paste is <a id="pasteurl" href="' + url + '">' + url + '</a> <span id="copyhint">(Hit CTRL+C to copy)</span>');
+                var hint = $('input#urlshortener').is(':checked') ? '' : ' <span id="copyhint">(Hit CTRL+C to copy)</span>';
+
+                $('div#pastelink').html('Your paste is <a id="pasteurl" href="' + url + '">' + url + '</a>' + hint);
                 $('div#deletelink').html('<a href="' + deleteUrl + '">Delete link</a>');
                 $('div#pasteresult').show();
-                selectText('pasteurl'); // We pre-select the link so that the user only has to CTRL+C the link.
 
                 setElementText($('div#cleartext'), $('textarea#message').val());
                 urls2links($('div#cleartext'));
 
                 // FIXME: Add option to remove syntax highlighting ?
                 if ($('input#syntaxcoloring').is(':checked')) applySyntaxColoring();
+
+                if ($('input#urlshortener').is(':checked'))
+                    shortenUrl(url);
+                else
+                    selectText('pasteurl'); // We pre-select the link so that the user only has to CTRL+C the link.
 
                 showStatus('');
             }
@@ -412,6 +438,7 @@ function stateNewPaste() {
     $('div#burnafterreadingoption').show();
     $('div#opendisc').show();
     $('div#syntaxcoloringoption').show();
+    $('div#urlshorteneroption').show();
     $('button#newbutton').show();
     $('div#pasteresult').hide();
     $('textarea#message').text('');
@@ -440,6 +467,7 @@ function stateExistingPaste() {
     $('div#burnafterreadingoption').hide();
     $('div#opendisc').hide();
     $('div#syntaxcoloringoption').hide();    
+    $('div#urlshorteneroption').hide();    
     $('button#newbutton').show();
     $('div#pasteresult').hide();
     $('textarea#message').hide();
