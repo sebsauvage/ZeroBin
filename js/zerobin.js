@@ -182,6 +182,13 @@ function applySyntaxColoring()
     $('div#cleartext').css('padding','0'); // Remove white padding around code box.
 }
 
+function addLineNumbers() {
+    cleartext = $('div#cleartext > pre > code');
+    newtext = cleartext.html()
+        .replace( /(\r?\n)/g, "</li>$1<li class=\"line\">");
+    newtext = "<ol><li class=\"line\">" + newtext + "</li></ol>";
+    cleartext.html(newtext);
+}
 
 /**
  * Show decrypted text in the display area, including discussion (if open)
@@ -203,7 +210,10 @@ function displayMessages(key, comments) {
 
     // comments[0] is the paste itself.
 
-    if (comments[0].meta.syntaxcoloring) applySyntaxColoring();
+    if (comments[0].meta.syntaxcoloring) {
+        applySyntaxColoring();
+        addLineNumbers();
+    }
 
     // Display paste expiration.
     if (comments[0].meta.expire_date) $('div#remainingtime').removeClass('foryoureyesonly').text('This document will expire in '+secondsToHuman(comments[0].meta.remaining_time)+'.').show();
