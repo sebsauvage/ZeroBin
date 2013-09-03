@@ -331,7 +331,11 @@ function processPasteFetch($pasteid)
         {
             return array('','Paste does not exist, has expired or has been deleted.','');
         }
-    }    
+    }
+    else
+    {
+        return array('','Invalid data','');
+    }
 
     // Get the paste itself.
     $paste=json_decode(file_get_contents($filename));
@@ -395,7 +399,6 @@ if (!empty($_GET['deletetoken']) && !empty($_GET['pasteid'])) // Delete an exist
 else if (!empty($_SERVER['QUERY_STRING']))  // Return an existing paste.
 {
     list ($CIPHERDATA, $ERRORMESSAGE, $STATUS) = processPasteFetch($_SERVER['QUERY_STRING']);    
-
 }
 
 require_once "lib/rain.tpl.class.php";
