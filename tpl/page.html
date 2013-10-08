@@ -50,7 +50,7 @@
       <div id="expiration" style="display:none;">Expires: 
       <select id="pasteExpiration" name="pasteExpiration">
         {loop="$cfg['expireLabels']"}
-            {if condition="$cfg['expireSelected'] == {$key}"}
+            {if condition="$cfg['expireSelected'] == $key"}
                 <option value="{$key}" selected="selected">{$value}</option>
             {else}
                 <option value="{$key}">{$value}</option>
