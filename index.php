@@ -164,11 +164,17 @@ if (!empty($_POST['data'])) // Create new paste/comment
     $expire=$_POST['expire'];
     if(array_key_exists($expire, $cfg["expire"])) {
         // Valid expiration info
-        $meta['expire_date'] = time() + $cfg["expire"][$expire];
+        $expireDelay = $cfg["expire"][$expire];
+        if($expireDelay != -1) { // -1 means never
+            $meta['expire_date'] = time() + $expireDelay;
+        }
     } else {
         // Use default for an invalid POST expire name.
         // Will also be executed for empty keys
-        $meta['expire_date'] = $cfg["expire"][$cfg["expireDefault"]];
+        $expireDelay = $cfg["expire"][$cfg["expireDefault"]];
+        if($expireDelay != -1) { // -1 means never
+            $meta['expire_date'] = time() + $expireDelay;
+        }
     }
 
     // Destroy the paste when it is read.
