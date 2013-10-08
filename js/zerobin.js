@@ -560,10 +560,9 @@ function pageKey() {
 }
 
 $(function() {
-
-    // If "burn after reading" is checked, disable discussion.
-    $('input#burnafterreading').change(function() {
-        if ($(this).is(':checked') ) { 
+    
+    function onBurnAfterReadingCheckboxChange() {
+        if ($("input#burnafterreading").is(':checked') ) { 
             $('div#opendisc').addClass('buttondisabled');
             $('input#opendiscussion').attr({checked: false});
             $('input#opendiscussion').attr('disabled',true);
@@ -572,7 +571,13 @@ $(function() {
             $('div#opendisc').removeClass('buttondisabled');
             $('input#opendiscussion').removeAttr('disabled');
         }
-    });
+    }
+
+    // If "burn after reading" is checked, disable discussion.
+    $('input#burnafterreading').change(onBurnAfterReadingCheckboxChange);
+    
+    // ...it might be enabled or disabled by default
+    onBurnAfterReadingCheckboxChange();
 
     // Display status returned by php code if any (eg. Paste was properly deleted.)
     if ($('div#status').text().length > 0) {
