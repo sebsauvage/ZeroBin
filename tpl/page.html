@@ -60,7 +60,11 @@
       </div>
       <div id="remainingtime" style="display:none;"></div>
       <div id="burnafterreadingoption" class="button" style="display:none;">
-         <input type="checkbox" id="burnafterreading" name="burnafterreading" />
+         {if condition="$cfg['burnAfterReadingSelected']"}
+            <input type="checkbox" id="burnafterreading" name="burnafterreading" selected="selected" />
+         {else}
+            <input type="checkbox" id="burnafterreading" name="burnafterreading" />
+         {/if}
          <label for="burnafterreading">Burn after reading</label>
       </div>
       <div id="opendisc" class="button" style="display:none;">

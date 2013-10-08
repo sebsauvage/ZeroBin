@@ -38,7 +38,11 @@ $cfg["expireSelected"] = "1month";
  */
 $cfg["expireDefault"] = "never";
 
-
+/*
+ * Set this to true to default-select
+ * the burn-after-reading feature
+ */
+$cfg["burnAfterReadingSelected"] = false;
 
 
 ?>
