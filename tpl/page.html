@@ -49,14 +49,13 @@
     <button id="rawtextbutton" onclick="rawText();return false;" style="display:none; "><img src="img/icon_raw.png#" width="15" height="15" style="padding:1px 0px 1px 0px;"/>Raw text</button>
       <div id="expiration" style="display:none;">Expires: 
       <select id="pasteExpiration" name="pasteExpiration">
-        <option value="5min">5 minutes</option>
-        <option value="10min">10 minutes</option>
-        <option value="1hour">1 hour</option>
-        <option value="1day">1 day</option>
-        <option value="1week">1 week</option>
-        <option value="1month" selected="selected">1 month</option>
-        <option value="1year">1 year</option>
-        <option value="never">Never</option>
+        {loop="$cfg['expireLabels']"}
+            {if condition="$cfg['expireSelected'] == {$key}"}
+                <option value="{$key}" selected="selected">{$value}</option>
+            {else}
+                <option value="{$key}">{$value}</option>
+            {/if}
+        {/loop}
       </select>
       </div>
       <div id="remainingtime" style="display:none;"></div>

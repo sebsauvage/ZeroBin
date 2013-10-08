@@ -5,6 +5,7 @@ Please see project page: http://sebsauvage.net/wiki/doku.php?id=php:zerobin
 */
 $VERSION='Alpha 0.19';
 if (version_compare(PHP_VERSION, '5.2.6') < 0) die('ZeroBin requires php 5.2.6 or above to work. Sorry.');
+require_once "config.inc.php"
 require_once "lib/serversalt.php";
 require_once "lib/vizhash_gd_zero.php";
 
@@ -160,16 +161,14 @@ if (!empty($_POST['data'])) // Create new paste/comment
     $meta=array();
 
     // Read expiration date
-    if (!empty($_POST['expire']))
-    {
-        $expire=$_POST['expire'];
-        if ($expire=='5min') $meta['expire_date']=time()+5*60;
-        elseif ($expire=='10min') $meta['expire_date']=time()+10*60;
-        elseif ($expire=='1hour') $meta['expire_date']=time()+60*60;
-        elseif ($expire=='1day') $meta['expire_date']=time()+24*60*60;
-        elseif ($expire=='1week') $meta['expire_date']=time()+7*24*60*60;
-        elseif ($expire=='1month') $meta['expire_date']=time()+30*24*60*60; // Well this is not *exactly* one month, it's 30 days.
-        elseif ($expire=='1year') $meta['expire_date']=time()+365*24*60*60;
+    $expire=$_POST['expire'];
+    if(array_key_exists($expire, $cfg["expire"])) {
+        // Valid expiration info
+        $meta['expire_date'] = time() + $cfg["expire"][$expire];
+    } else {
+        // Use default for an invalid POST expire name.
+        // Will also be executed for empty keys
+        $meta['expire_date'] = $cfg["expire"][$cfg["expireDefault"]];
     }
 
     // Destroy the paste when it is read.
