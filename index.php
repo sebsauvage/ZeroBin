@@ -5,7 +5,7 @@ Please see project page: http://sebsauvage.net/wiki/doku.php?id=php:zerobin
 */
 $VERSION='Alpha 0.19';
 if (version_compare(PHP_VERSION, '5.2.6') < 0) die('ZeroBin requires php 5.2.6 or above to work. Sorry.');
-require_once "config.inc.php"
+require_once "config.inc.php";
 require_once "lib/serversalt.php";
 require_once "lib/vizhash_gd_zero.php";
 
