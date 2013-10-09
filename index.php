@@ -23,6 +23,11 @@ if (get_magic_quotes_gpc())
 function trafic_limiter_canPass($ip)
 {
     global $cfg;
+    $timeBetweenPosts = $cfg["timeBetweenPosts"];
+    // -1: no rate limiting
+    if($timeBetweenPosts == -1) {
+        return true;
+    }
     $tfilename='./data/trafic_limiter.php';
     if (!is_file($tfilename))
     {
@@ -31,7 +36,6 @@ function trafic_limiter_canPass($ip)
     }
     require $tfilename;
     $tl=$GLOBALS['trafic_limiter'];
-    $timeBetweenPosts = $cfg["timeBetweenPosts"];
     if (!empty($tl[$ip]) && ($tl[$ip] + $timeBetweenPosts >=time()))
     {
         return false;

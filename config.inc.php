@@ -46,7 +46,8 @@ $cfg["burnAfterReadingSelected"] = false;
 
 /*
  * The time between two posts, in seconds
- * from a single IP address
+ * from a single IP address.
+ * Set this to -1 to disable rate limiting.
  */
 $cfg["timeBetweenPosts"] = 10;
 
