@@ -30,7 +30,8 @@ function trafic_limiter_canPass($ip)
     }
     require $tfilename;
     $tl=$GLOBALS['trafic_limiter'];
-    if (!empty($tl[$ip]) && ($tl[$ip]+10>=time()))
+    $timeBetweenPosts = $cfg["timeBetweenPosts"];
+    if (!empty($tl[$ip]) && ($tl[$ip] + $timeBetweenPosts >=time()))
     {
         return false;
         // FIXME: purge file of expired IPs to keep it small

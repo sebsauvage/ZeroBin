@@ -44,5 +44,10 @@ $cfg["expireDefault"] = "never";
  */
 $cfg["burnAfterReadingSelected"] = false;
 
+/*
+ * The time between two posts, in seconds
+ * from a single IP address
+ */
+$cfg["timeBetweenPosts"] = 10;
 
 ?>
