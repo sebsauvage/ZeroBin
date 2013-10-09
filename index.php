@@ -147,8 +147,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
     }
 
     // Make sure last paste from the IP address was more than 10 seconds ago.
-    if (!trafic_limiter_canPass($_SERVER['REMOTE_ADDR']))
-        {
+    if (!trafic_limiter_canPass($_SERVER['REMOTE_ADDR'])) {
         $timeBetweenPosts = $cfg['timeBetweenPosts'];
         echo json_encode(array('status'=>1,'message'=>"Please wait $timeBetweenPosts seconds between each post."));
         exit;
