@@ -22,6 +22,7 @@ if (get_magic_quotes_gpc())
 // Will return false if IP address made a call less than 10 seconds ago.
 function trafic_limiter_canPass($ip)
 {
+    global $cfg;
     $tfilename='./data/trafic_limiter.php';
     if (!is_file($tfilename))
     {
