@@ -161,7 +161,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
     $data = $_POST['data'];
     $maxPostSize = $cfg["maxPostSize"];
     if (strlen($data) > $maxPostSize)
-        { echo json_encode(array('status'=>1,'message'=>'Paste is limited to 2 Mb of encrypted data.')); exit; }
+        { echo json_encode(array('status'=>1,'message'=>"Paste is limited to $maxPostSize bytes of encrypted data.")); exit; }
 
     // Make sure format is correct.
     if (!validSJCL($data))
