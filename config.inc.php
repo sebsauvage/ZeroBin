@@ -51,4 +51,10 @@ $cfg["burnAfterReadingSelected"] = false;
  */
 $cfg["timeBetweenPosts"] = 10;
 
+/*
+ * The maximum post size in bytes.
+ * Default: 2 Mibibytes
+ */
+$cfg["maxPostSize"] = 2097152;
+
 ?>

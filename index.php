@@ -159,7 +159,8 @@ if (!empty($_POST['data'])) // Create new paste/comment
 
     // Make sure content is not too big.
     $data = $_POST['data'];
-    if (strlen($data)>2000000)
+    $maxPostSize = $cfg["maxPostSize"];
+    if (strlen($data) > $maxPostSize)
         { echo json_encode(array('status'=>1,'message'=>'Paste is limited to 2 Mb of encrypted data.')); exit; }
 
     // Make sure format is correct.
