@@ -9,8 +9,10 @@
 <script src="js/rawdeflate.js?{$VERSION|rawurlencode}#"></script>
 <script src="js/rawinflate.js?{$VERSION|rawurlencode}#"></script>
 <script src="js/zerobin.js?{$VERSION|rawurlencode}#"></script>
-<link type="text/css" rel="stylesheet" href="js/highlight.styles/monokai.css?{$VERSION|rawurlencode}#">
-<script src="js/highlight.pack.js?{$VERSION|rawurlencode}#"></script>
+{if condition="$cfg['enableSyntaxHighlighting']"}
+    <link type="text/css" rel="stylesheet" href="js/highlight.styles/monokai.css?{$VERSION|rawurlencode}#">
+    <script src="js/highlight.pack.js?{$VERSION|rawurlencode}#"></script>
+{/if}
 
 <!--[if lt IE 10]>
 <style> body {padding-left:60px;padding-right:60px;} div#ienotice {display:block;} </style>
