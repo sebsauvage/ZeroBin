@@ -3,7 +3,6 @@
 html  {
 background-color:#455463;
 color:white;
-min-height:100%;
 background-image: linear-gradient(bottom, #0F1823 0%, #455463 100%);
 background-image: -o-linear-gradient(bottom, #0F1823 0%, #455463 100%);
 background-image: -moz-linear-gradient(bottom, #0F1823 0%, #455463 100%);
