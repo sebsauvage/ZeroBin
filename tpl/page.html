@@ -73,10 +73,12 @@
             <label for="opendiscussion">Open discussion</label>
         </div>
       {/if}
-      <div id="syntaxcoloringoption" class="button" style="display:none;">
-         <input type="checkbox" id="syntaxcoloring" name="syntaxcoloring" />
-         <label for="syntaxcoloring">Syntax coloring</label>
-      </div>
+      {if condition="$cfg['enableSyntaxHighlighting']"}
+        <div id="syntaxcoloringoption" class="button" style="display:none;">
+            <input type="checkbox" id="syntaxcoloring" name="syntaxcoloring" />
+            <label for="syntaxcoloring">Syntax coloring</label>
+        </div>
+      {/if}
     </div>
     <div id="pasteresult" style="display:none;">
       <div id="deletelink"></div>
