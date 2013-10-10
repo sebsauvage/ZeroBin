@@ -196,7 +196,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
     }
 
     // Read open discussion flag
-    if (!empty($_POST['opendiscussion']))
+    if (!empty($_POST['opendiscussion']) && $cfg["enableDiscussionSystem"])
     {
         $opendiscussion = $_POST['opendiscussion'];
         if ($opendiscussion!='0' && $opendiscussion!='1') { $error=true; }
@@ -367,8 +367,8 @@ function processPasteFetch($pasteid)
     if (property_exists($paste->meta, 'expire_date')) $paste->meta->remaining_time = $paste->meta->expire_date - time();
 
     $messages = array($paste); // The paste itself is the first in the list of encrypted messages.
-    // If it's a discussion, get all comments.
-    if (property_exists($paste->meta, 'opendiscussion') && $paste->meta->opendiscussion)
+    // If it's a discussion, get all comments, unless discussions are disabled
+    if (property_exists($paste->meta, 'opendiscussion') && $paste->meta->opendiscussion && $cfg["enableDiscussionSystem"])
     {
         $comments=array();
         $datadir = dataid2discussionpath($pasteid);

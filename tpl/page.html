@@ -67,10 +67,12 @@
          {/if}
          <label for="burnafterreading">Burn after reading</label>
       </div>
-      <div id="opendisc" class="button" style="display:none;">
-         <input type="checkbox" id="opendiscussion" name="opendiscussion" />
-         <label for="opendiscussion">Open discussion</label>
-      </div>
+      {if condition="$cfg['enableDiscussionSystem']"}
+        <div id="opendisc" class="button" style="display:none;">
+            <input type="checkbox" id="opendiscussion" name="opendiscussion" />
+            <label for="opendiscussion">Open discussion</label>
+        </div>
+      {/if}
       <div id="syntaxcoloringoption" class="button" style="display:none;">
          <input type="checkbox" id="syntaxcoloring" name="syntaxcoloring" />
          <label for="syntaxcoloring">Syntax coloring</label>
@@ -82,10 +84,12 @@
     </div>
     <div id="cleartext" style="display:none;"></div>
     <textarea id="message" name="message" cols="80" rows="25" style="display:none;"></textarea>
-    <div id="discussion" style="display:none;">
-        <h4>Discussion</h4>
-        <div id="comments"></div>
-    </div>
+    {if condition="$cfg['enableDiscussionSystem']"}
+        <div id="discussion" style="display:none;">
+            <h4>Discussion</h4>
+            <div id="comments"></div>
+        </div>
+    {/if}
     <div id="cipherdata" style="display:none;">{$CIPHERDATA}</div>
   </body>
 </html>

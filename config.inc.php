@@ -66,4 +66,10 @@ $cfg["maxPostSize"] = 2097152;
  */
 $cfg["showHash"] = true;
 
+
+/*
+ * Set this to false to disable the discussion system
+ */
+$cfg["enableDiscussionSystem"] = true;
+
 ?>
