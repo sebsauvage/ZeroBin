@@ -204,7 +204,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
     }
 
     // Should we use syntax coloring when displaying ?
-    if (!empty($_POST['syntaxcoloring']))
+    if (!empty($_POST['syntaxcoloring']) && $cfg["enableSyntaxHighlighting"])
     {
         $syntaxcoloring = $_POST['syntaxcoloring'];
         if ($syntaxcoloring!='0' && $syntaxcoloring!='1') { $error=true; }
