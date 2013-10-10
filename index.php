@@ -302,7 +302,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
         // The paste can be delete by calling http://myserver.com/zerobin/?pasteid=<pasteid>&deletetoken=<deletetoken>
         $deletetoken = hash_hmac('sha1', $dataid , getServerSalt());
 
-        echo json_encode(array('status'=>0,'id'=>$dataid,'deletetoken'=>$deletetoken)); // 0 = no error
+        echo json_encode(array('status'=>0,'id'=>$dataid,'deletetoken'=>$deletetoken,'showHash'=>$cfg['showHash'])); // 0 = no error
         exit;
     }
 

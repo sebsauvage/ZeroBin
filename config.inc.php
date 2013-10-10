@@ -57,4 +57,13 @@ $cfg["timeBetweenPosts"] = 10;
  */
 $cfg["maxPostSize"] = 2097152;
 
+/*
+ * Whether to show the hash on-screen.
+ * Users selecting the text could copy
+ *  the paste URL without hash if
+ *  this is disabled, but it provides
+ *  slightly higher security.
+ */
+$cfg["showHash"] = true;
+
 ?>
