@@ -339,6 +339,7 @@ function processPasteDelete($pasteid,$deletetoken)
 */
 function processPasteFetch($pasteid)
 {
+    global $cfg;
     if (preg_match('/\A[a-f\d]{16}\z/',$pasteid))  // Is this a valid paste identifier ?
     {
         $filename = dataid2path($pasteid).$pasteid;
