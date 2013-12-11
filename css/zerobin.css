@@ -1,30 +1,26 @@
 /* ZeroBin 0.19 - http://sebsauvage.net/wiki/doku.php?id=php:zerobin */
 
+/* CSS Reset from YUI 3.4.1 (build 4118) - Copyright 2011 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License. - http://yuilibrary.com/license/ */
+html{color:#000;background:#fff}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}ol,ul{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}sup{vertical-align:text-top}sub{vertical-align:text-bottom}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit}input,textarea,select{*font-size:100%}legend{color:#000}
 
-/*  CSS Reset from YUI 3.4.1 (build 4118) - Copyright 2011 Yahoo! Inc. All rights reserved.
-Licensed under the BSD License. - http://yuilibrary.com/license/    */
-html{color:#000;background:#FFF}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}ol,ul{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}sup{vertical-align:text-top}sub{vertical-align:text-bottom}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit}input,textarea,select{*font-size:100%}legend{color:#000}
-
-html  {
+html {
 background-color:#455463;
 color:white;
 min-height:100%;
-background-image: linear-gradient(bottom, #0F1823 0%, #455463 100%);
-background-image: -o-linear-gradient(bottom, #0F1823 0%, #455463 100%);
-background-image: -moz-linear-gradient(bottom, #0F1823 0%, #455463 100%);
-background-image: -webkit-linear-gradient(bottom, #0F1823 0%, #455463 100%);
-background-image: -ms-linear-gradient(bottom, #0F1823 0%, #455463 100%);
-background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #0F1823), color-stop(1, #455463));
+background-image: linear-gradient(to top, #0f1823, #455463);
+background-image: -webkit-linear-gradient(bottom, #0f1823 0%, #455463 100%);
+background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #0f1823), color-stop(1, #455463));
 }
 
 body {
-font-family: Arial, Helvetica, sans-serif;
+font-family: arial, helvetica, sans-serif;
 font-size: 0.8em;
 margin-bottom:15px;
 padding-left:60px; padding-right:60px;
 }
- 
-a  { color:#0F388F; }
+
+a { color:#0f388f; }
 
 h1 {
 font-size:3.5em;
@@ -44,42 +40,43 @@ left:1px;
 cursor:pointer;
 }
 
-h2 { 
-color:#000; 
-font-size:1em; 
-display:inline; 
-font-style:italic; 
-font-weight:bold; 
-position:relative; 
-bottom:8px;} 
-  
-h3 { 
-color:#94a3b4; 
-font-size:0.7em; 
-display:inline; 
-position:relative; 
-bottom:8px;}   
+h2 {
+color:#000;
+font-size:1em;
+display:inline;
+font-style:italic;
+font-weight:bold;
+position:relative;
+bottom:8px;}
 
-#aboutbox { 
+h3 {
+color:#94a3b4;
+font-size:0.7em;
+display:inline;
+position:relative;
+bottom:8px;}
+
+#aboutbox {
 font-size:0.85em;
-color: #94a3b4; 
+color: #94a3b4;
 padding: 4px 8px 4px 16px;
-position:relative; 
+position:relative;
 top:10px;
 border-left: 2px solid #94a3b4;
-float:right;  
+float:right;
 width:60%;
 }
 
-div#aboutbox a { color: #94a3b4; } 
+div#aboutbox a { color: #94a3b4; }
+
 textarea#message,div#cleartext,.replymessage, code {
 clear:both;
 color:black;
 background-color:#fff;
 white-space:pre-wrap;
-font-family:Consolas,"Lucida Console","DejaVu Sans Mono",Monaco,monospace;
+font-family:consolas,"lucida console","dejavu sans mono",monaco,monospace;
 font-size:9pt;
-border: 1px solid #28343F;
+border: 1px solid #28343f;
 padding:5px;
 box-sizing:border-box;
 -webkit-box-sizing:border-box;
@@ -90,19 +87,17 @@ width:100%;
 }
 
 
-div#status { 
-clear:both; 
-padding:5px 10px; 
+div#status {
+clear:both;
+padding:5px 10px;
 }
 
 
-div#pasteresult { 
-background-color:#1F2833;
+div#pasteresult {
+background-color:#1f2833;
 color:white;
-padding:4px 12px; 
+padding:4px 12px;
 clear:both;
--moz-box-shadow: inset 0px 2px 2px #000;
--webkit-box-shadow: inset 0px 2px 2px #000;
 box-shadow: inset 0px 2px 5px #000;
 }
 div#pasteresult a { color:white; }
@@ -113,43 +108,30 @@ div#toolbar, div#status { margin-bottom:5px; }
 
 button,.button,div#expiration {
 color:#fff;
-background-color:#323B47;
+background-color:#323b47;
 background-repeat:no-repeat;
 background-position:center left;
 padding:4px 8px;
 font-size:1em;
 margin-right:5px;
 display:inline;
-background-image: linear-gradient(bottom, #323B47 0%, #51606E 100%);
-background-image: -o-linear-gradient(bottom, #323B47 0%, #51606E 100%);
-background-image: -moz-linear-gradient(bottom, #323B47 0%, #51606E 100%);
-background-image: -webkit-linear-gradient(bottom, #323B47 0%, #51606E 100%);
-background-image: -ms-linear-gradient(bottom, #323B47 0%, #51606E 100%);
-background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #323B47), color-stop(1, #51606E));
-border: 1px solid #28343F;
--moz-box-shadow: inset 0px 1px 2px #647384;
--webkit-box-shadow: inset 0px 1px 2px #647384;
+background-image: linear-gradient(to top, #323b47, #51606e);
+background-image: -webkit-linear-gradient(bottom, #323b47 0%, #51606e 100%);
+background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #323b47), color-stop(1, #51606e));
+border: 1px solid #28343f;
 box-shadow: inset 0px 1px 2px #647384;
--webkit-border-radius: 3px;
--moz-border-radius: 3px;
 border-radius: 3px;
 -moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box;
 }
-button:hover  { 
-background-image: linear-gradient(bottom, #424B57 0%, #61707E 100%);
-background-image: -o-linear-gradient(bottom, #424B57 0%, #61707E 100%);
-background-image: -moz-linear-gradient(bottom, #424B57 0%, #61707E 100%);
-background-image: -webkit-linear-gradient(bottom, #424B57 0%, #61707E 100%);
-background-image: -ms-linear-gradient(bottom, #424B57 0%, #61707E 100%);
-background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #424B57), color-stop(1, #61707E));
+button:hover {
+background-image: linear-gradient(to top, #424b57, #61707e);
+background-image: -webkit-linear-gradient(bottom, #424b57 0%, #61707e 100%);
+background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #424b57), color-stop(1, #61707e));
 }
 button:active {
-background-image: linear-gradient(bottom, #51606E 0%, #323B47 100%);
-background-image: -o-linear-gradient(bottom, #51606E 0%, #323B47 100%);
-background-image: -moz-linear-gradient(bottom, #51606E 0%, #323B47 100%);
-background-image: -webkit-linear-gradient(bottom, #51606E 0%, #323B47 100%);
-background-image: -ms-linear-gradient(bottom, #51606E 0%, #323B47 100%);
-background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #51606E), color-stop(1, #323B47));
+background-image: linear-gradient(to top, #51606e, #323b47);
+background-image: -webkit-linear-gradient(bottom, #51606e 0%, #323b47 100%);
+background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #51606e), color-stop(1, #323b47));
 position:relative;
 top:1px;
 }
@@ -164,12 +146,12 @@ position:relative;
 top:2px;
 }
 
-div#expiration, div#rawtextbutton, div#burnafterreadingoption, div#opendisc, div#syntaxcoloringoption { 
-background-color:#414D5A; 
+div#expiration, div#rawtextbutton, div#burnafterreadingoption, div#opendisc, div#syntaxcoloringoption {
+background-color:#414d5a;
 padding:6px 8px;
 margin:0px 5px 0px 0px;;
 position: relative;
-bottom:1px; /* WTF ? Why is this shifted by 1 pixel ? */
+bottom:1px; /* wtf ? why is this shifted by 1 pixel ? */
 }
 div#expiration select {
 color:#eee;
@@ -180,12 +162,12 @@ border: none;
 
 div#expiration select option {
 color:#eee;
-background: #414D5A;
-background-color:#414D5A;
+background: #414d5a;
+background-color: #414d5a;
 }
 
 div#remainingtime {
-color: #94a3b4; 
+color: #94a3b4;
 display:inline;
 font-size:0.85em;
 }
@@ -197,7 +179,7 @@ font-weight:bold !important;
 }
 
 button#newbutton { float:right; margin-right:0px;margin-bottom:5px; display:inline; }
-input { color:#777; font-size:1em; padding:6px; border: 1px solid #28343F; }
+input { color:#777; font-size:1em; padding:6px; border: 1px solid #28343f; }
 
 .nonworking {
 background-color:#fff;
@@ -213,7 +195,7 @@ padding:5px;
 }
 
 div#ienotice {
-background-color:#7E98AF;
+background-color:#7e98af;
 color:#000;
 font-size:0.85em;
 padding:3px 5px;
@@ -232,16 +214,16 @@ div#oldienotice {
 display:none;
 }
 
-.errorMessage {
-background-color:#FF7979 !important;
-color:#FF0;
+.errormessage {
+background-color:#ff7979 !important;
+color:#ff0;
 }
 
 
-/* --- discussion related CSS ------- */
+/* --- discussion related css ------- */
 
 
-div#discussion {  /* Discussion container */
+div#discussion { /* discussion container */
 margin-top:20px;
 width:100%;
 margin-left:-30px;
@@ -250,27 +232,25 @@ min-width:200px;
 
 h4 {
 font-size:1.2em;
-color: #94A3B4;
+color: #94a3b4;
 font-style:italic;
-font-weight:bold; 
+font-weight:bold;
 position:relative;
 margin-left:30px;
 }
 
 
-div.comment /* One single reply */
+div.comment /* one single reply */
 {
-background-color:#CECED6;
+background-color:#ceced6;
 color:#000;
 white-space:pre-wrap;
-font-family:Consolas,"Lucida Console","DejaVu Sans Mono",Monaco,monospace;
+font-family:consolas,"lucida console","dejavu sans mono",monaco,monospace;
 font-size:9pt;
-border-left: 1px solid #859AAE;
-border-top: 1px solid #859AAE;
+border-left: 1px solid #859aae;
+border-top: 1px solid #859aae;
 padding:5px 0px 5px 5px;
 margin-left:30px;
--moz-box-shadow: -3px -3px 5px rgba(0,0,0,0.15);
--webkit-box-shadow: -3px -3px 5px rgba(0,0,0,0.15);
 box-shadow: -3px -3px 5px rgba(0,0,0,0.15);
 min-width:200px;
 overflow:auto;
@@ -281,13 +261,13 @@ div.reply {
 margin: 5px 0px 0px 30px;
 }
 
-div#replystatus { 
+div#replystatus {
 display:inline;
-padding:1px 7px; 
-font-family: Arial, Helvetica, sans-serif;
+padding:1px 7px;
+font-family: arial, helvetica, sans-serif;
 }
 
-div.comment button  {
+div.comment button {
 color:#446;
 background-color:#aab;
 background-repeat:no-repeat;
@@ -296,41 +276,28 @@ padding:0px 2px;
 font-size:0.73em;
 margin: 3px 5px 3px 0px;
 display:inline;
-background-image: linear-gradient(bottom, #aab 0%, #ccc 100%);
-background-image: -o-linear-gradient(bottom, #aab 0%, #ccc 100%);
-background-image: -moz-linear-gradient(bottom, #aab 0%, #ccc 100%);
+background-image: linear-gradient(to top, #aab, #ccc);
 background-image: -webkit-linear-gradient(bottom, #aab 0%, #ccc 100%);
-background-image: -ms-linear-gradient(bottom, #aab 0%, #ccc 100%);
 background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #aab), color-stop(1, #ccc));
 border: 1px solid #ccd;
--moz-box-shadow: inset 0px 1px 2px #ddd;
--webkit-box-shadow: inset 0px 1px 2px #fff;
 box-shadow: inset 0px 1px 2px #eee;
--webkit-border-radius: 3px;
--moz-border-radius: 3px;
 border-radius: 3px;
 -moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box;
 }
-div.comment button:hover  { 
-background-image: linear-gradient(bottom, #ccd 0%, #fff 100%);
-background-image: -o-linear-gradient(bottom, #ccd 0%, #fff 100%);
-background-image: -moz-linear-gradient(bottom, #ccd 0%, #fff 100%);
+div.comment button:hover {
+background-image: linear-gradient(to top, #ccd, #fff);
 background-image: -webkit-linear-gradient(bottom, #ccd 0%, #fff 100%);
-background-image: -ms-linear-gradient(bottom, #ccd 0%, #fff 100%);
 background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccd), color-stop(1, #fff));
 }
 div.comment button:active {
-background-image: linear-gradient(bottom, #fff 0%, #889 100%);
-background-image: -o-linear-gradient(bottom, #fff 0%, #889 100%);
-background-image: -moz-linear-gradient(bottom, #fff 0%, #889 100%);
+background-image: linear-gradient(to top, #fff, #889);
 background-image: -webkit-linear-gradient(bottom, #fff 0%, #889 100%);
-background-image: -ms-linear-gradient(bottom, #fff 0%, #889 100%);
 background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #fff), color-stop(1, #889));
 position:relative;
 top:1px;
 }
 
-div.comment input  {
+div.comment input {
 padding:2px;
 }
 
@@ -340,13 +307,13 @@ margin-top:5px;
 
 div.commentmeta {
 color: #fff;
-background-color:#8EA0B2;
+background-color:#8ea0b2;
 margin-bottom:3px;
 padding:0px 0px 0px 3px;
 }
 
 span.commentdate {
-color: #BFCEDE;
+color: #bfcede;
 }
 
 img.vizhash {
@@ -358,11 +325,9 @@ left:-3px;
 }
 
 pre a {
-color:#58A5B4;
+color:#58a5b4;
 }
 
 pre a:hover {
-color:#64B9C6;
+color:#64b9c6;
 }
-
-
