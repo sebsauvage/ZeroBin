@@ -147,8 +147,16 @@ function pasteID() {
     return window.location.search.substring(1);
 }
 
+/**
+ * @param string str the string to sanitize
+ * @todo should convert simple quotes "'" in "&#039;"
+ */
 function htmlEntities(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return String(str).replace(/&/g, '&amp;')
+                      .replace(/</g, '&lt;')
+                      .replace(/>/g, '&gt;')
+                      .replace(/\"/g, '&quot;').
+                      .replace(/\'/g, '&#039;');
 }
 /**
  * Set text of a DOM element (required for IE)
