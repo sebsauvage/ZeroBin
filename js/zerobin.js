@@ -155,7 +155,7 @@ function htmlEntities(str) {
     return String(str).replace(/&/g, '&amp;')
                       .replace(/</g, '&lt;')
                       .replace(/>/g, '&gt;')
-                      .replace(/\"/g, '&quot;').
+                      .replace(/\"/g, '&quot;')
                       .replace(/\'/g, '&#039;');
 }
 /**
@@ -569,6 +569,23 @@ function pageKey() {
     return key;
 }
 
+/**
+ * Force browser to return to script location
+ */
+function goHome()
+{
+    window.location.href = scriptLocation();
+}
+
+/**
+ * @param string id DOM element idientifier to be clicked
+ * @param function callback function to be triggered by click
+ */
+function addClickEvent(id, callback)
+{
+    document.getElementById(id).addEventListener('click', callback);
+}
+
 $(function() {
     
     function onBurnAfterReadingCheckboxChange() {
@@ -594,6 +611,13 @@ $(function() {
         showStatus($('div#status').text(),false);
         return;
     }
+
+    // Add event handlers on buttons
+    addClickEvent('title', goHome);
+    addClickEvent('newbutton', goHome);
+    addClickEvent('sendbutton', send_data);
+    addClickEvent('clonebutton', clonePaste);
+    addClickEvent('rawtextbutton', rawText);
 
     $('div#status').html('&nbsp;'); // Keep line height even if content empty.
 
