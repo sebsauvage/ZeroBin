@@ -14,15 +14,10 @@ var b64chars
     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 var b64charcodes = function(){
-    var a = [];
-    var codeA = 'A'.charCodeAt(0);
-    var codea = 'a'.charCodeAt(0);
-    var code0 = '0'.charCodeAt(0);
-    for (var i = 0; i < 26; i ++) a.push(codeA + i);
-    for (var i = 0; i < 26; i ++) a.push(codea + i);
-    for (var i = 0; i < 10; i ++) a.push(code0 + i);
-    a.push('+'.charCodeAt(0));
-    a.push('/'.charCodeAt(0));
+
+    for(var a = [], i = 0, j = b64chars.length; i < j; i++)
+        a.push(b64chars.charCodeAt(i));
+
     return a;
 }();
 
