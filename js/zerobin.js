@@ -238,10 +238,12 @@ function displayMessages(key, comments) {
             if ($(cname).length) {
                 place = $(cname);
             }
+
             var divComment = $('<div class="comment" id="comment_' + comment.meta.commentid+'">'
                                + '<div class="commentmeta"><span class="nickname"></span><span class="commentdate"></span></div><div class="commentdata"></div>'
-                               + '<button onclick="open_reply($(this),\'' + comment.meta.commentid + '\');return false;">Reply</button>'
+                               + '<button id="replyToComm' + comment.meta.commentid + '">Reply</button>'
                                + '</div>');
+
             setElementText(divComment.find('div.commentdata'), cleartext);
             // Convert URLs to clickable links in comment.
             urls2links(divComment.find('div.commentdata'));
@@ -259,9 +261,13 @@ function displayMessages(key, comments) {
             }
 
             place.append(divComment);
+            addClickEvent('replyToComm' + comment.meta.commentid, function(e){ open_reply(e.target, comment.meta.commentid); } );
         }
-        $('div#comments').append('<div class="comment"><button onclick="open_reply($(this),\'' + pasteID() + '\');return false;">Add comment</button></div>');
+
+        $('div#comments').append('<div class="comment"><button id=openreplybutton>Add comment</button></div>');
         $('div#discussion').show();
+
+        addClickEvent('openreplybutton', function(e){ open_reply(e.target, pasteID()); } );
     }
 }
 
@@ -272,10 +278,10 @@ function displayMessages(key, comments) {
  */
 function open_reply(source, commentid) {
     $('div.reply').remove(); // Remove any other reply area.
-    source.after('<div class="reply">'
+   $(source).after('<div class="reply">'
                 + '<input type="text" id="nickname" title="Optional nickname..." value="Optional nickname..." />'
                 + '<textarea id="replymessage" class="replymessage" cols="80" rows="7"></textarea>'
-                + '<br><button id="replybutton" onclick="send_comment(\'' + commentid + '\');return false;">Post comment</button>'
+                + '<br><button id="replybutton">Post comment</button>'
                 + '<div id="replystatus">&nbsp;</div>'
                 + '</div>');
     $('input#nickname').focus(function() {
@@ -284,6 +290,9 @@ function open_reply(source, commentid) {
             $(this).val('');
         }
     });
+
+    addClickEvent('replybutton', function(){ send_comment(commentid); });
+
     $('textarea#replymessage').focus();
 }
 
