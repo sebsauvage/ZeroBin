@@ -1,88 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
 <html>
-<head>
-<title>ZeroBin</title>
-<meta name="robots" content="noindex" />
-<link type="text/css" rel="stylesheet" href="css/zerobin.css?{$VERSION|rawurlencode}#" /> 
-<script src="js/jquery.js?{$VERSION|rawurlencode}#"></script>
-<script src="js/sjcl.js?{$VERSION|rawurlencode}#"></script>
-<script src="js/base64.js?{$VERSION|rawurlencode}#"></script>
-<script src="js/rawdeflate.js?{$VERSION|rawurlencode}#"></script>
-<script src="js/rawinflate.js?{$VERSION|rawurlencode}#"></script>
-<script src="js/zerobin.js?{$VERSION|rawurlencode}#"></script>
-<link type="text/css" rel="stylesheet" href="js/highlight.styles/monokai.css?{$VERSION|rawurlencode}#">
-<script src="js/highlight.pack.js?{$VERSION|rawurlencode}#"></script>
-
-<!--[if lt IE 10]>
-<style> body {padding-left:60px;padding-right:60px;} div#ienotice {display:block;} </style>
-<![endif]-->
-
-<!--[if lt IE 10]>
-<style> div#ienotice {display:block; }  div#oldienotice {display:block; } </style>
-<![endif]-->
-
-</head>
+  <head>
+    <title>ZeroBin</title>
+    <meta charset="utf-8" />
+    <meta content="initial-scale=1.0, user-scalable=yes" name="viewport" />
+    
+    <meta name="robots" content="noindex" />
+    <link type="text/css" rel="stylesheet" href="css/zerobin.css?{$VERSION|rawurlencode}#" /> 
+    <script src="js/jquery.js?{$VERSION|rawurlencode}#"></script>
+    <script src="js/sjcl.js?{$VERSION|rawurlencode}#"></script>
+    <script src="js/base64.js?{$VERSION|rawurlencode}#"></script>
+    <script src="js/rawdeflate.js?{$VERSION|rawurlencode}#"></script>
+    <script src="js/rawinflate.js?{$VERSION|rawurlencode}#"></script>
+    <script src="js/zerobin.js?{$VERSION|rawurlencode}#"></script>
+    <link type="text/css" rel="stylesheet" href="js/highlight.styles/monokai.css?{$VERSION|rawurlencode}#">
+    <script src="js/highlight.pack.js?{$VERSION|rawurlencode}#"></script>
+    
+    <style>html[data-useragent*='MSIE'] #ienotice { display:block }</style>
+    <!--[if lt IE 10]>
+    <style> #ienotice, #oldienotice { display: block } </style>
+    <![endif]-->
+  </head>
   <body>
-      <div id="aboutbox">
-          ZeroBin is a minimalist, opensource online pastebin where the server has zero knowledge of pasted data.
-          Data is encrypted/decrypted <i>in the browser</i> using 256 bits AES. 
-          More information on the <a href="http://sebsauvage.net/wiki/doku.php?id=php:zerobin">project page</a>.<br />
-          <span style="text-decoration:blink;font-size:10pt;color:#a4b3c4;">&#9654;</span> Note: This is a test service: 
-          Data may be deleted anytime. Kittens will die if you abuse this service.
-</div>
-    <h1 title="ZeroBin" onclick="window.location.href=scriptLocation();return false;">ZeroBin</h1><br>
-    <h2>Because ignorance is bliss</h2><br>
-    <h3>{$VERSION}</h3>
-    <noscript><div class="nonworking">Javascript is required for ZeroBin to work.<br>Sorry for the inconvenience.</div></noscript>
-    <div id="oldienotice" class="nonworking">ZeroBin requires a modern browser to work.</div>
-    <div id="ienotice">Still using Internet Explorer ? &nbsp;Do yourself a favor, switch to a modern browser: 
-        <a href="http://www.mozilla.org/firefox/">Firefox</a>, 
-        <a href="http://www.opera.com/">Opera</a>, 
-        <a href="http://www.google.com/chrome">Chrome</a>, 
-        <a href="http://www.apple.com/safari">Safari</a>...
-    </div>
-    <div id="status">{$STATUS}</div>
-    <div id="errormessage" style="display:none">{$ERRORMESSAGE|htmlspecialchars}</div>
-    <div id="toolbar">
-    <button id="newbutton" onclick="window.location.href=scriptLocation();return false;" style="display:none;"><img src="img/icon_new.png#" width="11" height="15" />New</button>
-    <button id="sendbutton" onclick="send_data();return false;" style="display:none;"><img src="img/icon_send.png#" width="18" height="15" />Send</button>
-    <button id="clonebutton" onclick="clonePaste();return false;" style="display:none;"><img src="img/icon_clone.png#" width="15" height="17" />Clone</button>
-    <button id="rawtextbutton" onclick="rawText();return false;" style="display:none; "><img src="img/icon_raw.png#" width="15" height="15" style="padding:1px 0px 1px 0px;"/>Raw text</button>
-      <div id="expiration" style="display:none;">Expires: 
-      <select id="pasteExpiration" name="pasteExpiration">
-        <option value="5min">5 minutes</option>
-        <option value="10min">10 minutes</option>
-        <option value="1hour">1 hour</option>
-        <option value="1day">1 day</option>
-        <option value="1week">1 week</option>
-        <option value="1month" selected="selected">1 month</option>
-        <option value="1year">1 year</option>
-        <option value="never">Never</option>
-      </select>
-      </div>
-      <div id="remainingtime" style="display:none;"></div>
-      <div id="burnafterreadingoption" class="button" style="display:none;">
-         <input type="checkbox" id="burnafterreading" name="burnafterreading" />
-         <label for="burnafterreading">Burn after reading</label>
-      </div>
-      <div id="opendisc" class="button" style="display:none;">
-         <input type="checkbox" id="opendiscussion" name="opendiscussion" />
-         <label for="opendiscussion">Open discussion</label>
-      </div>
-      <div id="syntaxcoloringoption" class="button" style="display:none;">
-         <input type="checkbox" id="syntaxcoloring" name="syntaxcoloring" />
-         <label for="syntaxcoloring">Syntax coloring</label>
-      </div>
-    </div>
-    <div id="pasteresult" style="display:none;">
-      <div id="deletelink"></div>
-      <div id="pastelink"></div>
-    </div>
-    <div id="cleartext" style="display:none;"></div>
+    <header>
+      <aside id="about">
+        <p>ZeroBin is a minimalist, open-source online pastebin where the server has zero knowledge of pasted data. Data is encrypted/decrypted <em>in the browser</em> using 256 bits AES. More information on the <a href="http://sebsauvage.net/wiki/doku.php?id=php:zerobin">project page</a>.</p>
+        <p><span style="text-decoration:blink;font-size:10pt;color:#a4b3c4;">&#9654;</span> Note: This is a test service:
+          Data may be deleted anytime. Kittens will die if you abuse this service.</p>
+      </aside>
+      <h1 title="ZeroBin" onclick="window.location.href=scriptLocation();return false;">ZeroBin</h1>
+      <p>Because ignorance is bliss</p>
+    <p>{$VERSION}</p>
+    </header>
+    
+    <noscript class="nonworking">
+      <p>Javascript is required for ZeroBin to work.</p>
+      <p>Sorry for the inconvenience.</p>
+    </noscript>
+    
+    <aside id="oldienotice" class="nonworking">
+      <p>ZeroBin requires a modern browser to work.</p>
+    </aside>
+    <aside id="ienotice">
+      <p>Still using Internet Explorer? Do yourself a favor, switch to a modern browser:</p>
+      <ul>
+        <li><a href="//www.mozilla.org/firefox/">Firefox</a>,</li>
+        <li><a href="//www.opera.com/">Opera</a>,</li>
+        <li><a href="//www.google.com/chrome">Chrome</a>,</li>
+        <li><a href="//www.apple.com/safari">Safari</a>…</li>
+      </ul>
+    </aside>
+    <p id="status">{$STATUS}</p>
+    <p id="errormessage" style="display:none">{$ERRORMESSAGE|htmlspecialchars}</p>
+    <menu type="toolbar">
+      <button id="newbutton" onclick="window.location.href=scriptLocation();return false;" style="display:none;"><img src="img/icon_new.png#" width="11" height="15" />New</button>
+      <button id="sendbutton" onclick="send_data();return false;" style="display:none;"><img src="img/icon_send.png#" width="18" height="15" />Send</button>
+      <button id="clonebutton" onclick="clonePaste();return false;" style="display:none;"><img src="img/icon_clone.png#" width="15" height="17" />Clone</button>
+      <button id="rawtextbutton" onclick="rawText();return false;" style="display:none; "><img src="img/icon_raw.png#" width="15" height="15" style="padding:1px 0px 1px 0px;"/>Raw text</button>
+      <label id="expiration" style="display:none;">Expires: 
+        <select name="pasteExpiration">
+          <option value="5min">5 minutes</option>
+          <option value="10min">10 minutes</option>
+          <option value="1hour" selected="yes">1 hour</option>
+          <option value="1day">1 day</option>
+          <option value="1week">1 week</option>
+          <option value="1month">1 month</option>
+          <option value="1year">1 year</option>
+          <option value="never">Never</option>
+        </select>
+      </label>
+      <p id="remainingtime" style="display:none;"></p>
+      
+      <label id="burnafterreadingoption" class="button" style="display:none;">
+        <input type="checkbox" name="burnafterreading" /> Burn after reading
+      </label>
+      <label id="opendisc" class="button" style="display:none;">
+        <input type="checkbox" name="opendiscussion" /> Open discussion
+      </label>
+      <label id="syntaxcoloringoption" class="button" style="display:none;">
+        <input type="checkbox" name="syntaxcoloring" /> Syntax coloring
+      </label>
+    </menu>
+    <ul id="pasteresult" style="display:none;">
+      <li id="deletelink"></li>
+      <li id="pastelink"></li>
+    </ul>
+    <main style="display:none;"></main>
     <textarea id="message" name="message" cols="80" rows="25" style="display:none;"></textarea>
-    <div id="discussion" style="display:none;">
-        <h4>Discussion</h4>
-        <div id="comments"></div>
-    </div>
+    <section id="comments" style="display:none;"></section>
     <div id="cipherdata" style="display:none;">{$CIPHERDATA}</div>
   </body>
 </html>
