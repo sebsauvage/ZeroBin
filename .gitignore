@@ -4,3 +4,6 @@ tmp/
 # Ignore for safety
 .htaccess
 .htpasswd
+
+# Ignore for sanity
+*.jar
