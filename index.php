@@ -308,6 +308,10 @@ function processPasteDelete($pasteid,$deletetoken)
             return array('','Paste does not exist, has expired or has been deleted.','');
         }
     }
+    else
+    {
+        return array('','Invalid data','');
+    }
 
     if ($deletetoken != hash_hmac('sha1', $pasteid , getServerSalt())) // Make sure token is valid.
     {
