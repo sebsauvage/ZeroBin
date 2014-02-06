@@ -27,7 +27,7 @@ function getServerSalt()
 {
     $saltfile = 'data/salt.php';
     if (!is_file($saltfile))
-        file_put_contents($saltfile,'<?php /* |'.generateRandomSalt().'| */ ?>');
+        file_put_contents($saltfile,'<?php /* |'.generateRandomSalt().'| */ ?>',LOCK_EX);
     $items=explode('|',file_get_contents($saltfile));
     return $items[1];
 

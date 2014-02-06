@@ -24,7 +24,7 @@ function trafic_limiter_canPass($ip)
     $tfilename='./data/trafic_limiter.php';
     if (!is_file($tfilename))
     {
-        file_put_contents($tfilename,"<?php\n\$GLOBALS['trafic_limiter']=array();\n?>");
+        file_put_contents($tfilename,"<?php\n\$GLOBALS['trafic_limiter']=array();\n?>", LOCK_EX);
         chmod($tfilename,0705);
     }
     require $tfilename;
@@ -140,7 +140,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
     if (!is_dir('data'))
     {
         mkdir('data',0705);
-        file_put_contents('data/.htaccess',"Allow from none\nDeny from all\n");
+        file_put_contents('data/.htaccess',"Allow from none\nDeny from all\n", LOCK_EX);
     }
 
     // Make sure last paste from the IP address was more than 10 seconds ago.
@@ -266,7 +266,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
             exit;
         }
 
-        file_put_contents($discdir.$filename,json_encode($storage));
+        file_put_contents($discdir.$filename,json_encode($storage), LOCK_EX);
         echo json_encode(array('status'=>0,'id'=>$dataid)); // 0 = no error
         exit;
     }
@@ -280,7 +280,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
             exit;
         }
         // New paste
-        file_put_contents($storagedir.$dataid,json_encode($storage));
+        file_put_contents($storagedir.$dataid,json_encode($storage), LOCK_EX);
 
         // Generate the "delete" token.
         // The token is the hmac of the pasteid signed with the server salt.
