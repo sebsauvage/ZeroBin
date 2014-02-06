@@ -39,6 +39,19 @@ function trafic_limiter_canPass($ip)
     return true;
 }
 
+// Constant time string comparison.
+// (Used to deter time attacks on hmac checking. See section 2.7 of https://defuse.ca/audits/zerobin.htm)
+function slow_equals($a, $b)
+{
+    $diff = strlen($a) ^ strlen($b);
+    for($i = 0; $i < strlen($a) && $i < strlen($b); $i++)
+    {
+        $diff |= ord($a[$i]) ^ ord($b[$i]);
+    }
+    return $diff === 0;
+}
+
+
 /* Convert paste id to storage path.
    The idea is to creates subdirectories in order to limit the number of files per directory.
    (A high number of files in a single directory can slow things down.)
@@ -309,7 +322,7 @@ function processPasteDelete($pasteid,$deletetoken)
         }
     }
 
-    if ($deletetoken != hash_hmac('sha1', $pasteid , getServerSalt())) // Make sure token is valid.
+    if (!slow_equals($deletetoken, hash_hmac('sha1', $pasteid , getServerSalt()))) // Make sure token is valid.
     {
         return array('','Wrong deletion token. Paste was not deleted.','');
     }
