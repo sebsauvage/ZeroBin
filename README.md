@@ -1,6 +1,8 @@
-# Changelog
+## Changelog
 
 Prevedli v slovenščino, dodali malo DJND brandinga. :)
+
+## Original readme
 
 ZeroBin 0.19 Alpha
 
