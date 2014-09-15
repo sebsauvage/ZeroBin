@@ -16,12 +16,12 @@ sjcl.random.startCollectors();
  */
 function secondsToHuman(seconds)
 {
-    if (seconds<60) { var v=Math.floor(seconds); return v+' second'+((v>1)?'s':''); }
-    if (seconds<60*60) { var v=Math.floor(seconds/60); return v+' minute'+((v>1)?'s':''); }
-    if (seconds<60*60*24) { var v=Math.floor(seconds/(60*60)); return v+' hour'+((v>1)?'s':''); }
+    if (seconds<60) { var v=Math.floor(seconds); return v+' sekund'+((v==1)?'o':(v==2)?'i':(5>v>2)?'e':''); }
+    if (seconds<60*60) { var v=Math.floor(seconds/60); return v+' minut'+((v==1)?'o':(v==2)?'i':(5>v>2)?'e':''); }
+    if (seconds<60*60*24) { var v=Math.floor(seconds/(60*60)); return v+' ur'+((v==1)?'o':(v==2)?'i':(5>v>2)?'e':''); }
     // If less than 2 months, display in days:
-    if (seconds<60*60*24*60) { var v=Math.floor(seconds/(60*60*24)); return v+' day'+((v>1)?'s':''); }
-    var v=Math.floor(seconds/(60*60*24*30)); return v+' month'+((v>1)?'s':'');
+    if (seconds<60*60*24*60) { var v=Math.floor(seconds/(60*60*24)); return v+' dni'+((v>1)?'s':''); }
+    var v=Math.floor(seconds/(60*60*24*30)); return v+' mesec'+((v==2)?'a':(5>v>2)?'e':'ev');
 }
 
 /**
@@ -206,9 +206,9 @@ function displayMessages(key, comments) {
     if (comments[0].meta.syntaxcoloring) applySyntaxColoring();
 
     // Display paste expiration.
-    if (comments[0].meta.expire_date) $('div#remainingtime').removeClass('foryoureyesonly').text('This document will expire in '+secondsToHuman(comments[0].meta.remaining_time)+'.').show();
+    if (comments[0].meta.expire_date) $('div#remainingtime').removeClass('foryoureyesonly').text('Ta dokument bo izginil čez '+secondsToHuman(comments[0].meta.remaining_time)+'.').show();
     if (comments[0].meta.burnafterreading) {
-        $('div#remainingtime').addClass('foryoureyesonly').text('FOR YOUR EYES ONLY.  Don\'t close this window, this message can\'t be displayed again.').show();
+        $('div#remainingtime').addClass('foryoureyesonly').text('SAMO ZA TVOJE OČI.  Ne zapri tega okna, to sporočilo je že pobrisano. Živi le še na tvojem računalniku.').show();
         $('button#clonebutton').hide(); // Discourage cloning (as it can't really be prevented).
     }
 
@@ -252,7 +252,7 @@ function displayMessages(key, comments) {
 
             place.append(divComment);
         }
-        $('div#comments').append('<div class="comment"><button onclick="open_reply($(this),\'' + pasteID() + '\');return false;">Add comment</button></div>');
+        $('div#comments').append('<div class="comment"><button onclick="open_reply($(this),\'' + pasteID() + '\');return false;">Dodaj komentar</button></div>');
         $('div#discussion').show();
     }
 }
@@ -265,9 +265,9 @@ function displayMessages(key, comments) {
 function open_reply(source, commentid) {
     $('div.reply').remove(); // Remove any other reply area.
     source.after('<div class="reply">'
-                + '<input type="text" id="nickname" title="Optional nickname..." value="Optional nickname..." />'
+                + '<input type="text" id="nickname" title="Lahko si izbereš nickname..." value="Lahko si izbereš nickname..." />'
                 + '<textarea id="replymessage" class="replymessage" cols="80" rows="7"></textarea>'
-                + '<br><button id="replybutton" onclick="send_comment(\'' + commentid + '\');return false;">Post comment</button>'
+                + '<br><button id="replybutton" onclick="send_comment(\'' + commentid + '\');return false;">Oddaj komentar</button>'
                 + '<div id="replystatus">&nbsp;</div>'
                 + '</div>');
     $('input#nickname').focus(function() {
@@ -289,11 +289,11 @@ function send_comment(parentid) {
         return;
     }
 
-    showStatus('Sending comment...', spin=true);
+    showStatus('Pošiljam komentar...', spin=true);
     var cipherdata = zeroCipher(pageKey(), $('textarea#replymessage').val());
     var ciphernickname = '';
     var nick=$('input#nickname').val();
-    if (nick != '' && nick != 'Optional nickname...') {
+    if (nick != '' && nick != 'Lahko si izbereš nickname...') {
         ciphernickname = zeroCipher(pageKey(), nick);
     }
     var data_to_send = { data:cipherdata,
@@ -304,18 +304,18 @@ function send_comment(parentid) {
 
     $.post(scriptLocation(), data_to_send, 'json')
         .error(function() {
-            showError('Comment could not be sent (serveur error or not responding).');
+            showError('Komentarja nismo mogli poslati (serverju se je ali zmešalo, ali pa je na malici).');
         })
         .success(function(data) {
             if (data.status == 0) {
-                showStatus('Comment posted.');
+                showStatus('Komentar oddan.');
                 location.reload();
             }
             else if (data.status==1) {
-                showError('Could not post comment: '+data.message);
+                showError('Nismo mogli objaviti komentarja: '+data.message);
             }
             else {
-                showError('Could not post comment.');
+                showError('Nismo mogli objaviti komentarja.');
             }
         });
     }
@@ -333,12 +333,12 @@ function send_data() {
     // If sjcl has not collected enough entropy yet, display a message.
     if (!sjcl.random.isReady())
     {
-        showStatus('Sending paste (Please move your mouse for more entropy)...', spin=true);
+        showStatus('Pošiljamo (šejkaj šejkaj svojo miško za še malo več entropije)...', spin=true);
         sjcl.random.addEventListener('seeded', function(){ send_data(); }); 
         return; 
     }
     
-    showStatus('Sending paste...', spin=true);
+    showStatus('Pošiljam podatke...', spin=true);
 
     var randomkey = sjcl.codec.base64.fromBits(sjcl.random.randomWords(8, 0), 0);
     var cipherdata = zeroCipher(randomkey, $('textarea#message').val());
@@ -350,7 +350,7 @@ function send_data() {
                        };
     $.post(scriptLocation(), data_to_send, 'json')
         .error(function() {
-            showError('Data could not be sent (serveur error or not responding).');
+            showError('Podatkov nismo mogli poslati (serverju se je ali zmešalo, ali pa je na malici).');
         })
         .success(function(data) {
             if (data.status == 0) {
@@ -359,8 +359,8 @@ function send_data() {
                 var deleteUrl = scriptLocation() + "?pasteid=" + data.id + '&deletetoken=' + data.deletetoken;
                 showStatus('');
 
-                $('div#pastelink').html('Your paste is <a id="pasteurl" href="' + url + '">' + url + '</a> <span id="copyhint">(Hit CTRL+C to copy)</span>');
-                $('div#deletelink').html('<a href="' + deleteUrl + '">Delete link</a>');
+                $('div#pastelink').html('URL do tvojega skrivnega sporočila je <a id="pasteurl" href="' + url + '">' + url + '</a> <span id="copyhint">(Pritisni CTRL+C da skopiraš)</span>');
+                $('div#deletelink').html('<a href="' + deleteUrl + '">Izbriši link</a>');
                 $('div#pasteresult').show();
                 selectText('pasteurl'); // We pre-select the link so that the user only has to CTRL+C the link.
 
@@ -373,10 +373,10 @@ function send_data() {
                 showStatus('');
             }
             else if (data.status==1) {
-                showError('Could not create paste: '+data.message);
+                showError('Ni nam uspelo. :( '+data.message);
             }
             else {
-                showError('Could not create paste.');
+                showError('Ni nam uspelo. :(');
             }
         });
 }
@@ -585,7 +585,7 @@ $(function() {
     if ($('div#cipherdata').text().length > 1) {
         // Missing decryption key in URL ?
         if (window.location.hash.length == 0) {
-            showError('Cannot decrypt paste: Decryption key missing in URL (Did you use a redirector or an URL shortener which strips part of the URL ?)');
+            showError('Ne morem odkodirati sporočila: v URLju (linku) manjka ključ. A si uporabil šortner ali bil preusmerjen, tako da se je del linka zgubil?');
             return;
         }
 
