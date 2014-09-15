@@ -2,6 +2,8 @@
 
 Prevedli v slovenščino, dodali malo DJND brandinga. :)
 
+Polno delujoč prototip: http://muki.webfactional.com/djstatic/djnbin/
+
 ## Original readme
 
 ZeroBin 0.19 Alpha
