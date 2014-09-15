@@ -1,3 +1,7 @@
+# Changelog
+
+Prevedli v slovenščino, dodali malo DJND brandinga. :)
+
 ZeroBin 0.19 Alpha
 
 ==== THIS IS ALPHA SOFTWARE - USE AT YOUR OWN RISKS ====
