@@ -369,7 +369,8 @@ function send_data() {
 
                 setElementText($('div#cleartext'), $('textarea#message').val());
                 urls2links($('div#cleartext'));
-
+                // Don't clone if confidential
+                if ($('input#confidential').is(':checked'))  $('button#clonebutton').hide();
                 // FIXME: Add option to remove syntax highlighting ?
                 if ($('input#syntaxcoloring').is(':checked')) applySyntaxColoring();
 
