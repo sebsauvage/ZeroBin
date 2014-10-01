@@ -201,6 +201,8 @@ function displayMessages(key, comments) {
     setElementText($('div#cleartext'), cleartext);
     urls2links($('div#cleartext')); // Convert URLs to clickable links.
 
+    if (comments[0].meta.confidential)  $('button#clonebutton').hide();
+
     // comments[0] is the paste itself.
 
     if (comments[0].meta.syntaxcoloring) applySyntaxColoring();
@@ -431,7 +433,7 @@ function stateNewPaste() {
 function stateExistingPaste() {
     $('button#sendbutton').hide();
 
-    // No "clone" for IE<10. || comments[0].meta.confidential 
+    // No "clone" for IE<10. 
     if ($('div#oldienotice').is(":visible") ) {
         $('button#clonebutton').hide();
     }
