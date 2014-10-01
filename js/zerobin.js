@@ -346,7 +346,8 @@ function send_data() {
                          expire:         $('select#pasteExpiration').val(),
                          burnafterreading: $('input#burnafterreading').is(':checked') ? 1 : 0,
                          opendiscussion: $('input#opendiscussion').is(':checked') ? 1 : 0,
-                         syntaxcoloring: $('input#syntaxcoloring').is(':checked') ? 1 : 0
+                         syntaxcoloring: $('input#syntaxcoloring').is(':checked') ? 1 : 0,
+                         condfidential: $('input#confidential').is(':checked') ? 1 : 0
                        };
     $.post(scriptLocation(), data_to_send, 'json')
         .error(function() {
