@@ -347,7 +347,7 @@ function send_data() {
                          burnafterreading: $('input#burnafterreading').is(':checked') ? 1 : 0,
                          opendiscussion: $('input#opendiscussion').is(':checked') ? 1 : 0,
                          syntaxcoloring: $('input#syntaxcoloring').is(':checked') ? 1 : 0,
-                         condfidential: $('input#confidential').is(':checked') ? 1 : 0
+                         confidential: $('input#confidential').is(':checked') ? 1 : 0
                        };
     $.post(scriptLocation(), data_to_send, 'json')
         .error(function() {
@@ -432,12 +432,13 @@ function stateExistingPaste() {
     $('button#sendbutton').hide();
 
     // No "clone" for IE<10.
-    if ($('div#oldienotice').is(":visible")) {
+    if ($('div#oldienotice').is(":visible") || comments[0].meta.confidential ) {
         $('button#clonebutton').hide();
     }
     else {
         $('button#clonebutton').show();
     }
+
     $('button#rawtextbutton').show();
 
     $('div#expiration').hide();
