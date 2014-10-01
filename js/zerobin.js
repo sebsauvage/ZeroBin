@@ -431,8 +431,8 @@ function stateNewPaste() {
 function stateExistingPaste() {
     $('button#sendbutton').hide();
 
-    // No "clone" for IE<10.
-    if ($('div#oldienotice').is(":visible") || comments[0].meta.confidential ) {
+    // No "clone" for IE<10. || comments[0].meta.confidential 
+    if ($('div#oldienotice').is(":visible") ) {
         $('button#clonebutton').hide();
     }
     else {

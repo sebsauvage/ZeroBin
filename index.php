@@ -222,10 +222,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
     if (isset($meta['burnafterreading'])) unset($meta['opendiscussion']);
 
     // Everything is disable on confidential mode
-    if (isset($meta['confidential'])) 
-    {    
-        unset($meta['opendiscussion']);
-    }
+    if (isset($meta['confidential'])) unset($meta['opendiscussion']);          
 
     // Optional nickname for comments
     if (!empty($_POST['nickname']))
