@@ -2,7 +2,7 @@
 
 Prevedli v slovenščino, dodali malo DJND brandinga. :)
 
-Polno delujoč prototip: http://muki.webfactional.com/djstatic/djnbin/
+Polno delujoč prototip: http://danesjenovdan.si/djnbin/
 
 ## Original readme
 
