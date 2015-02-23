@@ -2,7 +2,8 @@
 <head>
 <title>ZeroBin</title>
 <meta name="robots" content="noindex" />
-<link type="text/css" rel="stylesheet" href="css/zerobin.css?{$VERSION|rawurlencode}#" /> 
+<link type="text/css" rel="stylesheet" href="css/zerobin.css?{$VERSION|rawurlencode}#" media="only screen and (min-device-width: 481px)"/> <!-- Lädt CSS für Geräte mit Auflösung > 480px -->
+<link type="text/css" rel="stylesheet" href="css/zerobinmobile.css?{$VERSION|rawurlencode}#" media="only screen and (max-device-width: 480px)"/> <!-- Lädt CSS für Geräte mit Auflösung < 481 px --> 
 <script src="js/jquery.js?{$VERSION|rawurlencode}#"></script>
 <script src="js/sjcl.js?{$VERSION|rawurlencode}#"></script>
 <script src="js/base64.js?{$VERSION|rawurlencode}#"></script>
@@ -19,15 +20,11 @@
 <!--[if lt IE 10]>
 <style> div#ienotice {display:block; }  div#oldienotice {display:block; } </style>
 <![endif]-->
-
+<meta name="viewport" content="width=device-width" />
 </head>
   <body>
       <div id="aboutbox">
-          ZeroBin is a minimalist, opensource online pastebin where the server has zero knowledge of pasted data.
-          Data is encrypted/decrypted <i>in the browser</i> using 256 bits AES. 
-          More information on the <a href="http://sebsauvage.net/wiki/doku.php?id=php:zerobin">project page</a>.<br />
-          <span style="text-decoration:blink;font-size:10pt;color:#a4b3c4;">&#9654;</span> Note: This is a test service: 
-          Data may be deleted anytime. Kittens will die if you abuse this service.
+          Opensource: <a href="https://github.com/sebsauvage/ZeroBin/">ZeroBin @ Github</a>
 </div>
     <h1 title="ZeroBin" onclick="window.location.href=scriptLocation();return false;">ZeroBin</h1><br>
     <h2>Because ignorance is bliss</h2><br>
@@ -68,6 +65,7 @@
          <input type="checkbox" id="opendiscussion" name="opendiscussion" />
          <label for="opendiscussion">Open discussion</label>
       </div>
+
       <div id="syntaxcoloringoption" class="button" style="display:none;">
          <input type="checkbox" id="syntaxcoloring" name="syntaxcoloring" />
          <label for="syntaxcoloring">Syntax coloring</label>
