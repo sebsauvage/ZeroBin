@@ -369,20 +369,21 @@ color:#64B9C6;
 	margin: 0 auto;
 	}	
 	textarea#message,div#cleartext,.replymessage, code {
-	line-height: 5px;
+	line-height: 15px;
+	height: 150px;
 	}
-	div#pasteresult { 
+	div#pasteresult, div#cleartext { 
 	word-wrap:break-word;
 	}
 	button,.button,div#expiration {
-	padding:10px 80px;
-	border-radius: 20px;
+	padding:8px 80px;
+	border-radius: 10px;
 	}
 	div#syntaxcoloringoption{
 	visibility: hidden;
 	}
 	div#expiration, div#rawtextbutton, div#burnafterreadingoption, div#opendisc { 
-	line-height:15px;
+	line-height:10px;
 	color:#fff;
 	background-repeat:no-repeat;
 	background-position:center-left;
