@@ -21,7 +21,7 @@ class RainTPL{
 		 *
 		 * @var string
 		 */
-		static $tpl_dir = "tpl/";
+		static $tpl_dir = "../tpl/";
 
 
 		/**
@@ -29,7 +29,7 @@ class RainTPL{
 		 *
 		 * @var string
 		 */
-		static $cache_dir = "tmp/";
+		static $cache_dir = "../tmp/";
 
 
 		/**

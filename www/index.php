@@ -5,8 +5,8 @@ Please see project page: http://sebsauvage.net/wiki/doku.php?id=php:zerobin
 */
 $VERSION='Alpha 0.19';
 if (version_compare(PHP_VERSION, '5.2.6') < 0) die('ZeroBin requires php 5.2.6 or above to work. Sorry.');
-require_once "lib/serversalt.php";
-require_once "lib/vizhash_gd_zero.php";
+require_once "../lib/serversalt.php";
+require_once "../lib/vizhash_gd_zero.php";
 
 // In case stupid admin has left magic_quotes enabled in php.ini:
 if (get_magic_quotes_gpc())
@@ -62,7 +62,7 @@ function slow_equals($a, $b)
 */
 function dataid2path($dataid)
 {
-    return 'data/'.substr($dataid,0,2).'/'.substr($dataid,2,2).'/';
+    return '../data/'.substr($dataid,0,2).'/'.substr($dataid,2,2).'/';
 }
 
 /* Convert paste id to discussion storage path.
@@ -418,7 +418,7 @@ else if (!empty($_SERVER['QUERY_STRING']))  // Return an existing paste.
     list ($CIPHERDATA, $ERRORMESSAGE, $STATUS) = processPasteFetch($_SERVER['QUERY_STRING']);    
 }
 
-require_once "lib/rain.tpl.class.php";
+require_once "../lib/rain.tpl.class.php";
 header('Content-Type: text/html; charset=utf-8');
 $page = new RainTPL;
 $page->assign('CIPHERDATA',htmlspecialchars($CIPHERDATA,ENT_NOQUOTES));  // We escape it here because ENT_NOQUOTES can't be used in RainTPL templates.
