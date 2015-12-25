@@ -1,0 +1,16 @@
+{
+	"@context": {
+		"so": "http://schema.org/",
+		"status": "so:Integer",
+		"id": "so:name",
+		"parentid": "so:name",
+		"url: {
+			"@id": "so:url",
+			"@type": "@id"
+		},
+		"data": "so:Text",
+		"meta": {
+			"@id": "?jsonld=commentmeta"
+		}
+	}
+}

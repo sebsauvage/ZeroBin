@@ -1,0 +1,73 @@
+/* ZeroBin 0.22 - http://sebsauvage.net/wiki/doku.php?id=php:zerobin */
+
+
+body {
+	padding: 0 0 30px;
+}
+
+body.navbar-spacing {
+	padding-top: 70px;
+}
+
+.navbar-nav {
+	margin: 0 8px;
+}
+
+.dropdown-menu > li > label, .dropdown-menu > li > div {
+	clear: both;
+	display: block;
+	font-weight: normal;
+	line-height: 1.42857;
+	white-space: nowrap;
+}
+
+.dropdown-menu > li > label {
+	color: #333;
+	padding: 3px 20px 3px 40px;
+}
+
+.dropdown-menu > li > div {
+	color: #777;
+	padding: 3px 20px;
+	cursor: default;
+}
+
+#image img {
+	max-width: 100%;
+	height: auto;
+	margin-bottom: 20px;
+}
+
+#deletelink {
+	float: right;
+}
+
+#pastelink {
+	display: inline;
+}
+
+#message {
+	font-family: monospace;
+}
+
+#nickname {
+	margin: 5px 0;
+}
+
+#comments, #comments button {
+	margin-bottom: 10px;
+}
+
+.comment {
+	border-left: 1px solid #ccc;
+	padding: 5px 0 5px 10px;
+	white-space: pre-wrap;
+}
+
+footer h4 {
+	margin-top: 0;
+}
+
+li.L0, li.L1, li.L2, li.L3, li.L5, li.L6, li.L7, li.L8 {
+	list-style-type: decimal !important;
+}

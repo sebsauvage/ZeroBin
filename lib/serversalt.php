@@ -1,36 +1,99 @@
 <?php
+/**
+ * ZeroBin
+ *
+ * a zero-knowledge paste bin
+ *
+ * @link      http://sebsauvage.net/wiki/doku.php?id=php:zerobin
+ * @copyright 2012 Sébastien SAUVAGE (sebsauvage.net)
+ * @license   http://www.opensource.org/licenses/zlib-license.php The zlib/libpng License
+ * @version   0.22
+ */
 
-// Generate a large random hexadecimal salt.
-function generateRandomSalt()
+/**
+ * serversalt
+ *
+ * This is a random string which is unique to each ZeroBin installation.
+ * It is automatically created if not present.
+ *
+ * Salt is used:
+ * - to generate unique VizHash in discussions (which are not reproductible across ZeroBin servers)
+ * - to generate unique deletion token (which are not re-usable across ZeroBin servers)
+ */
+class serversalt extends persistence
 {
-    $randomSalt='';
-    if (function_exists("mcrypt_create_iv"))
+    /**
+     * generated salt
+     *
+     * @access private
+     * @static
+     * @var    string
+     */
+    private static $_salt = '';
+
+    /**
+     * generate a large random hexadecimal salt
+     *
+     * @access public
+     * @static
+     * @return string
+     */
+    public static function generate()
     {
-        $randomSalt = bin2hex(mcrypt_create_iv(256, MCRYPT_DEV_URANDOM));
+        $randomSalt = '';
+        if (function_exists('mcrypt_create_iv'))
+        {
+            $randomSalt = bin2hex(mcrypt_create_iv(256, MCRYPT_DEV_URANDOM));
+        }
+        else // fallback to mt_rand()
+        {
+            for($i = 0; $i < 256; ++$i) {
+                $randomSalt .= base_convert(mt_rand(), 10, 16);
+            }
+        }
+        return $randomSalt;
     }
-    else // fallback to mt_rand()
+
+    /**
+     * get server salt
+     *
+     * @access public
+     * @static
+     * @throws Exception
+     * @return string
+     */
+    public static function get()
     {
-        for($i=0;$i<16;$i++) { $randomSalt.=base_convert(mt_rand(),10,16); }
+        if (strlen(self::$_salt)) return self::$_salt;
+
+        $file = 'salt.php';
+        if (self::_exists($file)) {
+            $items = explode('|', @file_get_contents(self::getPath($file)));
+            if (!is_array($items) || count($items) != 3) {
+                throw new Exception('unable to read file ' . self::getPath($file), 20);
+            }
+            self::$_salt = $items[1];
+        } else {
+            self::$_salt = self::generate();
+            self::_store(
+                $file,
+                '<?php /* |'. self::$_salt . '| */ ?>'
+            );
+        }
+        return self::$_salt;
     }
-    return $randomSalt;
+
+    /**
+     * set the path
+     *
+     * @access public
+     * @static
+     * @param  string $path
+     * @return void
+     */
+    public static function setPath($path)
+    {
+    	self::$_salt = '';
+        parent::setPath($path);
+    }
 }
-
-/* Return this ZeroBin server salt.
-   This is a random string which is unique to each ZeroBin installation.
-   It is automatically created if not present.
-
-   Salt is used:
-      - to generate unique VizHash in discussions (which are not reproductible across ZeroBin servers)
-      - to generate unique deletion token (which are not re-usable across ZeroBin servers)
-*/
-function getServerSalt()
-{
-    $saltfile = 'data/salt.php';
-    if (!is_file($saltfile))
-        file_put_contents($saltfile,'<?php /* |'.generateRandomSalt().'| */ ?>',LOCK_EX);
-    $items=explode('|',file_get_contents($saltfile));
-    return $items[1];
-
-}
-
-?>
