@@ -1,35 +1,90 @@
 <?php
-// VizHash_GD 0.0.4 beta ZeroBin 0.19
-// Visual Hash implementation in php4+GD, stripped down and modified version for ZeroBin
-// See: http://sebsauvage.net/wiki/doku.php?id=php:vizhash_gd
-// This is free software under the zlib/libpng licence
-// http://www.opensource.org/licenses/zlib-license.php
-/* Example:
-    $vz = new vizhash16x16();
-    $data = $vz->generate('hello');
-    header('Content-type: image/png');
-    echo $data;
-    exit;
-*/
-require_once "serversalt.php";
+/**
+ * VizHash_GD
+ *
+ * Visual Hash implementation in php4+GD,
+ * stripped down and modified version for ZeroBin
+ *
+ * @link      http://sebsauvage.net/wiki/doku.php?id=php:vizhash_gd
+ * @copyright 2012 Sébastien SAUVAGE (sebsauvage.net)
+ * @license   http://www.opensource.org/licenses/zlib-license.php The zlib/libpng License
+ * @version   0.0.4 beta ZeroBin 0.22
+ */
+
+/**
+ * vizhash16x16
+ *
+ * Example:
+ * $vz = new vizhash16x16();
+ * $data = $vz->generate('hello');
+ * header('Content-type: image/png');
+ * echo $data;
+ * exit;
+ */
+
 class vizhash16x16
 {
+    /**
+     * hash values
+     *
+     * @access private
+     * @var    array
+     */
     private $VALUES;
+
+    /**
+     * index of current value
+     *
+     * @access private
+     * @var    int
+     */
     private $VALUES_INDEX;
+
+    /**
+     * image width
+     *
+     * @access private
+     * @var    int
+     */
     private $width;
+
+    /**
+     * image height
+     *
+     * @access private
+     * @var    int
+     */
     private $height;
+
+    /**
+     * salt used when generating the image
+     *
+     * @access private
+     * @var    string
+     */
     private $salt;
-    function __construct()
+
+    /**
+     * constructor
+     *
+     * @access public
+     * @return void
+     */
+    public function __construct()
     {
-        $this->width=16;
-        $this->height=16;
-        $this->salt = getServerSalt();
-    }  
-    
-    // Generate a 16x16 png corresponding to $text.
-    // Input: $text (string)
-    // Output: PNG data. Or empty string if GD is not available.
-    function generate($text)
+        $this->width  = 16;
+        $this->height = 16;
+        $this->salt   = serversalt::get();
+    }
+
+    /**
+     * Generate a 16x16 png corresponding to $text.
+     *
+     * @access public
+     * @param  string $text
+     * @return string PNG data. Or empty string if GD is not available.
+     */
+    public function generate($text)
     {
         if (!function_exists('gd_info')) return '';
 
@@ -54,14 +109,14 @@ class vizhash16x16
         $image = $this->degrade($image,$op,array($r0,$g0,$b0),array(0,0,0));
 
         for($i=0; $i<7; $i=$i+1)
-        {     
+        {
             $action=$this->getInt();
             $color = imagecolorallocate($image, $r,$g,$b);
             $r = ($r0 + $this->getInt()/25)%256;
             $g = ($g0 + $this->getInt()/25)%256;
             $b = ($b0 + $this->getInt()/25)%256;
             $r0=$r; $g0=$g; $b0=$b;
-            $this->drawshape($image,$action,$color);   
+            $this->drawshape($image,$action,$color);
         }
 
         $color = imagecolorallocate($image,$this->getInt(),$this->getInt(),$this->getInt());
@@ -71,29 +126,59 @@ class vizhash16x16
         $imagedata = ob_get_contents();
         ob_end_clean();
         imagedestroy($image);
-        
-        return $imagedata;
-    } 
 
-    private function getInt() // Returns a single integer from the $VALUES array (0...255)
+        return $imagedata;
+    }
+
+    /**
+     * Returns a single integer from the $VALUES array (0...255)
+     *
+     * @access private
+     * @return int
+     */
+    private function getInt()
     {
-        $v= $this->VALUES[$this->VALUES_INDEX]; 
+        $v= $this->VALUES[$this->VALUES_INDEX];
         $this->VALUES_INDEX++;
         $this->VALUES_INDEX %= count($this->VALUES); // Warp around the array
         return $v;
     }
-    private function getX() // Returns a single integer from the array (roughly mapped to image width) 
+
+    /**
+     * Returns a single integer from the array (roughly mapped to image width)
+     *
+     * @access private
+     * @return int
+     */
+    private function getX()
     {
         return $this->width*$this->getInt()/256;
     }
 
-    private function getY() // Returns a single integer from the array (roughly mapped to image height) 
-    { 
+    /**
+     * Returns a single integer from the array (roughly mapped to image height)
+     *
+     * @access private
+     * @return int
+     */
+    private function getY()
+    {
         return $this->height*$this->getInt()/256;
-    }  
-    
-    # Gradient function taken from:
-    # http://www.supportduweb.com/scripts_tutoriaux-code-source-41-gd-faire-un-degrade-en-php-gd-fonction-degrade-imagerie.html
+    }
+
+    /**
+     * Gradient function
+     *
+     * taken from:
+     * http://www.supportduweb.com/scripts_tutoriaux-code-source-41-gd-faire-un-degrade-en-php-gd-fonction-degrade-imagerie.html
+     *
+     * @access private
+     * @param  resource $img
+     * @param  string $direction
+     * @param  array $color1
+     * @param  array $color2
+     * @return resource
+     */
     private function degrade($img,$direction,$color1,$color2)
     {
             if($direction=='h') { $size = imagesx($img); $sizeinv = imagesy($img); }
@@ -113,30 +198,34 @@ class vizhash16x16
             }
             return $img;
     }
-    
+
+    /**
+     * Draw a shape
+     *
+     * @access private
+     * @param  resource $image
+     * @param  int $action
+     * @param  int $color
+     * @return void
+     */
     private function drawshape($image,$action,$color)
     {
         switch($action%7)
         {
             case 0:
-                ImageFilledRectangle ($image,$this->getX(),$this->getY(),$this->getX(),$this->getY(),$color);  
+                ImageFilledRectangle ($image,$this->getX(),$this->getY(),$this->getX(),$this->getY(),$color);
                 break;
             case 1:
             case 2:
-                ImageFilledEllipse ($image, $this->getX(), $this->getY(), $this->getX(), $this->getY(), $color);  
+                ImageFilledEllipse ($image, $this->getX(), $this->getY(), $this->getX(), $this->getY(), $color);
                 break;
             case 3:
                 $points = array($this->getX(), $this->getY(), $this->getX(), $this->getY(), $this->getX(), $this->getY(),$this->getX(), $this->getY());
                 ImageFilledPolygon ($image, $points, 4, $color);
                 break;
-            case 4:
-            case 5:
-            case 6:
+            default:
                 $start=$this->getInt()*360/256; $end=$start+$this->getInt()*180/256;
                 ImageFilledArc ($image, $this->getX(), $this->getY(), $this->getX(), $this->getY(),$start,$end,$color,IMG_ARC_PIE);
-                break;     
         }
-    }    
-}    
-
-?>
+    }
+}
