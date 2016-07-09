@@ -1,7 +1,7 @@
 ## This repo is unmaintained and outdated! Do not use this code anymore! :warning: 
 
 **If you still use this old code switch to the new maintained repo:**  
-**:arrow_forward: https://github.com/elrido/ZeroBin**
+**:arrow_forward: https://github.com/PrivateBin/PrivateBin**
 
 You will get more features and up-to-date code. 
 
