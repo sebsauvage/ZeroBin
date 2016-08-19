@@ -33,4 +33,10 @@ $lang["Open discussion"]="Ouvrir les commentaires";
 $lang["Syntax coloring"]="Coloration syntaxique";
 $lang["Discussion"]="Discussion";
 $lang["Paste was properly deleted."]="Le texte a été correctement supprimé";
-
+$lang["Please wait 10 seconds between each post."]="Patientez 10 secondes entre chaque post";
+$lang["Paste is limited to 2 Mb of encrypted data."]="Les textes sont limités à 2 Mb de données chiffée.";
+$lang["Invalid data."]="Données invalides.";
+$lang["You are unlucky. Try again."]="Vous n'avez pas de chance. Essayez encore.";
+$lang["Server error."]="Erreur serveur.";
+$lang["Paste does not exist, has expired or has been deleted."]="Le texte n'existe plus, il a expiré ou a été supprimé.";
+$lang["Wrong deletion token. Paste was not deleted."]="Mauvais jeton de suppression. Le texte n'a pas été supprimé";
