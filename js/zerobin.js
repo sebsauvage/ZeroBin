@@ -22,12 +22,13 @@ sjcl.random.startCollectors();
 function secondsToHuman(seconds)
 {
     //FIXME add optionnal s at the end of time word according to the language 
+    //set two version plural et singular and set a flag for the use of one or another
     if (seconds<60) { var v=Math.floor(seconds); return v+' '+translate('second')+((v>1)?'s':''); }
     if (seconds<60*60) { var v=Math.floor(seconds/60); return v+' '+translate('minute')+((v>1)?'s':''); }
     if (seconds<60*60*24) { var v=Math.floor(seconds/(60*60)); return v+' '+translate('hour')+((v>1)?'s':''); }
     // If less than 2 months, display in days:
     if (seconds<60*60*24*60) { var v=Math.floor(seconds/(60*60*24)); return v+' '+translate('day')+((v>1)?'s':''); }
-    //FIXME if french add exeption
+    //FIXME if french add exeption for month
     var v=Math.floor(seconds/(60*60*24*30)); return v+' '+translate('month')+((v>1)?'s':'');
 }
 
