@@ -31,3 +31,4 @@ $lang["Never"]="Jamais";
 $lang["Burn after reading"]="Brûler après lecture";
 $lang["Open discussion"]="Ouvrir les commentaires";
 $lang["Syntax coloring"]="Coloration syntaxique";
+$lang["Discussion"]="Discussion";
