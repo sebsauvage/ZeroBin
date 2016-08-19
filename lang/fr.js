@@ -22,3 +22,5 @@ lang["Sending paste (Please move your mouse for more entropy)"]="Envoi de texte 
 lang["Comment could not be sent (serveur error or not responding)."]="Le commentaire n'a pu être envoyé (erreur serveur ou ne répond pas";
 lang["Comment posted."]="Commentaire posté.";
 lang["Could not post comment"]="Le commentaire n'a pu être posté";
+lang["Reply"]="Répondre";
+lang["Sending comment"]="Envoi du commentaire";

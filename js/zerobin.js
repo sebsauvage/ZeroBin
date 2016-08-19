@@ -202,7 +202,7 @@ function displayMessages(key, comments) {
     } catch(err) {
         $('div#cleartext').hide();
         $('button#clonebutton').hide();
-        showError('Could not decrypt data (Wrong key ?)');
+        showError(translate('Could not decrypt data (Wrong key ?)'));
         return;
     }
     setElementText($('div#cleartext'), cleartext);
@@ -239,7 +239,7 @@ function displayMessages(key, comments) {
             }
             var divComment = $('<div class="comment" id="comment_' + comment.meta.commentid+'">'
                                + '<div class="commentmeta"><span class="nickname"></span><span class="commentdate"></span></div><div class="commentdata"></div>'
-                               + '<button onclick="open_reply($(this),\'' + comment.meta.commentid + '\');return false;">Reply</button>'
+                               + '<button onclick="open_reply($(this),\'' + comment.meta.commentid + '\');return false;">'+translate('Reply')+'</button>'
                                + '</div>');
             setElementText(divComment.find('div.commentdata'), cleartext);
             // Convert URLs to clickable links in comment.
@@ -296,7 +296,7 @@ function send_comment(parentid) {
         return;
     }
 
-    showStatus('Sending comment...', spin=true);
+    showStatus(translate('Sending comment')+'...', spin=true);
     var cipherdata = zeroCipher(pageKey(), $('textarea#replymessage').val());
     var ciphernickname = '';
     var nick=$('input#nickname').val();
@@ -322,7 +322,7 @@ function send_comment(parentid) {
                 showError(translate('Could not post comment')+': '+data.message);
             }
             else {
-                showError('Could not post comment.');
+                showError(translate('Could not post comment')+'.');
             }
         });
     }
