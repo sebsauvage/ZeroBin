@@ -300,7 +300,7 @@ function send_comment(parentid) {
     var cipherdata = zeroCipher(pageKey(), $('textarea#replymessage').val());
     var ciphernickname = '';
     var nick=$('input#nickname').val();
-    if (nick != '' && nick != 'Optional nickname...') {
+    if (nick != '' && nick != translate('Optional nickname')+'...') {
         ciphernickname = zeroCipher(pageKey(), nick);
     }
     var data_to_send = { data:cipherdata,
@@ -311,15 +311,15 @@ function send_comment(parentid) {
 
     $.post(scriptLocation(), data_to_send, 'json')
         .error(function() {
-            showError('Comment could not be sent (serveur error or not responding).');
+            showError(translate('Comment could not be sent (serveur error or not responding).'));
         })
         .success(function(data) {
             if (data.status == 0) {
-                showStatus('Comment posted.');
+                showStatus(translate('Comment posted.'));
                 location.reload();
             }
             else if (data.status==1) {
-                showError('Could not post comment: '+data.message);
+                showError(translate('Could not post comment')+': '+data.message);
             }
             else {
                 showError('Could not post comment.');
@@ -340,12 +340,12 @@ function send_data() {
     // If sjcl has not collected enough entropy yet, display a message.
     if (!sjcl.random.isReady())
     {
-        showStatus('Sending paste (Please move your mouse for more entropy)...', spin=true);
+        showStatus(translate('Sending paste (Please move your mouse for more entropy)'+'...'), spin=true);
         sjcl.random.addEventListener('seeded', function(){ send_data(); }); 
         return; 
     }
     
-    showStatus('Sending paste...', spin=true);
+    showStatus(translate('Sending paste'+'...'), spin=true);
 
     var randomkey = sjcl.codec.base64.fromBits(sjcl.random.randomWords(8, 0), 0);
     var cipherdata = zeroCipher(randomkey, $('textarea#message').val());
