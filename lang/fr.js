@@ -14,3 +14,6 @@ lang["Post comment"]="Poster le commentaire";
 lang["Delete link"]="Supprimer l'accès à ce lien";
 lang["Your paste is"]="votre texte est accessible via ce lien";
 lang["Hit CTRL+C to copy"]="Appuyez sur CTRL+C pour copier le lien";
+lang["Cannot decrypt paste: Decryption key missing in URL (Did you use a redirector or an URL shortener which strips part of the URL ?)"]="Impossible de déchiffrer le texte: La clé de déchiffrement manque dans l'URL (Avez vous utilisez une redirection ou un URL raccourcie qui retire certaine partie de l'URL ?)";
+lang["Could not create paste"]="Impossible de poster le texte";
+lang["Data could not be sent (serveur error or not responding)"]="Les données n'ont pu être envoyées (erreur serveur ou ne répond pas)";

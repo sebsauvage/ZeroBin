@@ -357,7 +357,7 @@ function send_data() {
                        };
     $.post(scriptLocation(), data_to_send, 'json')
         .error(function() {
-            showError('Data could not be sent (serveur error or not responding).');
+            showError(translate('Data could not be sent (serveur error or not responding)')+'.');
         })
         .success(function(data) {
             if (data.status == 0) {
@@ -380,10 +380,10 @@ function send_data() {
                 showStatus('');
             }
             else if (data.status==1) {
-                showError('Could not create paste: '+data.message);
+                showError(translate('Could not create paste')+': '+data.message);
             }
             else {
-                showError('Could not create paste.');
+                showError(translate('Could not create paste')+'.');
             }
         });
 }
@@ -593,7 +593,7 @@ $(function() {
     if ($('div#cipherdata').text().length > 1) {
         // Missing decryption key in URL ?
         if (window.location.hash.length == 0) {
-            showError('Cannot decrypt paste: Decryption key missing in URL (Did you use a redirector or an URL shortener which strips part of the URL ?)');
+            showError(translate('Cannot decrypt paste: Decryption key missing in URL (Did you use a redirector or an URL shortener which strips part of the URL ?)'));
             return;
         }
 
