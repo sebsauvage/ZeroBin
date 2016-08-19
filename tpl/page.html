@@ -46,32 +46,32 @@
     <div id="toolbar">
     <button id="newbutton" onclick="window.location.href=scriptLocation();return false;" style="display:none;"><img src="img/icon_new.png#" width="11" height="15" />{"New"|translate}</button>
     <button id="sendbutton" onclick="send_data();return false;" style="display:none;"><img src="img/icon_send.png#" width="18" height="15" />{"Send"|translate}</button>
-    <button id="clonebutton" onclick="clonePaste();return false;" style="display:none;"><img src="img/icon_clone.png#" width="15" height="17" />Clone</button>
-    <button id="rawtextbutton" onclick="rawText();return false;" style="display:none; "><img src="img/icon_raw.png#" width="15" height="15" style="padding:1px 0px 1px 0px;"/>Raw text</button>
-      <div id="expiration" style="display:none;">Expires: 
+    <button id="clonebutton" onclick="clonePaste();return false;" style="display:none;"><img src="img/icon_clone.png#" width="15" height="17" />{"Clone"|translate}</button>
+    <button id="rawtextbutton" onclick="rawText();return false;" style="display:none; "><img src="img/icon_raw.png#" width="15" height="15" style="padding:1px 0px 1px 0px;"/>{"Raw text"|translate}</button>
+      <div id="expiration" style="display:none;">{"Expires"|translate}: 
       <select id="pasteExpiration" name="pasteExpiration">
-        <option value="5min">5 minutes</option>
-        <option value="10min">10 minutes</option>
-        <option value="1hour">1 hour</option>
-        <option value="1day">1 day</option>
-        <option value="1week">1 week</option>
-        <option value="1month" selected="selected">1 month</option>
-        <option value="1year">1 year</option>
-        <option value="never">Never</option>
+        <option value="5min">5 {"minutes"|translate}</option>
+        <option value="10min">10 {"minutes"|translate}</option>
+        <option value="1hour">1 {"hour"|translate}</option>
+        <option value="1day">1 {"day"|translate}</option>
+        <option value="1week">1 {"week"|translate}</option>
+        <option value="1month" selected="selected">1 {"month"|translate}</option>
+        <option value="1year">1 {"year"|translate}</option>
+        <option value="never">{"Never"|translate}</option>
       </select>
       </div>
       <div id="remainingtime" style="display:none;"></div>
       <div id="burnafterreadingoption" class="button" style="display:none;">
          <input type="checkbox" id="burnafterreading" name="burnafterreading" />
-         <label for="burnafterreading">Burn after reading</label>
+         <label for="burnafterreading">{"Burn after reading"|translate}</label>
       </div>
       <div id="opendisc" class="button" style="display:none;">
          <input type="checkbox" id="opendiscussion" name="opendiscussion" />
-         <label for="opendiscussion">Open discussion</label>
+         <label for="opendiscussion">{"Open discussion"|translate}</label>
       </div>
       <div id="syntaxcoloringoption" class="button" style="display:none;">
          <input type="checkbox" id="syntaxcoloring" name="syntaxcoloring" />
-         <label for="syntaxcoloring">Syntax coloring</label>
+         <label for="syntaxcoloring">{"Syntax coloring"|translate}</label>
       </div>
     </div>
     <div id="pasteresult" style="display:none;">
