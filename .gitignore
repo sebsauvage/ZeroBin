@@ -4,3 +4,4 @@ tmp/
 # Ignore for safety
 .htaccess
 .htpasswd
+config.inc.php

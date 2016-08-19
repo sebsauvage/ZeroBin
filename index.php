@@ -8,6 +8,9 @@ if (version_compare(PHP_VERSION, '5.2.6') < 0) die('ZeroBin requires php 5.2.6 o
 require_once "lib/serversalt.php";
 require_once "lib/vizhash_gd_zero.php";
 
+// Load config.inc.php file if exists
+if (file_exists('config.inc.php')) include('config.inc.php');
+
 // In case stupid admin has left magic_quotes enabled in php.ini:
 if (get_magic_quotes_gpc())
 {
@@ -425,5 +428,25 @@ $page->assign('CIPHERDATA',htmlspecialchars($CIPHERDATA,ENT_NOQUOTES));  // We e
 $page->assign('VERSION',$VERSION);
 $page->assign('ERRORMESSAGE',$ERRORMESSAGE);
 $page->assign('STATUS',$STATUS);
+
+// Manage translation
+$js_lang_file="";
+
+function translate($str, $modifier = null) {
+	global $lang;
+	if (isset($lang[$str])) return $lang[$str];
+	return $str;
+}
+
+if (isset($language)) {
+	if (file_exists("lang/".$language.".php")) {
+		include "lang/".$language.".php";
+	}
+	if (file_exists("lang/".$language.".js")) {
+		$js_lang_file="lang/".$language.".js";
+	}
+}
+$page->assign('lang_file',$js_lang_file);
+
 $page->draw('page');
 ?>

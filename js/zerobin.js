@@ -5,6 +5,11 @@
  * @author sebsauvage
  */
 
+function translate(msg) {
+	if (typeof(lang) == "object" && typeof(lang[msg]) == "string") return lang[msg];
+	return msg;
+}
+
 // Immediately start random number generator collector.
 sjcl.random.startCollectors();
 
@@ -20,8 +25,8 @@ function secondsToHuman(seconds)
     if (seconds<60*60) { var v=Math.floor(seconds/60); return v+' minute'+((v>1)?'s':''); }
     if (seconds<60*60*24) { var v=Math.floor(seconds/(60*60)); return v+' hour'+((v>1)?'s':''); }
     // If less than 2 months, display in days:
-    if (seconds<60*60*24*60) { var v=Math.floor(seconds/(60*60*24)); return v+' day'+((v>1)?'s':''); }
-    var v=Math.floor(seconds/(60*60*24*30)); return v+' month'+((v>1)?'s':'');
+    if (seconds<60*60*24*60) { var v=Math.floor(seconds/(60*60*24)); return v+' '+translate('day')+((v>1)?'s':''); }
+    var v=Math.floor(seconds/(60*60*24*30)); return v+' '+translate('month')+((v>1)?'s':'');
 }
 
 /**
@@ -206,7 +211,7 @@ function displayMessages(key, comments) {
     if (comments[0].meta.syntaxcoloring) applySyntaxColoring();
 
     // Display paste expiration.
-    if (comments[0].meta.expire_date) $('div#remainingtime').removeClass('foryoureyesonly').text('This document will expire in '+secondsToHuman(comments[0].meta.remaining_time)+'.').show();
+    if (comments[0].meta.expire_date) $('div#remainingtime').removeClass('foryoureyesonly').text(translate('This document will expire in')+' '+secondsToHuman(comments[0].meta.remaining_time)+'.').show();
     if (comments[0].meta.burnafterreading) {
         $('div#remainingtime').addClass('foryoureyesonly').text('FOR YOUR EYES ONLY.  Don\'t close this window, this message can\'t be displayed again.').show();
         $('button#clonebutton').hide(); // Discourage cloning (as it can't really be prevented).
@@ -486,6 +491,7 @@ function newPaste() {
  * (We use the same function for paste and reply to comments)
  */
 function showError(message) {
+    message=translate(message);
     $('div#status').addClass('errorMessage').text(message);
     $('div#replystatus').addClass('errorMessage').text(message);
 }
