@@ -272,9 +272,9 @@ function displayMessages(key, comments) {
 function open_reply(source, commentid) {
     $('div.reply').remove(); // Remove any other reply area.
     source.after('<div class="reply">'
-                + '<input type="text" id="nickname" title="Optional nickname..." value="Optional nickname..." />'
+                + '<input type="text" id="nickname" title="Optional nickname..." value="'+translate('Optional nickname')+'..." />'
                 + '<textarea id="replymessage" class="replymessage" cols="80" rows="7"></textarea>'
-                + '<br><button id="replybutton" onclick="send_comment(\'' + commentid + '\');return false;">Post comment</button>'
+                + '<br><button id="replybutton" onclick="send_comment(\'' + commentid + '\');return false;">'+translate('Post comment')+'</button>'
                 + '<div id="replystatus">&nbsp;</div>'
                 + '</div>');
     $('input#nickname').focus(function() {
@@ -366,8 +366,8 @@ function send_data() {
                 var deleteUrl = scriptLocation() + "?pasteid=" + data.id + '&deletetoken=' + data.deletetoken;
                 showStatus('');
 
-                $('div#pastelink').html('Your paste is <a id="pasteurl" href="' + url + '">' + url + '</a> <span id="copyhint">(Hit CTRL+C to copy)</span>');
-                $('div#deletelink').html('<a href="' + deleteUrl + '">Delete link</a>');
+                $('div#pastelink').html(translate('Your paste is')+' <a id="pasteurl" href="' + url + '">' + url + '</a> <span id="copyhint">('+translate('Hit CTRL+C to copy')+')</span>');
+                $('div#deletelink').html('<a href="' + deleteUrl + '">'+translate('Delete link')+'</a>');
                 $('div#pasteresult').show();
                 selectText('pasteurl'); // We pre-select the link so that the user only has to CTRL+C the link.
 

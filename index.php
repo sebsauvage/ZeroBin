@@ -20,6 +20,26 @@ if (get_magic_quotes_gpc())
     $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
 }
 
+// Manage translation
+$js_lang_file="";
+
+
+if (isset($language)) {
+	if (file_exists("lang/".$language.".php")) {
+		include "lang/".$language.".php";
+	}
+	if (file_exists("lang/".$language.".js")) {
+		$js_lang_file="lang/".$language.".js";
+	}
+}
+
+/*Take a string in paramater and if a translation exist return the string translated*/
+function translate($str, $modifier = null) {
+	global $lang;
+	if (isset($lang[$str])) return $lang[$str];
+	return $str;
+}
+
 // trafic_limiter : Make sure the IP address makes at most 1 request every 10 seconds.
 // Will return false if IP address made a call less than 10 seconds ago.
 function trafic_limiter_canPass($ip)
@@ -311,9 +331,11 @@ echo json_encode(array('status'=>1,'message'=>'Server error.'));
 exit;
 }
 
+
 /* Process a paste deletion request.
    Returns an array ('',$ERRORMESSAGE,$STATUS)
 */
+
 function processPasteDelete($pasteid,$deletetoken)
 {
     if (preg_match('/\A[a-f\d]{16}\z/',$pasteid))  // Is this a valid paste identifier ?
@@ -336,7 +358,8 @@ function processPasteDelete($pasteid,$deletetoken)
 
     // Paste exists and deletion token is valid: Delete the paste.
     deletePaste($pasteid);
-    return array('','','Paste was properly deleted.');
+    //return array('','','Paste was properly deleted.');
+    return array('','',translate('Paste was properly deleted.'));
 }
 
 /* Process a paste fetch request.
@@ -429,23 +452,6 @@ $page->assign('VERSION',$VERSION);
 $page->assign('ERRORMESSAGE',$ERRORMESSAGE);
 $page->assign('STATUS',$STATUS);
 
-// Manage translation
-$js_lang_file="";
-
-function translate($str, $modifier = null) {
-	global $lang;
-	if (isset($lang[$str])) return $lang[$str];
-	return $str;
-}
-
-if (isset($language)) {
-	if (file_exists("lang/".$language.".php")) {
-		include "lang/".$language.".php";
-	}
-	if (file_exists("lang/".$language.".js")) {
-		$js_lang_file="lang/".$language.".js";
-	}
-}
 $page->assign('lang_file',$js_lang_file);
 
 $page->draw('page');
