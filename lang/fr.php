@@ -9,5 +9,7 @@ $lang["Data is encrypted/decrypted <i>in the browser</i> using 256 bits AES."]="
 
 $lang['More information on the']="Plus d'information sur le";
 $lang["project page"]="site du projet";
-
 $lang["Note: This is a test service:"]="Note: Il s'agit d'un service de test :";
+$lang["Data may be deleted anytime. Kittens will die if you abuse this service."]="Les données peuvent être supprimées à tout moment. Des chatons mourront si vous abusez de ce service";
+$lang["Because ignorance is bliss"]="Parce que l'ignorance est une bénédiction";
+$lang["Javascript is required for ZeroBin to work.<br>Sorry for the inconvenience."]="Javascript est requis pour le fonctionnement de ZeroBin.<br> Excusez nous pour la gêne occassionée";
