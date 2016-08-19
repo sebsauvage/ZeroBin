@@ -21,11 +21,13 @@ sjcl.random.startCollectors();
  */
 function secondsToHuman(seconds)
 {
-    if (seconds<60) { var v=Math.floor(seconds); return v+' second'+((v>1)?'s':''); }
-    if (seconds<60*60) { var v=Math.floor(seconds/60); return v+' minute'+((v>1)?'s':''); }
-    if (seconds<60*60*24) { var v=Math.floor(seconds/(60*60)); return v+' hour'+((v>1)?'s':''); }
+    //FIXME add optionnal s at the end of time word according to the language 
+    if (seconds<60) { var v=Math.floor(seconds); return v+' '+translate('second')+((v>1)?'s':''); }
+    if (seconds<60*60) { var v=Math.floor(seconds/60); return v+' '+translate('minute')+((v>1)?'s':''); }
+    if (seconds<60*60*24) { var v=Math.floor(seconds/(60*60)); return v+' '+translate('hour')+((v>1)?'s':''); }
     // If less than 2 months, display in days:
     if (seconds<60*60*24*60) { var v=Math.floor(seconds/(60*60*24)); return v+' '+translate('day')+((v>1)?'s':''); }
+    //FIXME if french add exeption
     var v=Math.floor(seconds/(60*60*24*30)); return v+' '+translate('month')+((v>1)?'s':'');
 }
 
@@ -213,7 +215,7 @@ function displayMessages(key, comments) {
     // Display paste expiration.
     if (comments[0].meta.expire_date) $('div#remainingtime').removeClass('foryoureyesonly').text(translate('This document will expire in')+' '+secondsToHuman(comments[0].meta.remaining_time)+'.').show();
     if (comments[0].meta.burnafterreading) {
-        $('div#remainingtime').addClass('foryoureyesonly').text('FOR YOUR EYES ONLY.  Don\'t close this window, this message can\'t be displayed again.').show();
+        $('div#remainingtime').addClass('foryoureyesonly').text(translate('FOR YOUR EYES ONLY.  Don\'t close this window, this message can\'t be displayed again.')).show();
         $('button#clonebutton').hide(); // Discourage cloning (as it can't really be prevented).
     }
 
