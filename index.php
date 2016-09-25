@@ -17,6 +17,21 @@ if (get_magic_quotes_gpc())
     $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
 }
 
+// get_real_ip : Support for proxies that will put the real IP into the HTTP_X_FORWARDED_FOR-header.
+function get_real_ip()
+{
+    $useproxyip = false;
+    // uncomment the following line if you want to use the X-Forwarded-For-header. Beware that this header can be spoofed. Leave commented out on systems without reverse proxy in front of the webserver.
+    //if ( isset($_SERVER['HTTP_X_FORWARDED_FOR']) ) $useproxyip = true;
+    
+    if ( $useproxyip ) {
+        $ip_arr = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'], 2);
+        return trim($ip_arr[0]);
+    } else {
+        return $_SERVER['REMOTE_ADDR'];
+    }
+}
+
 // trafic_limiter : Make sure the IP address makes at most 1 request every 10 seconds.
 // Will return false if IP address made a call less than 10 seconds ago.
 function trafic_limiter_canPass($ip)
@@ -157,7 +172,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
     }
 
     // Make sure last paste from the IP address was more than 10 seconds ago.
-    if (!trafic_limiter_canPass($_SERVER['REMOTE_ADDR']))
+    if (!trafic_limiter_canPass(get_real_ip()))
         { echo json_encode(array('status'=>1,'message'=>'Please wait 10 seconds between each post.')); exit; }
 
     // Make sure content is not too big.
@@ -229,7 +244,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
             // (We assume that if the user did not enter a nickname, he/she wants
             // to be anonymous and we will not generate the vizhash.)
             $vz = new vizhash16x16();
-            $pngdata = $vz->generate($_SERVER['REMOTE_ADDR']);
+            $pngdata = $vz->generate(get_real_ip());
             if ($pngdata!='') $meta['vizhash'] = 'data:image/png;base64,'.base64_encode($pngdata);
             // Once the avatar is generated, we do not keep the IP address, nor its hash.
         }
