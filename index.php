@@ -5,6 +5,7 @@ Please see project page: http://sebsauvage.net/wiki/doku.php?id=php:zerobin
 */
 $VERSION='Alpha 0.19';
 if (version_compare(PHP_VERSION, '5.2.6') < 0) die('ZeroBin requires php 5.2.6 or above to work. Sorry.');
+require_once "config.inc.php";
 require_once "lib/serversalt.php";
 require_once "lib/vizhash_gd_zero.php";
 
@@ -21,6 +22,12 @@ if (get_magic_quotes_gpc())
 // Will return false if IP address made a call less than 10 seconds ago.
 function trafic_limiter_canPass($ip)
 {
+    global $cfg;
+    $timeBetweenPosts = $cfg["timeBetweenPosts"];
+    // -1: no rate limiting
+    if($timeBetweenPosts == -1) {
+        return true;
+    }
     $tfilename='./data/trafic_limiter.php';
     if (!is_file($tfilename))
     {
@@ -29,7 +36,7 @@ function trafic_limiter_canPass($ip)
     }
     require $tfilename;
     $tl=$GLOBALS['trafic_limiter'];
-    if (!empty($tl[$ip]) && ($tl[$ip]+10>=time()))
+    if (!empty($tl[$ip]) && ($tl[$ip] + $timeBetweenPosts >=time()))
     {
         return false;
         // FIXME: purge file of expired IPs to keep it small
@@ -157,13 +164,17 @@ if (!empty($_POST['data'])) // Create new paste/comment
     }
 
     // Make sure last paste from the IP address was more than 10 seconds ago.
-    if (!trafic_limiter_canPass($_SERVER['REMOTE_ADDR']))
-        { echo json_encode(array('status'=>1,'message'=>'Please wait 10 seconds between each post.')); exit; }
+    if (!trafic_limiter_canPass($_SERVER['REMOTE_ADDR'])) {
+        $timeBetweenPosts = $cfg['timeBetweenPosts'];
+        echo json_encode(array('status'=>1,'message'=>"Please wait $timeBetweenPosts seconds between each post."));
+        exit;
+    }
 
     // Make sure content is not too big.
     $data = $_POST['data'];
-    if (strlen($data)>2000000)
-        { echo json_encode(array('status'=>1,'message'=>'Paste is limited to 2 Mb of encrypted data.')); exit; }
+    $maxPostSize = $cfg["maxPostSize"];
+    if (strlen($data) > $maxPostSize)
+        { echo json_encode(array('status'=>1,'message'=>"Paste is limited to $maxPostSize bytes of encrypted data.")); exit; }
 
     // Make sure format is correct.
     if (!validSJCL($data))
@@ -173,16 +184,20 @@ if (!empty($_POST['data'])) // Create new paste/comment
     $meta=array();
 
     // Read expiration date
-    if (!empty($_POST['expire']))
-    {
-        $expire=$_POST['expire'];
-        if ($expire=='5min') $meta['expire_date']=time()+5*60;
-        elseif ($expire=='10min') $meta['expire_date']=time()+10*60;
-        elseif ($expire=='1hour') $meta['expire_date']=time()+60*60;
-        elseif ($expire=='1day') $meta['expire_date']=time()+24*60*60;
-        elseif ($expire=='1week') $meta['expire_date']=time()+7*24*60*60;
-        elseif ($expire=='1month') $meta['expire_date']=time()+30*24*60*60; // Well this is not *exactly* one month, it's 30 days.
-        elseif ($expire=='1year') $meta['expire_date']=time()+365*24*60*60;
+    $expire=$_POST['expire'];
+    if(array_key_exists($expire, $cfg["expire"])) {
+        // Valid expiration info
+        $expireDelay = $cfg["expire"][$expire];
+        if($expireDelay != -1) { // -1 means never
+            $meta['expire_date'] = time() + $expireDelay;
+        }
+    } else {
+        // Use default for an invalid POST expire name.
+        // Will also be executed for empty keys
+        $expireDelay = $cfg["expire"][$cfg["expireDefault"]];
+        if($expireDelay != -1) { // -1 means never
+            $meta['expire_date'] = time() + $expireDelay;
+        }
     }
 
     // Destroy the paste when it is read.
@@ -194,7 +209,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
     }
 
     // Read open discussion flag
-    if (!empty($_POST['opendiscussion']))
+    if (!empty($_POST['opendiscussion']) && $cfg["enableDiscussionSystem"])
     {
         $opendiscussion = $_POST['opendiscussion'];
         if ($opendiscussion!='0' && $opendiscussion!='1') { $error=true; }
@@ -202,7 +217,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
     }
 
     // Should we use syntax coloring when displaying ?
-    if (!empty($_POST['syntaxcoloring']))
+    if (!empty($_POST['syntaxcoloring']) && $cfg["enableSyntaxHighlighting"])
     {
         $syntaxcoloring = $_POST['syntaxcoloring'];
         if ($syntaxcoloring!='0' && $syntaxcoloring!='1') { $error=true; }
@@ -300,7 +315,7 @@ if (!empty($_POST['data'])) // Create new paste/comment
         // The paste can be delete by calling http://myserver.com/zerobin/?pasteid=<pasteid>&deletetoken=<deletetoken>
         $deletetoken = hash_hmac('sha1', $dataid , getServerSalt());
 
-        echo json_encode(array('status'=>0,'id'=>$dataid,'deletetoken'=>$deletetoken)); // 0 = no error
+        echo json_encode(array('status'=>0,'id'=>$dataid,'deletetoken'=>$deletetoken,'showHash'=>$cfg['showHash'])); // 0 = no error
         exit;
     }
 
@@ -341,6 +356,7 @@ function processPasteDelete($pasteid,$deletetoken)
 */
 function processPasteFetch($pasteid)
 {
+    global $cfg;
     if (preg_match('/\A[a-f\d]{16}\z/',$pasteid))  // Is this a valid paste identifier ?
     {
         $filename = dataid2path($pasteid).$pasteid;
@@ -369,8 +385,8 @@ function processPasteFetch($pasteid)
     if (property_exists($paste->meta, 'expire_date')) $paste->meta->remaining_time = $paste->meta->expire_date - time();
 
     $messages = array($paste); // The paste itself is the first in the list of encrypted messages.
-    // If it's a discussion, get all comments.
-    if (property_exists($paste->meta, 'opendiscussion') && $paste->meta->opendiscussion)
+    // If it's a discussion, get all comments, unless discussions are disabled
+    if (property_exists($paste->meta, 'opendiscussion') && $paste->meta->opendiscussion && $cfg["enableDiscussionSystem"])
     {
         $comments=array();
         $datadir = dataid2discussionpath($pasteid);
@@ -421,6 +437,7 @@ else if (!empty($_SERVER['QUERY_STRING']))  // Return an existing paste.
 require_once "lib/rain.tpl.class.php";
 header('Content-Type: text/html; charset=utf-8');
 $page = new RainTPL;
+$page->assign('cfg',$cfg);
 $page->assign('CIPHERDATA',htmlspecialchars($CIPHERDATA,ENT_NOQUOTES));  // We escape it here because ENT_NOQUOTES can't be used in RainTPL templates.
 $page->assign('VERSION',$VERSION);
 $page->assign('ERRORMESSAGE',$ERRORMESSAGE);

@@ -9,8 +9,10 @@
 <script src="js/rawdeflate.js?{$VERSION|rawurlencode}#"></script>
 <script src="js/rawinflate.js?{$VERSION|rawurlencode}#"></script>
 <script src="js/zerobin.js?{$VERSION|rawurlencode}#"></script>
-<link type="text/css" rel="stylesheet" href="js/highlight.styles/monokai.css?{$VERSION|rawurlencode}#">
-<script src="js/highlight.pack.js?{$VERSION|rawurlencode}#"></script>
+{if condition="$cfg['enableSyntaxHighlighting']"}
+    <link type="text/css" rel="stylesheet" href="js/highlight.styles/monokai.css?{$VERSION|rawurlencode}#">
+    <script src="js/highlight.pack.js?{$VERSION|rawurlencode}#"></script>
+{/if}
 
 <!--[if lt IE 10]>
 <style> body {padding-left:60px;padding-right:60px;} div#ienotice {display:block;} </style>
@@ -49,29 +51,36 @@
     <button id="rawtextbutton" onclick="rawText();return false;" style="display:none; "><img src="img/icon_raw.png#" width="15" height="15" style="padding:1px 0px 1px 0px;"/>Raw text</button>
       <div id="expiration" style="display:none;">Expires: 
       <select id="pasteExpiration" name="pasteExpiration">
-        <option value="5min">5 minutes</option>
-        <option value="10min">10 minutes</option>
-        <option value="1hour">1 hour</option>
-        <option value="1day">1 day</option>
-        <option value="1week">1 week</option>
-        <option value="1month" selected="selected">1 month</option>
-        <option value="1year">1 year</option>
-        <option value="never">Never</option>
+        {loop="$cfg['expireLabels']"}
+            {if condition="$cfg['expireSelected'] == $key"}
+                <option value="{$key}" selected="selected">{$value}</option>
+            {else}
+                <option value="{$key}">{$value}</option>
+            {/if}
+        {/loop}
       </select>
       </div>
       <div id="remainingtime" style="display:none;"></div>
       <div id="burnafterreadingoption" class="button" style="display:none;">
-         <input type="checkbox" id="burnafterreading" name="burnafterreading" />
+         {if condition="$cfg['burnAfterReadingSelected']"}
+            <input type="checkbox" id="burnafterreading" name="burnafterreading" checked="checked" />
+         {else}
+            <input type="checkbox" id="burnafterreading" name="burnafterreading" />
+         {/if}
          <label for="burnafterreading">Burn after reading</label>
       </div>
-      <div id="opendisc" class="button" style="display:none;">
-         <input type="checkbox" id="opendiscussion" name="opendiscussion" />
-         <label for="opendiscussion">Open discussion</label>
-      </div>
-      <div id="syntaxcoloringoption" class="button" style="display:none;">
-         <input type="checkbox" id="syntaxcoloring" name="syntaxcoloring" />
-         <label for="syntaxcoloring">Syntax coloring</label>
-      </div>
+      {if condition="$cfg['enableDiscussionSystem']"}
+        <div id="opendisc" class="button" style="display:none;">
+            <input type="checkbox" id="opendiscussion" name="opendiscussion" />
+            <label for="opendiscussion">Open discussion</label>
+        </div>
+      {/if}
+      {if condition="$cfg['enableSyntaxHighlighting']"}
+        <div id="syntaxcoloringoption" class="button" style="display:none;">
+            <input type="checkbox" id="syntaxcoloring" name="syntaxcoloring" />
+            <label for="syntaxcoloring">Syntax coloring</label>
+        </div>
+      {/if}
     </div>
     <div id="pasteresult" style="display:none;">
       <div id="deletelink"></div>
@@ -79,10 +88,12 @@
     </div>
     <div id="cleartext" style="display:none;"></div>
     <textarea id="message" name="message" cols="80" rows="25" style="display:none;"></textarea>
-    <div id="discussion" style="display:none;">
-        <h4>Discussion</h4>
-        <div id="comments"></div>
-    </div>
+    {if condition="$cfg['enableDiscussionSystem']"}
+        <div id="discussion" style="display:none;">
+            <h4>Discussion</h4>
+            <div id="comments"></div>
+        </div>
+    {/if}
     <div id="cipherdata" style="display:none;">{$CIPHERDATA}</div>
   </body>
 </html>
