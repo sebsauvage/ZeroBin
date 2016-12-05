@@ -1,0 +1,11 @@
+Markers
+===========
+
+Adding marker files to this directory will have the following effects:
+
+force_clean_build - Will remove all previous php pears and start installing
+    required pears from scratch
+
+hot_deploy - Will prevent the apache process from being restarted during
+    build/deployment
+
