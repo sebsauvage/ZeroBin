@@ -32,7 +32,13 @@ function trafic_limiter_canPass($ip)
     if (!empty($tl[$ip]) && ($tl[$ip]+10>=time()))
     {
         return false;
-        // FIXME: purge file of expired IPs to keep it small
+    } else {
+        unset($tl[$ip]);
+    }
+    foreach ($tl as $k => $v) {
+        if ($k != $ip && $v+10<=time()) {
+            unset($tl[$k]);
+        }
     }
     $tl[$ip]=time();
     file_put_contents($tfilename, "<?php\n\$GLOBALS['trafic_limiter']=".var_export($tl,true).";\n?>", LOCK_EX);
