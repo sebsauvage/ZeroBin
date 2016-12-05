@@ -1,0 +1,233 @@
+/* ZeroBin 0.19 - http://sebsauvage.net/wiki/doku.php?id=php:zerobin */
+
+html  {
+background-color:#455463;
+color:white;
+background-image: linear-gradient(bottom, #0F1823 0%, #455463 100%);
+background-image: -o-linear-gradient(bottom, #0F1823 0%, #455463 100%);
+background-image: -moz-linear-gradient(bottom, #0F1823 0%, #455463 100%);
+background-image: -webkit-linear-gradient(bottom, #0F1823 0%, #455463 100%);
+background-image: -ms-linear-gradient(bottom, #0F1823 0%, #455463 100%);
+background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #0F1823), color-stop(1, #455463));
+}
+
+a  {
+color:#0F388F;
+}
+
+h1 {
+color:#000;
+}
+
+h1:before {
+color:rgba(255,255,255,0.15);
+}
+
+h2 { 
+color:#000;
+}
+
+h3 { 
+color:#94a3b4;
+}
+
+#aboutbox { 
+color: #94a3b4;
+border-left: 2px solid #94a3b4;
+}
+
+div#aboutbox a {
+color: #94a3b4;   
+}
+
+textarea#message,div#cleartext,.replymessage, code {
+color:black;
+background-color:#fff;
+border: 1px solid #28343F;
+}
+
+div#pasteresult { 
+background-color:#1F2833;
+color:white;
+-moz-box-shadow: inset 0px 2px 2px #000;
+-webkit-box-shadow: inset 0px 2px 2px #000;
+box-shadow: inset 0px 2px 5px #000;
+}
+
+div#pasteresult a {
+color:white;    
+}
+
+#copyhint {
+color: #666;
+}
+
+
+button,.button,div#expiration {
+color:#fff;
+background-color:#323B47;
+background-repeat:no-repeat;
+background-position:center left;
+background-image: linear-gradient(bottom, #323B47 0%, #51606E 100%);
+background-image: -o-linear-gradient(bottom, #323B47 0%, #51606E 100%);
+background-image: -moz-linear-gradient(bottom, #323B47 0%, #51606E 100%);
+background-image: -webkit-linear-gradient(bottom, #323B47 0%, #51606E 100%);
+background-image: -ms-linear-gradient(bottom, #323B47 0%, #51606E 100%);
+background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #323B47), color-stop(1, #51606E));
+border: 1px solid #28343F;
+-moz-box-shadow: inset 0px 1px 2px #647384;
+-webkit-box-shadow: inset 0px 1px 2px #647384;
+box-shadow: inset 0px 1px 2px #647384;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
+}
+
+button:hover  { 
+background-image: linear-gradient(bottom, #424B57 0%, #61707E 100%);
+background-image: -o-linear-gradient(bottom, #424B57 0%, #61707E 100%);
+background-image: -moz-linear-gradient(bottom, #424B57 0%, #61707E 100%);
+background-image: -webkit-linear-gradient(bottom, #424B57 0%, #61707E 100%);
+background-image: -ms-linear-gradient(bottom, #424B57 0%, #61707E 100%);
+background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #424B57), color-stop(1, #61707E));
+}
+
+button:active {
+background-image: linear-gradient(bottom, #51606E 0%, #323B47 100%);
+background-image: -o-linear-gradient(bottom, #51606E 0%, #323B47 100%);
+background-image: -moz-linear-gradient(bottom, #51606E 0%, #323B47 100%);
+background-image: -webkit-linear-gradient(bottom, #51606E 0%, #323B47 100%);
+background-image: -ms-linear-gradient(bottom, #51606E 0%, #323B47 100%);
+background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #51606E), color-stop(1, #323B47));
+}
+
+button:disabled, .buttondisabled {
+background:#ccc;
+color:#888;
+}
+
+div#expiration, div#rawtextbutton, div#burnafterreadingoption, div#opendisc, div#syntaxcoloringoption { 
+background-color:#414D5A;
+}
+
+div#expiration select {
+color:#eee;
+background: transparent;
+}
+
+div#expiration select option {
+color:#eee;
+background: #414D5A;
+background-color:#414D5A;
+}
+
+div#remainingtime {
+color: #94a3b4;
+}
+
+.foryoureyesonly {
+color: yellow !important;
+}
+
+input {
+color:#777;
+border: 1px solid #28343F;
+}
+
+.nonworking {
+background-color:#fff;
+color:#000;
+-webkit-border-radius:4px;
+-moz-border-radius:4px;
+border-radius:4px;
+}
+
+div#ienotice {
+background-color:#7E98AF;
+color:#000;
+-webkit-border-radius:4px;
+-moz-border-radius:4px;
+border-radius:4px;
+}
+
+div#ienotice a {
+color:black;
+}
+
+.errorMessage {
+background-color:#FF7979 !important;
+color:#FF0;
+}
+
+h4 {
+color: #94A3B4;
+}
+
+
+div.comment /* One single reply */
+{
+background-color:#CECED6;
+color:#000;
+border-left: 1px solid #859AAE;
+border-top: 1px solid #859AAE;
+-moz-box-shadow: -3px -3px 5px rgba(0,0,0,0.15);
+-webkit-box-shadow: -3px -3px 5px rgba(0,0,0,0.15);
+box-shadow: -3px -3px 5px rgba(0,0,0,0.15);
+}
+
+div.comment button  {
+color:#446;
+background-color:#aab;
+background-repeat:no-repeat;
+background-position:center left;
+background-image: linear-gradient(bottom, #aab 0%, #ccc 100%);
+background-image: -o-linear-gradient(bottom, #aab 0%, #ccc 100%);
+background-image: -moz-linear-gradient(bottom, #aab 0%, #ccc 100%);
+background-image: -webkit-linear-gradient(bottom, #aab 0%, #ccc 100%);
+background-image: -ms-linear-gradient(bottom, #aab 0%, #ccc 100%);
+background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #aab), color-stop(1, #ccc));
+border: 1px solid #ccd;
+-moz-box-shadow: inset 0px 1px 2px #ddd;
+-webkit-box-shadow: inset 0px 1px 2px #fff;
+box-shadow: inset 0px 1px 2px #eee;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
+-moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box;
+}
+
+div.comment button:hover  { 
+background-image: linear-gradient(bottom, #ccd 0%, #fff 100%);
+background-image: -o-linear-gradient(bottom, #ccd 0%, #fff 100%);
+background-image: -moz-linear-gradient(bottom, #ccd 0%, #fff 100%);
+background-image: -webkit-linear-gradient(bottom, #ccd 0%, #fff 100%);
+background-image: -ms-linear-gradient(bottom, #ccd 0%, #fff 100%);
+background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccd), color-stop(1, #fff));
+}
+
+div.comment button:active {
+background-image: linear-gradient(bottom, #fff 0%, #889 100%);
+background-image: -o-linear-gradient(bottom, #fff 0%, #889 100%);
+background-image: -moz-linear-gradient(bottom, #fff 0%, #889 100%);
+background-image: -webkit-linear-gradient(bottom, #fff 0%, #889 100%);
+background-image: -ms-linear-gradient(bottom, #fff 0%, #889 100%);
+background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #fff), color-stop(1, #889));
+}
+
+
+div.commentmeta {
+color: #fff;
+background-color:#8EA0B2;
+}
+
+span.commentdate {
+color: #BFCEDE;
+}
+
+pre a {
+color:#58A5B4;
+}
+
+pre a:hover {
+color:#64B9C6;
+}
