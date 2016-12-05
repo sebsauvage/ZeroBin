@@ -201,6 +201,8 @@ function displayMessages(key, comments) {
     setElementText($('div#cleartext'), cleartext);
     urls2links($('div#cleartext')); // Convert URLs to clickable links.
 
+    if (comments[0].meta.confidential)  $('button#clonebutton').hide();
+
     // comments[0] is the paste itself.
 
     if (comments[0].meta.syntaxcoloring) applySyntaxColoring();
@@ -346,7 +348,8 @@ function send_data() {
                          expire:         $('select#pasteExpiration').val(),
                          burnafterreading: $('input#burnafterreading').is(':checked') ? 1 : 0,
                          opendiscussion: $('input#opendiscussion').is(':checked') ? 1 : 0,
-                         syntaxcoloring: $('input#syntaxcoloring').is(':checked') ? 1 : 0
+                         syntaxcoloring: $('input#syntaxcoloring').is(':checked') ? 1 : 0,
+                         confidential: $('input#confidential').is(':checked') ? 1 : 0
                        };
     $.post(scriptLocation(), data_to_send, 'json')
         .error(function() {
@@ -366,7 +369,8 @@ function send_data() {
 
                 setElementText($('div#cleartext'), $('textarea#message').val());
                 urls2links($('div#cleartext'));
-
+                // Don't clone if confidential
+                if ($('input#confidential').is(':checked'))  $('button#clonebutton').hide();
                 // FIXME: Add option to remove syntax highlighting ?
                 if ($('input#syntaxcoloring').is(':checked')) applySyntaxColoring();
 
@@ -430,13 +434,14 @@ function stateNewPaste() {
 function stateExistingPaste() {
     $('button#sendbutton').hide();
 
-    // No "clone" for IE<10.
-    if ($('div#oldienotice').is(":visible")) {
+    // No "clone" for IE<10. 
+    if ($('div#oldienotice').is(":visible") ) {
         $('button#clonebutton').hide();
     }
     else {
         $('button#clonebutton').show();
     }
+
     $('button#rawtextbutton').show();
 
     $('div#expiration').hide();

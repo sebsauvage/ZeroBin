@@ -176,7 +176,8 @@ if (!empty($_POST['data'])) // Create new paste/comment
     if (!empty($_POST['expire']))
     {
         $expire=$_POST['expire'];
-        if ($expire=='5min') $meta['expire_date']=time()+5*60;
+        if ($expire=='10sec') $meta['expire_date']=time()+10;
+        elseif ($expire=='5min') $meta['expire_date']=time()+5*60;
         elseif ($expire=='10min') $meta['expire_date']=time()+10*60;
         elseif ($expire=='1hour') $meta['expire_date']=time()+60*60;
         elseif ($expire=='1day') $meta['expire_date']=time()+24*60*60;
@@ -209,8 +210,19 @@ if (!empty($_POST['data'])) // Create new paste/comment
         if ($syntaxcoloring!='0') { $meta['syntaxcoloring']=true; }
     }    
 
+    // If confidential mode, we cannot change anything
+    if (!empty($_POST['confidential']))
+    {
+        $confidential = $_POST['confidential'];
+        if ($confidential!='0' && $confidential!='1') { $error=true; }
+        if ($confidential!='0') { $meta['confidential']=true; }
+    }
+
     // You can't have an open discussion on a "Burn after reading" paste:
     if (isset($meta['burnafterreading'])) unset($meta['opendiscussion']);
+
+    // Everything is disable on confidential mode
+    if (isset($meta['confidential'])) unset($meta['opendiscussion']);          
 
     // Optional nickname for comments
     if (!empty($_POST['nickname']))
