@@ -1,0 +1,4 @@
+<?php
+
+// Set translation language
+$language='fr';

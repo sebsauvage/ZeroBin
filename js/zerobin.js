@@ -5,6 +5,11 @@
  * @author sebsauvage
  */
 
+function translate(msg) {
+	if (typeof(lang) == "object" && typeof(lang[msg]) == "string") return lang[msg];
+	return msg;
+}
+
 // Immediately start random number generator collector.
 sjcl.random.startCollectors();
 
@@ -16,12 +21,15 @@ sjcl.random.startCollectors();
  */
 function secondsToHuman(seconds)
 {
-    if (seconds<60) { var v=Math.floor(seconds); return v+' second'+((v>1)?'s':''); }
-    if (seconds<60*60) { var v=Math.floor(seconds/60); return v+' minute'+((v>1)?'s':''); }
-    if (seconds<60*60*24) { var v=Math.floor(seconds/(60*60)); return v+' hour'+((v>1)?'s':''); }
+    //FIXME add optionnal s at the end of time word according to the language 
+    //set two version plural et singular and set a flag for the use of one or another
+    if (seconds<60) { var v=Math.floor(seconds); return v+' '+translate('second')+((v>1)?'s':''); }
+    if (seconds<60*60) { var v=Math.floor(seconds/60); return v+' '+translate('minute')+((v>1)?'s':''); }
+    if (seconds<60*60*24) { var v=Math.floor(seconds/(60*60)); return v+' '+translate('hour')+((v>1)?'s':''); }
     // If less than 2 months, display in days:
-    if (seconds<60*60*24*60) { var v=Math.floor(seconds/(60*60*24)); return v+' day'+((v>1)?'s':''); }
-    var v=Math.floor(seconds/(60*60*24*30)); return v+' month'+((v>1)?'s':'');
+    if (seconds<60*60*24*60) { var v=Math.floor(seconds/(60*60*24)); return v+' '+translate('day')+((v>1)?'s':''); }
+    //FIXME if french add exeption for month
+    var v=Math.floor(seconds/(60*60*24*30)); return v+' '+translate('month')+((v>1)?'s':'');
 }
 
 /**
@@ -195,7 +203,7 @@ function displayMessages(key, comments) {
     } catch(err) {
         $('div#cleartext').hide();
         $('button#clonebutton').hide();
-        showError('Could not decrypt data (Wrong key ?)');
+        showError(translate('Could not decrypt data (Wrong key ?)'));
         return;
     }
     setElementText($('div#cleartext'), cleartext);
@@ -206,9 +214,9 @@ function displayMessages(key, comments) {
     if (comments[0].meta.syntaxcoloring) applySyntaxColoring();
 
     // Display paste expiration.
-    if (comments[0].meta.expire_date) $('div#remainingtime').removeClass('foryoureyesonly').text('This document will expire in '+secondsToHuman(comments[0].meta.remaining_time)+'.').show();
+    if (comments[0].meta.expire_date) $('div#remainingtime').removeClass('foryoureyesonly').text(translate('This document will expire in')+' '+secondsToHuman(comments[0].meta.remaining_time)+'.').show();
     if (comments[0].meta.burnafterreading) {
-        $('div#remainingtime').addClass('foryoureyesonly').text('FOR YOUR EYES ONLY.  Don\'t close this window, this message can\'t be displayed again.').show();
+        $('div#remainingtime').addClass('foryoureyesonly').text(translate('FOR YOUR EYES ONLY.  Don\'t close this window, this message can\'t be displayed again.')).show();
         $('button#clonebutton').hide(); // Discourage cloning (as it can't really be prevented).
     }
 
@@ -232,7 +240,7 @@ function displayMessages(key, comments) {
             }
             var divComment = $('<div class="comment" id="comment_' + comment.meta.commentid+'">'
                                + '<div class="commentmeta"><span class="nickname"></span><span class="commentdate"></span></div><div class="commentdata"></div>'
-                               + '<button onclick="open_reply($(this),\'' + comment.meta.commentid + '\');return false;">Reply</button>'
+                               + '<button onclick="open_reply($(this),\'' + comment.meta.commentid + '\');return false;">'+translate('Reply')+'</button>'
                                + '</div>');
             setElementText(divComment.find('div.commentdata'), cleartext);
             // Convert URLs to clickable links in comment.
@@ -252,7 +260,7 @@ function displayMessages(key, comments) {
 
             place.append(divComment);
         }
-        $('div#comments').append('<div class="comment"><button onclick="open_reply($(this),\'' + pasteID() + '\');return false;">Add comment</button></div>');
+        $('div#comments').append('<div class="comment"><button onclick="open_reply($(this),\'' + pasteID() + '\');return false;">'+translate('Add comment')+'</button></div>');
         $('div#discussion').show();
     }
 }
@@ -265,9 +273,9 @@ function displayMessages(key, comments) {
 function open_reply(source, commentid) {
     $('div.reply').remove(); // Remove any other reply area.
     source.after('<div class="reply">'
-                + '<input type="text" id="nickname" title="Optional nickname..." value="Optional nickname..." />'
+                + '<input type="text" id="nickname" title="Optional nickname..." value="'+translate('Optional nickname')+'..." />'
                 + '<textarea id="replymessage" class="replymessage" cols="80" rows="7"></textarea>'
-                + '<br><button id="replybutton" onclick="send_comment(\'' + commentid + '\');return false;">Post comment</button>'
+                + '<br><button id="replybutton" onclick="send_comment(\'' + commentid + '\');return false;">'+translate('Post comment')+'</button>'
                 + '<div id="replystatus">&nbsp;</div>'
                 + '</div>');
     $('input#nickname').focus(function() {
@@ -289,11 +297,11 @@ function send_comment(parentid) {
         return;
     }
 
-    showStatus('Sending comment...', spin=true);
+    showStatus(translate('Sending comment')+'...', spin=true);
     var cipherdata = zeroCipher(pageKey(), $('textarea#replymessage').val());
     var ciphernickname = '';
     var nick=$('input#nickname').val();
-    if (nick != '' && nick != 'Optional nickname...') {
+    if (nick != '' && nick != translate('Optional nickname')+'...') {
         ciphernickname = zeroCipher(pageKey(), nick);
     }
     var data_to_send = { data:cipherdata,
@@ -304,18 +312,18 @@ function send_comment(parentid) {
 
     $.post(scriptLocation(), data_to_send, 'json')
         .error(function() {
-            showError('Comment could not be sent (serveur error or not responding).');
+            showError(translate('Comment could not be sent (serveur error or not responding).'));
         })
         .success(function(data) {
             if (data.status == 0) {
-                showStatus('Comment posted.');
+                showStatus(translate('Comment posted.'));
                 location.reload();
             }
             else if (data.status==1) {
-                showError('Could not post comment: '+data.message);
+                showError(translate('Could not post comment')+': '+data.message);
             }
             else {
-                showError('Could not post comment.');
+                showError(translate('Could not post comment')+'.');
             }
         });
     }
@@ -333,12 +341,12 @@ function send_data() {
     // If sjcl has not collected enough entropy yet, display a message.
     if (!sjcl.random.isReady())
     {
-        showStatus('Sending paste (Please move your mouse for more entropy)...', spin=true);
+        showStatus(translate('Sending paste (Please move your mouse for more entropy)'+'...'), spin=true);
         sjcl.random.addEventListener('seeded', function(){ send_data(); }); 
         return; 
     }
     
-    showStatus('Sending paste...', spin=true);
+    showStatus(translate('Sending paste'+'...'), spin=true);
 
     var randomkey = sjcl.codec.base64.fromBits(sjcl.random.randomWords(8, 0), 0);
     var cipherdata = zeroCipher(randomkey, $('textarea#message').val());
@@ -350,7 +358,7 @@ function send_data() {
                        };
     $.post(scriptLocation(), data_to_send, 'json')
         .error(function() {
-            showError('Data could not be sent (serveur error or not responding).');
+            showError(translate('Data could not be sent (serveur error or not responding)')+'.');
         })
         .success(function(data) {
             if (data.status == 0) {
@@ -359,8 +367,8 @@ function send_data() {
                 var deleteUrl = scriptLocation() + "?pasteid=" + data.id + '&deletetoken=' + data.deletetoken;
                 showStatus('');
 
-                $('div#pastelink').html('Your paste is <a id="pasteurl" href="' + url + '">' + url + '</a> <span id="copyhint">(Hit CTRL+C to copy)</span>');
-                $('div#deletelink').html('<a href="' + deleteUrl + '">Delete link</a>');
+                $('div#pastelink').html(translate('Your paste is')+' <a id="pasteurl" href="' + url + '">' + url + '</a> <span id="copyhint">('+translate('Hit CTRL+C to copy')+')</span>');
+                $('div#deletelink').html('<a href="' + deleteUrl + '">'+translate('Delete link')+'</a>');
                 $('div#pasteresult').show();
                 selectText('pasteurl'); // We pre-select the link so that the user only has to CTRL+C the link.
 
@@ -373,10 +381,10 @@ function send_data() {
                 showStatus('');
             }
             else if (data.status==1) {
-                showError('Could not create paste: '+data.message);
+                showError(translate('Could not create paste')+': '+data.message);
             }
             else {
-                showError('Could not create paste.');
+                showError(translate('Could not create paste')+'.');
             }
         });
 }
@@ -486,6 +494,7 @@ function newPaste() {
  * (We use the same function for paste and reply to comments)
  */
 function showError(message) {
+    message=translate(message);
     $('div#status').addClass('errorMessage').text(message);
     $('div#replystatus').addClass('errorMessage').text(message);
 }
@@ -585,7 +594,7 @@ $(function() {
     if ($('div#cipherdata').text().length > 1) {
         // Missing decryption key in URL ?
         if (window.location.hash.length == 0) {
-            showError('Cannot decrypt paste: Decryption key missing in URL (Did you use a redirector or an URL shortener which strips part of the URL ?)');
+            showError(translate('Cannot decrypt paste: Decryption key missing in URL (Did you use a redirector or an URL shortener which strips part of the URL ?)'));
             return;
         }
 

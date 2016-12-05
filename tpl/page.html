@@ -8,6 +8,7 @@
 <script src="js/base64.js?{$VERSION|rawurlencode}#"></script>
 <script src="js/rawdeflate.js?{$VERSION|rawurlencode}#"></script>
 <script src="js/rawinflate.js?{$VERSION|rawurlencode}#"></script>
+{if condition="$lang_file!=''"}<script src="{$lang_file}?{$VERSION|rawurlencode}#"></script>{/if}
 <script src="js/zerobin.js?{$VERSION|rawurlencode}#"></script>
 <link type="text/css" rel="stylesheet" href="js/highlight.styles/monokai.css?{$VERSION|rawurlencode}#">
 <script src="js/highlight.pack.js?{$VERSION|rawurlencode}#"></script>
@@ -23,18 +24,18 @@
 </head>
   <body>
       <div id="aboutbox">
-          ZeroBin is a minimalist, opensource online pastebin where the server has zero knowledge of pasted data.
-          Data is encrypted/decrypted <i>in the browser</i> using 256 bits AES. 
-          More information on the <a href="http://sebsauvage.net/wiki/doku.php?id=php:zerobin">project page</a>.<br />
-          <span style="text-decoration:blink;font-size:10pt;color:#a4b3c4;">&#9654;</span> Note: This is a test service: 
-          Data may be deleted anytime. Kittens will die if you abuse this service.
+          {"ZeroBin is a minimalist, opensource online pastebin where the server has zero knowledge of pasted data."|translate}
+          {"Data is encrypted/decrypted <i>in the browser</i> using 256 bits AES."|translate}
+          {"More information on the"|translate} <a href="http://sebsauvage.net/wiki/doku.php?id=php:zerobin">{"project page"|translate}</a>.<br />
+          <span style="text-decoration:blink;font-size:10pt;color:#a4b3c4;">&#9654;</span> {"Note: This is a test service:"|translate}
+          {"Data may be deleted anytime. Kittens will die if you abuse this service."|translate} 
 </div>
     <h1 title="ZeroBin" onclick="window.location.href=scriptLocation();return false;">ZeroBin</h1><br>
-    <h2>Because ignorance is bliss</h2><br>
+    <h2>{"Because ignorance is bliss"|translate}</h2><br>
     <h3>{$VERSION}</h3>
-    <noscript><div class="nonworking">Javascript is required for ZeroBin to work.<br>Sorry for the inconvenience.</div></noscript>
-    <div id="oldienotice" class="nonworking">ZeroBin requires a modern browser to work.</div>
-    <div id="ienotice">Still using Internet Explorer ? &nbsp;Do yourself a favor, switch to a modern browser: 
+    <noscript><div class="nonworking">{"Javascript is required for ZeroBin to work.<br>Sorry for the inconvenience."|translate}</div></noscript>
+    <div id="oldienotice" class="nonworking">{"ZeroBin requires a modern browser to work."|translate}</div>
+    <div id="ienotice">{"Still using Internet Explorer ?"|translate} &nbsp;{"Do yourself a favor, switch to a modern browser"|translate}: 
         <a href="http://www.mozilla.org/firefox/">Firefox</a>, 
         <a href="http://www.opera.com/">Opera</a>, 
         <a href="http://www.google.com/chrome">Chrome</a>, 
@@ -43,34 +44,34 @@
     <div id="status">{$STATUS}</div>
     <div id="errormessage" style="display:none">{$ERRORMESSAGE|htmlspecialchars}</div>
     <div id="toolbar">
-    <button id="newbutton" onclick="window.location.href=scriptLocation();return false;" style="display:none;"><img src="img/icon_new.png#" width="11" height="15" />New</button>
-    <button id="sendbutton" onclick="send_data();return false;" style="display:none;"><img src="img/icon_send.png#" width="18" height="15" />Send</button>
-    <button id="clonebutton" onclick="clonePaste();return false;" style="display:none;"><img src="img/icon_clone.png#" width="15" height="17" />Clone</button>
-    <button id="rawtextbutton" onclick="rawText();return false;" style="display:none; "><img src="img/icon_raw.png#" width="15" height="15" style="padding:1px 0px 1px 0px;"/>Raw text</button>
-      <div id="expiration" style="display:none;">Expires: 
+    <button id="newbutton" onclick="window.location.href=scriptLocation();return false;" style="display:none;"><img src="img/icon_new.png#" width="11" height="15" />{"New"|translate}</button>
+    <button id="sendbutton" onclick="send_data();return false;" style="display:none;"><img src="img/icon_send.png#" width="18" height="15" />{"Send"|translate}</button>
+    <button id="clonebutton" onclick="clonePaste();return false;" style="display:none;"><img src="img/icon_clone.png#" width="15" height="17" />{"Clone"|translate}</button>
+    <button id="rawtextbutton" onclick="rawText();return false;" style="display:none; "><img src="img/icon_raw.png#" width="15" height="15" style="padding:1px 0px 1px 0px;"/>{"Raw text"|translate}</button>
+      <div id="expiration" style="display:none;">{"Expires"|translate}: 
       <select id="pasteExpiration" name="pasteExpiration">
-        <option value="5min">5 minutes</option>
-        <option value="10min">10 minutes</option>
-        <option value="1hour">1 hour</option>
-        <option value="1day">1 day</option>
-        <option value="1week">1 week</option>
-        <option value="1month" selected="selected">1 month</option>
-        <option value="1year">1 year</option>
-        <option value="never">Never</option>
+        <option value="5min">5 {"minutes"|translate}</option>
+        <option value="10min">10 {"minutes"|translate}</option>
+        <option value="1hour">1 {"hour"|translate}</option>
+        <option value="1day">1 {"day"|translate}</option>
+        <option value="1week">1 {"week"|translate}</option>
+        <option value="1month" selected="selected">1 {"month"|translate}</option>
+        <option value="1year">1 {"year"|translate}</option>
+        <option value="never">{"Never"|translate}</option>
       </select>
       </div>
       <div id="remainingtime" style="display:none;"></div>
       <div id="burnafterreadingoption" class="button" style="display:none;">
          <input type="checkbox" id="burnafterreading" name="burnafterreading" />
-         <label for="burnafterreading">Burn after reading</label>
+         <label for="burnafterreading">{"Burn after reading"|translate}</label>
       </div>
       <div id="opendisc" class="button" style="display:none;">
          <input type="checkbox" id="opendiscussion" name="opendiscussion" />
-         <label for="opendiscussion">Open discussion</label>
+         <label for="opendiscussion">{"Open discussion"|translate}</label>
       </div>
       <div id="syntaxcoloringoption" class="button" style="display:none;">
          <input type="checkbox" id="syntaxcoloring" name="syntaxcoloring" />
-         <label for="syntaxcoloring">Syntax coloring</label>
+         <label for="syntaxcoloring">{"Syntax coloring"|translate}</label>
       </div>
     </div>
     <div id="pasteresult" style="display:none;">
@@ -80,7 +81,7 @@
     <div id="cleartext" style="display:none;"></div>
     <textarea id="message" name="message" cols="80" rows="25" style="display:none;"></textarea>
     <div id="discussion" style="display:none;">
-        <h4>Discussion</h4>
+        <h4>{"Discussion"|translate}</h4>
         <div id="comments"></div>
     </div>
     <div id="cipherdata" style="display:none;">{$CIPHERDATA}</div>
