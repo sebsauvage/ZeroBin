@@ -1,0 +1,12 @@
+
+# Compress files
+AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript
+
+# Block Facebook: when you post on a wall or PM, Facebook loads the URL ...
+<IfModule mod_rewrite.c>
+  Options +FollowSymlinks
+	RewriteEngine On
+	RewriteCond %{HTTP_USER_AGENT} ^$
+	RewriteCond %{HTTP_USER_AGENT} ^.*facebook.*$ [NC]
+	RewriteRule .* - [F,L]  
+</IfModule>
